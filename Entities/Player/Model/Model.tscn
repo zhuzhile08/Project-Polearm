@@ -1,0 +1,60 @@
+[gd_scene load_steps=11 format=3 uid="uid://cy5kumexxfyyb"]
+
+[ext_resource type="Script" uid="uid://c7ciamuapwubd" path="res://Entities/Player/Model/Model.gd" id="1_5k4v0"]
+[ext_resource type="Script" uid="uid://dgmxstlenay7b" path="res://Entities/Player/Actions/ActionManager.gd" id="1_uhp1s"]
+[ext_resource type="Script" uid="uid://bjw3tygpodtev" path="res://Entities/Player/Model/Resources.gd" id="2_660r0"]
+[ext_resource type="Script" uid="uid://du8txlrr2po7v" path="res://Entities/Player/Actions/Run.gd" id="4_rvbmx"]
+[ext_resource type="Script" uid="uid://ca6i0s8oneqjc" path="res://Entities/Player/Actions/Walk.gd" id="5_m20wt"]
+[ext_resource type="Script" uid="uid://p1qurm2f1bvl" path="res://Entities/Player/Actions/Idle.gd" id="6_dvg17"]
+[ext_resource type="Script" uid="uid://nvdk7gl3vqfs" path="res://Entities/Player/Model/ActionData.gd" id="8_prnb2"]
+[ext_resource type="Script" uid="uid://620any2k6qha" path="res://Entities/Player/Model/CombatManager.gd" id="9_rvbmx"]
+
+[sub_resource type="Curve" id="Curve_prnb2"]
+_limits = [0.0, 7.0, 0.0, 1.0]
+_data = [Vector2(0, 0), 0.0, 0.0, 0, 0, Vector2(0.114286, 1), 0.0, 0.0, 0, 0, Vector2(0.2, 2), 0.0, 0.0, 0, 0, Vector2(0.3, 3), 0.0, 0.0, 0, 0, Vector2(0.414286, 4), 0.0, 0.0, 0, 0, Vector2(0.485714, 5), 0.0, 0.0, 0, 0, Vector2(0.6, 6.1), 0.0, 0.0, 0, 0, Vector2(1, 7), 0.0, 0.0, 0, 0]
+point_count = 8
+metadata/_snap_count = 70
+metadata/_snap_enabled = true
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_prnb2"]
+
+[node name="PlayerModel" type="Node3D"]
+script = ExtResource("1_5k4v0")
+
+[node name="Resources" type="Node" parent="."]
+script = ExtResource("2_660r0")
+FLOW_CURVE = SubResource("Curve_prnb2")
+metadata/_custom_type_script = "uid://bjw3tygpodtev"
+
+[node name="CombatManager" type="Node" parent="."]
+script = ExtResource("9_rvbmx")
+metadata/_custom_type_script = "uid://620any2k6qha"
+
+[node name="ActionData" type="AnimationPlayer" parent="."]
+libraries = {
+&"": SubResource("AnimationLibrary_prnb2")
+}
+script = ExtResource("8_prnb2")
+metadata/_custom_type_script = "uid://nvdk7gl3vqfs"
+
+[node name="ActionManager" type="Node" parent="."]
+script = ExtResource("1_uhp1s")
+
+[node name="Run" type="Node" parent="ActionManager"]
+script = ExtResource("4_rvbmx")
+RUN_SPEED = 500.0
+TYPE = 15
+PRIORITY = 1
+metadata/_custom_type_script = "uid://jc1g0sv32qq1"
+
+[node name="Walk" type="Node" parent="ActionManager"]
+script = ExtResource("5_m20wt")
+WALK_SPEED = 300.0
+TYPE = 16
+PRIORITY = 1
+metadata/_custom_type_script = "uid://jc1g0sv32qq1"
+
+[node name="Idle" type="Node" parent="ActionManager"]
+script = ExtResource("6_dvg17")
+TYPE = 20
+metadata/_custom_type_script = "uid://jc1g0sv32qq1"

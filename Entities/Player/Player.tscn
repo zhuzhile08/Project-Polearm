@@ -1,0 +1,25 @@
+[gd_scene load_steps=6 format=3 uid="uid://cyti0335fm7s0"]
+
+[ext_resource type="Script" uid="uid://ba0auooa0mv8w" path="res://Entities/Player/Player.gd" id="1_e5kic"]
+[ext_resource type="Script" uid="uid://ls6r1csl2o7j" path="res://Entities/Player/Input/InputManager.gd" id="2_x44r4"]
+[ext_resource type="PackedScene" uid="uid://cy5kumexxfyyb" path="res://Entities/Player/Model/Model.tscn" id="3_vweq0"]
+
+[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_u36tg"]
+
+[sub_resource type="CapsuleMesh" id="CapsuleMesh_ww0jn"]
+
+[node name="Player" type="CharacterBody3D"]
+script = ExtResource("1_e5kic")
+
+[node name="Collider" type="CollisionShape3D" parent="."]
+shape = SubResource("CapsuleShape3D_u36tg")
+
+[node name="InputManager" type="Node" parent="."]
+script = ExtResource("2_x44r4")
+WALK_LIMIT_SQUARED = 0.25
+metadata/_custom_type_script = "uid://ls6r1csl2o7j"
+
+[node name="Model" parent="." instance=ExtResource("3_vweq0")]
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="."]
+mesh = SubResource("CapsuleMesh_ww0jn")
