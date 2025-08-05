@@ -22,7 +22,7 @@ func _ready() -> void:
 	switchTo(Player.ActionType.idle)
 
 
-func update(input : PlayerInputPackage, delta: float) -> void:
+func update(input : PlayerInputManager.Data, delta: float) -> void:
 	input = checkInput(input)
 	
 	var nextAction = currentAction.nextAction(input)
@@ -34,7 +34,7 @@ func update(input : PlayerInputPackage, delta: float) -> void:
 	resources.update(delta)
 
 
-func checkInput(input : PlayerInputPackage) -> PlayerInputPackage:
+func checkInput(input : PlayerInputManager.Data) -> PlayerInputManager.Data:
 	# Sort inputs
 	input.actions.sort_custom(actionManager.actionPrioritySort)
 	

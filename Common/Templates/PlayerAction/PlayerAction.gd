@@ -1,7 +1,7 @@
 extends PlayerAction
 
 
-func updateImpl(input : PlayerInputPackage, delta : float) -> void:
+func updateImpl(input : PlayerInputManager.Data, delta : float) -> void:
 	pass
 
 func enterImpl() -> void:

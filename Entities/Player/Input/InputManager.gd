@@ -1,11 +1,17 @@
 extends Node
 class_name PlayerInputManager
 
+
+class Data extends RefCounted:
+	var direction : Vector2
+	var actions : Array[Player.ActionType]
+
+
 @export var WALK_LIMIT_SQUARED : float
 
 
-func pollInputs() -> PlayerInputPackage:
-	var inputs := PlayerInputPackage.new()
+func pollInputs() -> Data:
+	var inputs := PlayerInputManager.Data.new()
 	inputs.actions.append(Player.ActionType.idle)
 	
 	inputs.direction = Input.get_vector("Move left", "Move right", "Move forwards", "Move backwards")
