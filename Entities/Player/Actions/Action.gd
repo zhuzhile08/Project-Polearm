@@ -6,6 +6,7 @@ class_name PlayerAction
 @export_category("General")
 @export var TYPE : Player.ActionType
 @export var PRIORITY : int = 0
+@export var DEFAULT_ANIMATION : String
 
 @export_category("Combat")
 @export var ENERGY_COST : float = 0
@@ -28,7 +29,7 @@ var DURATION : float
 var queue : Player.ActionType = Player.ActionType.none
 var next : Player.ActionType = Player.ActionType.none
 
-var animationName : String
+@onready var animation : String = DEFAULT_ANIMATION
 
 
 # Member functions
@@ -56,7 +57,7 @@ func init() -> void:
 func update(input : PlayerInputManager.Data, delta : float) -> void:
 	progress += delta
 
-	if actionData.animTracksDirection(animationName, progress):
+	if actionData.animTracksDirection(animation, progress):
 		processDirection(input, delta)
 	
 	updateImpl(input, delta)
@@ -66,7 +67,7 @@ func enter() -> void:
 	resources.payAction(self)
 	
 	if combatManager.isNextComboAction(TYPE):
-		animationName = combatManager.registerComboAction(TYPE)
+		animation = combatManager.registerComboAction(TYPE)
 		
 		# Play animation
 	
@@ -78,6 +79,7 @@ func exit() -> void:
 	
 	progress = 0
 	
+	animation = DEFAULT_ANIMATION
 	queue = Player.ActionType.none
 	next = Player.ActionType.none
 
@@ -86,11 +88,11 @@ func exit() -> void:
 
 # Check if the action can accept a queue (i.e. the animation has progressed enough for the move to be queueable)
 func acceptsQueue() -> bool:
-	return actionData.animAcceptsQueue(animationName, progress)
+	return actionData.animAcceptsQueue(animation, progress)
 
 # Check if the action can start it's transition to another action
 func canTransition() -> bool:
-	return actionData.animTransitionable(animationName, progress)
+	return actionData.animTransitionable(animation, progress)
 
 
 # Check if a queueable move is present, can be queued with the current action and set it if these are the case
@@ -98,7 +100,7 @@ func checkAndSetQueue(input : PlayerInputManager.Data) -> void:
 	if input.actions.size() == 0:
 		return
 	
-	if actionData.animComboPause(animationName, progress) && combatManager.isNextComboAction(Player.ActionType.idle):
+	if actionData.animComboPause(animation, progress) && combatManager.isNextComboAction(Player.ActionType.idle):
 		combatManager.registerComboAction(Player.ActionType.idle)
 	
 	if manager.actions[input.actions[0]].QUEUEABLE:
