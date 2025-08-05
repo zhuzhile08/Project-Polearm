@@ -1,5 +1,11 @@
-extends Node
+extends Resource
 class_name PlayerCombo
 
-@onready var TYPE : Player.ComboType
-@onready var ACTIONS : Array[Player.ActionType]
+class ActionData extends Resource:
+	@export var TYPE : Player.ActionType
+	@export var ANIMATION : String
+	@export var DAMAGE : int
+	@export var FLOW : int
+
+@export var TYPE : Player.ComboType
+@export var ACTIONS : Array[ActionData]

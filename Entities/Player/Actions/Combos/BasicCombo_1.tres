@@ -1,0 +1,11 @@
+[gd_resource type="Resource" script_class="PlayerCombo" load_steps=3 format=3 uid="uid://cjh50ktmrhkbi"]
+
+[ext_resource type="Script" uid="uid://d2s01khtokmi5" path="res://Entities/Player/Actions/Combos/Combo.gd" id="1_o0s56"]
+
+[sub_resource type="GDScript" id="GDScript_o0s56"]
+
+[resource]
+script = ExtResource("1_o0s56")
+COMBO_TYPE = 0
+ACTIONS = Array[SubResource("GDScript_o0s56")]([])
+metadata/_custom_type_script = "uid://d2s01khtokmi5"

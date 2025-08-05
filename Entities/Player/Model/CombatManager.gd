@@ -5,24 +5,24 @@ class_name PlayerCombatManager
 
 @export var PREVIOUS_COMBO_COUNT : int
 
+@export var unlockedCombos : Array[PlayerCombo]
+
 
 # Member variables
 
 @onready var resources : PlayerResources
 
-var combos : Dictionary[Player.ComboType, PlayerCombo]
-var comboTree : Dictionary[Player.ActionType, Dictionary]
+@onready var comboTree : PlayerComboAction = PlayerComboAction.new()
+@onready var currentComboAction : PlayerComboAction = comboTree
 
-var currentCombo : Dictionary
 var previousCombos : Array[Player.ComboType]
 
 
 # Member functions
 
 func init() -> void:
-	for child in get_children():
-		if child is PlayerCombo:
-			unlockCombo(child as PlayerCombo)
+	for combo in unlockedCombos:
+		unlockCombo(combo)
 
 func update(delta : float) -> void:
 	pass
@@ -31,35 +31,44 @@ func update(delta : float) -> void:
 # Combo functions
 
 func unlockCombo(combo : PlayerCombo) -> void:
-	var tree = comboTree
+	var combos := comboTree
 	for action in combo.ACTIONS:
-		if !tree.has(action):
-			tree[action] = { }
-		tree = tree[action]
-	tree[Player.ActionType.none] = combo.TYPE
-	
-	combos[combo.TYPE] = combo
+		if !combos.tree.has(action.TYPE):
+			combos.tree[action.TYPE] = PlayerComboAction.new(action)
+		combos = combos.tree[action.TYPE]
+	combos.FINAL_COMBO_TYPE = combo.TYPE
 
-func clearCurrentCombo() -> void:
-	currentCombo = comboTree
 
-func isCurrentComboAction(action : Player.ActionType) -> bool:
-	if currentCombo.has(action):
+func resetActiveCombo() -> void:
+	currentComboAction = comboTree
+
+func hasActiveCombo() -> bool:
+	if currentComboAction.TYPE == Player.ActionType.none:
+		return false
+	return true
+
+func isNextComboAction(action : Player.ActionType) -> bool:
+	if currentComboAction.tree.has(action):
 		return true
 	return false
 
+
+# Assumes the action has been checked and is valid
 func registerComboAction(action : Player.ActionType) -> String:
-	var current = comboTree[action]
+	assert(isNextComboAction(action), "PlayerCombatManager.registerComboAction(): Action is not next in chain, please check before calling the function!")
 	
-	if current is Player.ComboType:
+	var current = currentComboAction.tree[action]
+	
+	if current.TYPE != Player.ComboType.none:
 		if previousCombos.size() == PREVIOUS_COMBO_COUNT:
 			previousCombos.pop_front()
-		previousCombos.append(current)
+		previousCombos.append(current.TYPE)
+		
+		resetActiveCombo()
 	else:
-		currentCombo = current
+		currentComboAction = current # Somewhere here, check for collision or recieve the check to pay the action
 	
-	# Determine the animation name and return it
-	return ""
+	return current.ANIMATION
 
 # Returns 0 if the combo wasn't used previously
 func comboPreviousUse(combo : Player.ComboType) -> int:

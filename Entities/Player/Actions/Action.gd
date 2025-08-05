@@ -9,6 +9,7 @@ class_name PlayerAction
 
 @export_category("Combat")
 @export var ENERGY_COST : float = 0
+@export var QUEUEABLE : bool = false
 
 
 # Member variables
@@ -35,7 +36,7 @@ var animationName : String
 # Exposed interface
 
 # This checks if the current action should continue or a transition should happen
-func nextAction(input : PlayerInputPackage) -> Player.ActionType:
+func nextAction(input : PlayerInputManager.Data) -> Player.ActionType:
 	if acceptsQueue():
 		checkAndSetQueue(input)
 	
@@ -48,8 +49,11 @@ func nextAction(input : PlayerInputPackage) -> Player.ActionType:
 	return highestPriorityAction(input)
 
 
+func init() -> void:
+	pass
+
 # This is called on every frame when the action is enabled
-func update(input : PlayerInputPackage, delta : float) -> void:
+func update(input : PlayerInputManager.Data, delta : float) -> void:
 	progress += delta
 
 	if actionData.animTracksDirection(animationName, progress):
@@ -61,8 +65,10 @@ func update(input : PlayerInputPackage, delta : float) -> void:
 func enter() -> void:
 	resources.payAction(self)
 	
-	if combatManager.isCurrentComboAction(TYPE):
+	if combatManager.isNextComboAction(TYPE):
 		animationName = combatManager.registerComboAction(TYPE)
+		
+		# Play animation
 	
 	enterImpl()
 
@@ -88,11 +94,15 @@ func canTransition() -> bool:
 
 
 # Check if a queueable move is present, can be queued with the current action and set it if these are the case
-func checkAndSetQueue(input : PlayerInputPackage) -> void:
-	if input.actions.size() > 0 and combatManager.isCurrentComboAction(input.actions[0]):
-		if actionData.animComboPause(animationName, progress):
-			combatManager.registerComboAction(Player.ActionType.idle)
-		animationName = combatManager.registerComboAction(TYPE)
+func checkAndSetQueue(input : PlayerInputManager.Data) -> void:
+	if input.actions.size() == 0:
+		return
+	
+	if actionData.animComboPause(animationName, progress) && combatManager.isNextComboAction(Player.ActionType.idle):
+		combatManager.registerComboAction(Player.ActionType.idle)
+	
+	if manager.actions[input.actions[0]].QUEUEABLE:
+		queue = input.actions[0]
 
 # Check if the next action can be set (i.e. has a higher priority than the current next action)
 func checkAndSetNext(action : Player.ActionType) -> void:
@@ -101,7 +111,7 @@ func checkAndSetNext(action : Player.ActionType) -> void:
 
 
 # Gets the highest priority action from the current input package or wait
-func highestPriorityAction(input : PlayerInputPackage) -> Player.ActionType:
+func highestPriorityAction(input : PlayerInputManager.Data) -> Player.ActionType:
 	# Go through all higher priority actions and immediately return them if possible as they can cancel the current action
 	for actionType in input.actions:
 		var action = manager.actions[actionType]
@@ -118,13 +128,13 @@ func highestPriorityAction(input : PlayerInputPackage) -> Player.ActionType:
 
 
 # If enabled, this will influence the direction the player faces using the direction of the input package
-func processDirection(input : PlayerInputPackage, delta : float) -> void:
+func processDirection(input : PlayerInputManager.Data, delta : float) -> void:
 	pass
 
 
 # Implementation functions, usually overwritten
 
-func updateImpl(input : PlayerInputPackage, delta : float) -> void:
+func updateImpl(input : PlayerInputManager.Data, delta : float) -> void:
 	pass
 
 func enterImpl() -> void:
