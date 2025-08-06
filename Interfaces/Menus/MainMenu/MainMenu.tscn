@@ -1,8 +1,8 @@
 [gd_scene load_steps=4 format=3 uid="uid://cytx0bte25qd6"]
 
 [ext_resource type="Script" uid="uid://cigxcb07i0bbg" path="res://Interfaces/Menus/MainMenu/MainMenu.gd" id="1_qbosr"]
-[ext_resource type="PackedScene" uid="uid://bvok7432m66tn" path="res://Interfaces/Menus/MainMenu/OptionsMenu.tscn" id="2_cublm"]
-[ext_resource type="PackedScene" uid="uid://b4wy4hjlacpr7" path="res://Interfaces/Menus/MainMenu/StartMenu.tscn" id="3_0vu78"]
+[ext_resource type="PackedScene" uid="uid://bvok7432m66tn" path="res://Interfaces/Menus/MenuParts/OptionsMenu.tscn" id="2_cublm"]
+[ext_resource type="PackedScene" uid="uid://b4wy4hjlacpr7" path="res://Interfaces/Menus/MenuParts/StartMenu.tscn" id="3_0vu78"]
 
 [node name="MainMenu" type="Control"]
 layout_mode = 3
