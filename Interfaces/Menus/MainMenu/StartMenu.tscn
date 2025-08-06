@@ -1,0 +1,65 @@
+[gd_scene load_steps=2 format=3 uid="uid://b4wy4hjlacpr7"]
+
+[ext_resource type="Script" uid="uid://bm486ku37k4d6" path="res://Interfaces/Menus/MainMenu/StartMenu.gd" id="1_xfj7v"]
+
+[node name="StartMenu" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_xfj7v")
+
+[node name="StartOptions" type="VBoxContainer" parent="."]
+layout_mode = 1
+anchors_preset = -1
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 100.0
+offset_right = -1500.0
+offset_bottom = 9.0
+grow_horizontal = 2
+theme_override_constants/separation = 10
+alignment = 1
+
+[node name="Play" type="PanelContainer" parent="StartOptions"]
+layout_mode = 2
+focus_neighbor_bottom = NodePath("../Options")
+
+[node name="MarginContainer" type="MarginContainer" parent="StartOptions/Play"]
+layout_mode = 2
+theme_override_constants/margin_top = 30
+theme_override_constants/margin_bottom = 30
+
+[node name="PlayButton" type="Button" parent="StartOptions/Play"]
+layout_mode = 2
+text = "Play"
+
+[node name="Options" type="PanelContainer" parent="StartOptions"]
+layout_mode = 2
+
+[node name="MarginContainer" type="MarginContainer" parent="StartOptions/Options"]
+layout_mode = 2
+theme_override_constants/margin_top = 30
+theme_override_constants/margin_bottom = 30
+
+[node name="OptionsButton" type="Button" parent="StartOptions/Options"]
+layout_mode = 2
+text = "Options"
+
+[node name="Exit Game" type="PanelContainer" parent="StartOptions"]
+layout_mode = 2
+
+[node name="MarginContainer" type="MarginContainer" parent="StartOptions/Exit Game"]
+layout_mode = 2
+theme_override_constants/margin_top = 30
+theme_override_constants/margin_bottom = 30
+
+[node name="ExitGameButton" type="Button" parent="StartOptions/Exit Game"]
+layout_mode = 2
+text = "Exit Game"
+
+[connection signal="pressed" from="StartOptions/Play/PlayButton" to="." method="playButtonPressed"]
+[connection signal="pressed" from="StartOptions/Options/OptionsButton" to="." method="optionsButtonPressed"]
+[connection signal="pressed" from="StartOptions/Exit Game/ExitGameButton" to="." method="exitGameButtonPressed"]

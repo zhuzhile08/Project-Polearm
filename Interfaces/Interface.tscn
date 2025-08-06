@@ -1,0 +1,16 @@
+[gd_scene load_steps=3 format=3 uid="uid://d2cgtw7tycavb"]
+
+[ext_resource type="Script" uid="uid://nj2x1mqx88h1" path="res://Interfaces/Interfaces.gd" id="1_m8oew"]
+[ext_resource type="PackedScene" uid="uid://cv11tm2h8xbc7" path="res://Interfaces/Menus/Menus.tscn" id="2_de23d"]
+
+[node name="Interfaces" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_m8oew")
+
+[node name="Menus" parent="." instance=ExtResource("2_de23d")]
+layout_mode = 1
