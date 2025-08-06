@@ -13,5 +13,5 @@ grow_vertical = 2
 script = ExtResource("1_74bee")
 
 [node name="Icon" type="Sprite2D" parent="."]
-position = Vector2(448, 261)
+position = Vector2(952, 507)
 texture = ExtResource("1_hd2ub")

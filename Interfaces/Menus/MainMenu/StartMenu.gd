@@ -1,13 +1,13 @@
 extends Control
 
-
-# MainMenu Buttons
+# StartMenu Buttons
 func playButtonPressed() -> void:
-	print("pass")
+	get_tree().change_scene_to_file("res://Stages/Main.tscn")
 	
 func optionsButtonPressed() -> void:
 	$".".hide()
 	$"../OptionsMenu".show()
+	
 func exitGameButtonPressed() -> void:
 	get_tree().quit()
 
