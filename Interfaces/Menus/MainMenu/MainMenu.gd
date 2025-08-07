@@ -1,25 +1,31 @@
 extends Control
 
-var pressToStart = false;
+@onready var optionsMenu := $Options as CenterContainer
+@onready var buttons := $Buttons as MenuButtonManager
 
-func _ready() -> void:
+
+# Menu actions
+
+func playButtonPressed() -> void:
+	get_tree().change_scene_to_file("res://Stages/Main.tscn")
+	
+func optionsButtonPressed() -> void:
+	buttons.hide()
+	optionsMenu.show()
+	
+func quitButtonPressed() -> void:
+	get_tree().quit()
+
+func optionsMenuQuit() -> void:
+	optionsMenu.hide()
+	buttons.show()
+
+
+func DEBUG_setInitialVisibility():
 	for child in get_children():
 		child.hide()
-		$StartMenu.show()
-		
-	# Connect buttons
-	connectHoverAndFocus(get_children())
-	child_entered_tree.connect(onChildAdded)
+	
+	$Buttons.show()
 
-func onChildAdded(node: Node):
-	if node is Button:
-		node.mouse_entered.connect(onButtonHover.bind(node))
-
-func connectHoverAndFocus(nodes: Array):
-	for node in nodes:
-		if node is Button:
-			node.mouse_entered.connect(onButtonHover.bind(node))
-		connectHoverAndFocus(node.get_children())
-
-func onButtonHover(button: Button):
-	button.grab_focus()
+func _ready() -> void:
+	DEBUG_setInitialVisibility()

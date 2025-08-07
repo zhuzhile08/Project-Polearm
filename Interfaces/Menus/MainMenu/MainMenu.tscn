@@ -1,8 +1,9 @@
-[gd_scene load_steps=4 format=3 uid="uid://cytx0bte25qd6"]
+[gd_scene load_steps=5 format=3 uid="uid://cytx0bte25qd6"]
 
 [ext_resource type="Script" uid="uid://cigxcb07i0bbg" path="res://Interfaces/Menus/MainMenu/MainMenu.gd" id="1_qbosr"]
-[ext_resource type="PackedScene" uid="uid://bvok7432m66tn" path="res://Interfaces/Menus/MenuParts/OptionsMenu.tscn" id="2_cublm"]
-[ext_resource type="PackedScene" uid="uid://b4wy4hjlacpr7" path="res://Interfaces/Menus/MenuParts/StartMenu.tscn" id="3_0vu78"]
+[ext_resource type="PackedScene" uid="uid://bvok7432m66tn" path="res://Interfaces/Menus/OptionsMenu/OptionsMenu.tscn" id="2_cublm"]
+[ext_resource type="Script" uid="uid://i74owx7lrrhn" path="res://Common/Utility/Interfaces/MenuButtonManager.gd" id="3_cublm"]
+[ext_resource type="PackedScene" uid="uid://cvhascqcllqq3" path="res://Common/Utility/Interfaces/GameMenuButton.tscn" id="4_cublm"]
 
 [node name="MainMenu" type="Control"]
 layout_mode = 3
@@ -13,8 +14,46 @@ grow_horizontal = 2
 grow_vertical = 2
 script = ExtResource("1_qbosr")
 
-[node name="OptionsMenu" parent="." instance=ExtResource("2_cublm")]
+[node name="Options" parent="." instance=ExtResource("2_cublm")]
+visible = false
 layout_mode = 1
 
-[node name="StartMenu" parent="." instance=ExtResource("3_0vu78")]
+[node name="Buttons" type="Control" parent="." node_paths=PackedStringArray("buttonContainer")]
 layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("3_cublm")
+buttonContainer = NodePath("StartOptions")
+metadata/_custom_type_script = "uid://i74owx7lrrhn"
+
+[node name="StartOptions" type="VBoxContainer" parent="Buttons"]
+layout_mode = 1
+anchors_preset = -1
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 100.0
+offset_right = -1500.0
+offset_bottom = 9.0
+grow_horizontal = 2
+theme_override_constants/separation = 10
+alignment = 1
+
+[node name="Play" parent="Buttons/StartOptions" instance=ExtResource("4_cublm")]
+layout_mode = 2
+NAME = "Play"
+
+[node name="Options" parent="Buttons/StartOptions" instance=ExtResource("4_cublm")]
+layout_mode = 2
+NAME = "Options"
+
+[node name="Quit" parent="Buttons/StartOptions" instance=ExtResource("4_cublm")]
+layout_mode = 2
+NAME = "Quit"
+
+[connection signal="exitOptionsMenu" from="Options" to="." method="optionsMenuQuit"]
+[connection signal="buttonPressed" from="Buttons/StartOptions/Play" to="." method="playButtonPressed"]
+[connection signal="buttonPressed" from="Buttons/StartOptions/Options" to="." method="optionsButtonPressed"]
+[connection signal="buttonPressed" from="Buttons/StartOptions/Quit" to="." method="quitButtonPressed"]

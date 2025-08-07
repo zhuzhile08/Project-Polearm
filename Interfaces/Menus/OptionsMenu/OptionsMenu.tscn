@@ -1,6 +1,6 @@
 [gd_scene load_steps=2 format=3 uid="uid://bvok7432m66tn"]
 
-[ext_resource type="Script" uid="uid://cmixmbcmk3vhg" path="res://Interfaces/Menus/MenuParts/OptionsMenu.gd" id="1_vbbs6"]
+[ext_resource type="Script" uid="uid://cmixmbcmk3vhg" path="res://Interfaces/Menus/OptionsMenu/OptionsMenu.gd" id="1_vbbs6"]
 
 [node name="OptionsMenu" type="CenterContainer"]
 anchors_preset = 15
