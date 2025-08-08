@@ -6,10 +6,10 @@ class_name PlayerActionData
 
 @export_category("Animation")
 @export var transitionable : bool = false
-@export var interruptable : bool = false
+@export var interruptable : bool = true
 
 @export_category("Gameplay")
-@export var vulnerable : bool = false
+@export var vulnerable : bool = true
 @export var acceptsQueue : bool = false
 @export var comboPause : bool = false
 @export var tracksDirection : bool = false
