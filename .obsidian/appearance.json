@@ -1,0 +1,13 @@
+{
+  "cssTheme": "Shiba Inu",
+  "translucency": false,
+  "accentColor": "#cfa12a",
+  "enabledCssSnippets": [
+    "floating-status-bar",
+    "floating-search-bar",
+    "extended-colorschemes"
+  ],
+  "showViewHeader": true,
+  "baseFontSize": 14,
+  "nativeMenus": false
+}

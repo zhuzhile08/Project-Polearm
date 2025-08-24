@@ -1,0 +1,14 @@
+---
+sticker: emoji//1f91d
+---
+- This document has to be added when unexpected problems of social nature arise during development.
+- Before adding, editing or removing features into the design document they have to be approved by all members, it is to be noted during the discussion that:
+    - Everybody likes the feature
+    - The feasibility was discussed
+- Everything stated in the design document is not to be disputed and **ABSOLUTE.** Exceptions include:
+    - Everybody agrees that the feature in question is to be changed.
+    - When only one person wants to change a certain feature these measures have to be taken:
+        - A Discussion has to be held
+        - Discussions have to be prepared and are no longer than an hour.
+    - Features with a (???) or the color orange are **NOT ABSOLUTE.**
+- Every discussion ends roughly at 9 pm.
