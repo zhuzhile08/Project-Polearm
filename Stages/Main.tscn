@@ -12,15 +12,15 @@ sky_material = SubResource("ProceduralSkyMaterial_n2ew2")
 background_mode = 2
 sky = SubResource("Sky_g247f")
 
-[node name="Main" type="Node"]
+[node name="Main" type="Node" unique_id=723248040]
 
-[node name="WorldEnvironment" type="WorldEnvironment" parent="."]
+[node name="WorldEnvironment" type="WorldEnvironment" parent="." unique_id=1906119439]
 environment = SubResource("Environment_5neot")
 
-[node name="Player" parent="." instance=ExtResource("1_n2ew2")]
+[node name="Player" parent="." unique_id=1072143073 instance=ExtResource("1_n2ew2")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0)
 
-[node name="Floor" type="CSGBox3D" parent="."]
+[node name="Floor" type="CSGBox3D" parent="." unique_id=1113806689]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.5, 0)
 size = Vector3(20, 1, 20)
 
