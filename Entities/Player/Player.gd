@@ -67,12 +67,13 @@ enum FlowState {
 
 @onready var inputManager := $InputManager as PlayerInputManager
 @onready var model := $Model as PlayerModel
+@onready var cameraAxis := $CameraAxis as Node3D
 
 
 # Member functions
 
 func _ready() -> void:
-	pass
+	cameraAxis.init(self)
 
 
 func _physics_process(delta: float) -> void:

@@ -1,6 +1,7 @@
-[gd_scene load_steps=5 format=3 uid="uid://bk4ac1gibgvig"]
+[gd_scene load_steps=6 format=3 uid="uid://bk4ac1gibgvig"]
 
 [ext_resource type="PackedScene" uid="uid://cyti0335fm7s0" path="res://Entities/Player/Player.tscn" id="1_n2ew2"]
+[ext_resource type="Script" uid="uid://bd046eokvcnu2" path="res://addons/phantom_camera/scripts/phantom_camera_host/phantom_camera_host.gd" id="2_g247f"]
 
 [sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_n2ew2"]
 
@@ -24,4 +25,9 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.5, 0)
 size = Vector3(20, 1, 20)
 
 [node name="Camera3D" type="Camera3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 5.18221, 18.6468)
+
+[node name="PhantomCamera3D" type="Node" parent="Camera3D"]
+process_priority = 300
+process_physics_priority = 300
+script = ExtResource("2_g247f")
+metadata/_custom_type_script = "uid://bd046eokvcnu2"
