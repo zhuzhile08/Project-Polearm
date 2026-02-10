@@ -5,8 +5,8 @@ class_name PlayerActionData
 # Action data
 
 @export_category("Animation")
-@export var transitionable : bool = false
-@export var interruptable : bool = true
+@export var transitionable : bool = true # originally false
+# @export var interruptable : bool = true # I do not understand the purpose of why I added this, uncomment if it is useful and explain the difference between this and the option above
 
 @export_category("Gameplay")
 @export var vulnerable : bool = true
@@ -29,8 +29,8 @@ func _getBooleanValue(animationName : String, propertyName : String, time : floa
 func animTransitionable(animationName : String, time : float) -> bool:
 	return _getBooleanValue(animationName, "ActionData:transitionable", time)
 
-func animInterruptable(animationName : String, time : float) -> bool:
-	return _getBooleanValue(animationName, "ActionData:interruptable", time)
+# func animInterruptable(animationName : String, time : float) -> bool:
+#	return _getBooleanValue(animationName, "ActionData:interruptable", time)
 
 func animVulnerable(animationName : String, time : float) -> bool:
 	return _getBooleanValue(animationName, "ActionData:vulnerable", time)

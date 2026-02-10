@@ -11,40 +11,34 @@ var currentAction : PlayerAction
 
 
 func _ready() -> void:
-	actionManager.model = self
-	actionManager.actor = actor
-	actionManager.resources = resources
-	actionManager.combatManager = combatManager
-	actionManager.actionData = actionData
-	actionManager.init()
+	actionManager.init(actor, resources, combatManager, actionData)
+	combatManager.init(resources)
 
 	currentAction = actionManager.actions[Player.ActionType.idle]
 	switchTo(Player.ActionType.idle)
 
-
-func update(input : PlayerInputManager.Data, delta: float) -> void:
-	input = checkInput(input)
+func tick(input : PlayerInputManager.Data, delta: float) -> void:
+	processInput(input)
 	
-	var nextAction = currentAction.nextAction(input)
+	var nextAction := currentAction.nextAction(input)
 	if nextAction != Player.ActionType.none:
 		switchTo(nextAction)
 	
-	currentAction.update(input, delta)
-	combatManager.update(delta)
-	resources.update(delta)
+	currentAction.tick(input, delta)
+	combatManager.tick(delta)
+	resources.tick(delta)
 
 
-func checkInput(input : PlayerInputManager.Data) -> PlayerInputManager.Data:
-	# Sort inputs
+# Input processing by sorting them by priority
+func processInput(input : PlayerInputManager.Data):
 	input.actions.sort_custom(actionManager.actionPrioritySort)
 	
-	# Check sidearm
+	# Check sidearm --> What did I mean by this?
 	
-	# 
-	
-	return input
+	#
 
 
+# Forces a swith to a given action type
 func switchTo(action : Player.ActionType) -> void:
 	currentAction.exit()
 	currentAction = actionManager.actions[action]

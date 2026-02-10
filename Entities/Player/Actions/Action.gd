@@ -26,8 +26,8 @@ var actionData : PlayerActionData
 var progress : float
 var DURATION : float
 
-var queue : Player.ActionType = Player.ActionType.none
-var next : Player.ActionType = Player.ActionType.none
+var queue : Player.ActionType = Player.ActionType.none # Queued action, used for combos and buffering, not guaranteed to happen next
+var next : Player.ActionType = Player.ActionType.none # Guaranteed next action after the current one has ended
 
 @onready var animation : String = DEFAULT_ANIMATION
 
@@ -36,31 +36,17 @@ var next : Player.ActionType = Player.ActionType.none
 
 # Exposed interface
 
-# This checks if the current action should continue or a transition should happen
-func nextAction(input : PlayerInputManager.Data) -> Player.ActionType:
-	if acceptsQueue():
-		checkAndSetQueue(input)
-	
-	if queue != Player.ActionType.none && canTransition():
-		checkAndSetNext(queue)
-	
-	if next != Player.ActionType.none:
-		return next
-
-	return highestPriorityAction(input)
-
-
 func init() -> void:
 	pass
 
 # This is called on every frame when the action is enabled
-func update(input : PlayerInputManager.Data, delta : float) -> void:
+func tick(input : PlayerInputManager.Data, delta : float) -> void:
 	progress += delta
 
 	if actionData.animTracksDirection(animation, progress):
 		processDirection(input, delta)
 	
-	updateImpl(input, delta)
+	tickImpl(input, delta)
 
 # This is executed on action enter
 func enter() -> void:
@@ -82,6 +68,22 @@ func exit() -> void:
 	animation = DEFAULT_ANIMATION
 	queue = Player.ActionType.none
 	next = Player.ActionType.none
+
+# This checks if the current action should continue or if not, the action to transition to based on all inputs
+func nextAction(input : PlayerInputManager.Data) -> Player.ActionType:
+	if acceptsQueue(): # Set the queued action
+		checkAndSetQueue(input)
+
+	if not canTransition():
+		return Player.ActionType.none
+	
+	if queue != Player.ActionType.none: # If a transition can occur and the queue is set, push the queue as the next action
+		checkAndSetNext(queue)
+	
+	if next != Player.ActionType.none: # If the next guranteed action is set, we give that action as the next transition
+		return next
+
+	return highestPriorityAction(input) # If all above cases do not trigger a transition, just check for the input causing the highest priority action
 
 
 # Internal functions
@@ -107,16 +109,20 @@ func checkAndSetQueue(input : PlayerInputManager.Data) -> void:
 		queue = input.actions[0]
 
 # Check if the next action can be set (i.e. has a higher priority than the current next action)
-func checkAndSetNext(action : Player.ActionType) -> void:
-	if next == Player.ActionType.none || manager.actions[next].PRIORITY >= PRIORITY:
-		next = action
+func checkAndSetNext(actionType : Player.ActionType) -> void:
+	if next != Player.ActionType.none: # If it were none, just set the action type
+		var action := manager.actions[actionType]
+		if !resources.canAffordAction(action) || manager.actions[next].PRIORITY < action.PRIORITY: # Check for the priorities of the potential next actions
+			return
+	
+	next = actionType
 
 
-# Gets the highest priority action from the current input package or wait
+# Gets the highest priority action from the current input, given it has a higher pritority than the current one
 func highestPriorityAction(input : PlayerInputManager.Data) -> Player.ActionType:
 	# Go through all higher priority actions and immediately return them if possible as they can cancel the current action
 	for actionType in input.actions:
-		var action = manager.actions[actionType]
+		var action := manager.actions[actionType]
 		
 		# If both animations have the same type, just ignore it and break
 		# If the current action is not yet finished and the other has the same priority, don't play the animation
@@ -130,13 +136,13 @@ func highestPriorityAction(input : PlayerInputManager.Data) -> Player.ActionType
 
 
 # If enabled, this will influence the direction the player faces using the direction of the input package
-func processDirection(input : PlayerInputManager.Data, delta : float) -> void:
+func processDirection(_input : PlayerInputManager.Data, _delta : float) -> void:
 	pass
 
 
 # Implementation functions, usually overwritten
 
-func updateImpl(input : PlayerInputManager.Data, delta : float) -> void:
+func tickImpl(_input : PlayerInputManager.Data, _delta : float) -> void:
 	pass
 
 func enterImpl() -> void:

@@ -1,17 +1,16 @@
 extends Node
 class_name PlayerActionManager
 
-var actor : CharacterBody3D
-
-var model : PlayerModel
-var resources : PlayerResources
-var combatManager : PlayerCombatManager
-var actionData : PlayerActionData
+# var actor : CharacterBody3D
+# var model : PlayerModel
+# var resources : PlayerResources
+# var combatManager : PlayerCombatManager
+# var actionData : PlayerActionData
 
 var actions : Dictionary[Player.ActionType, PlayerAction]
 
 
-func init() -> void:
+func init(actor : CharacterBody3D, resources : PlayerResources, combatManager : PlayerCombatManager, actionData : PlayerActionData) -> void:
 	for child in get_children():
 		if child is PlayerAction:
 			child.actor = actor

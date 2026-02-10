@@ -3,8 +3,8 @@ extends PlayerAction
 @export var WALK_SPEED : float = 0
 
 
-func updateImpl(input : PlayerInputManager.Data, delta : float) -> void:
-	actor.velocity = Vector3(input.direction.x, 0, input.direction.y) * WALK_SPEED * delta
+func tickImpl(input : PlayerInputManager.Data, _delta : float) -> void:
+	actor.velocity = Vector3(input.direction.x, 0, input.direction.y) * WALK_SPEED
 	
 	actor.move_and_slide()
 

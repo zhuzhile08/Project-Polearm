@@ -49,8 +49,8 @@ class_name PlayerResources
 
 # Member functions
 
-func update(delta: float) -> void:
-	looseFlow(delta * BASE_FLOW_DECREASE_RATE * flowModifier)
+func tick(delta: float) -> void:
+	loseFlow(delta * BASE_FLOW_DECREASE_RATE * flowModifier)
 
 
 # Health functionality
@@ -58,11 +58,11 @@ func update(delta: float) -> void:
 func gainHealth(amount : float) -> void:
 	health = min(health + amount, maxHealth)
 
-func looseHealth(amount : float) -> void:
+func loseHealth(amount : float) -> void:
 	health = max(health - amount, 0)
 	
 	if health == 0:
-		model.forceSwitch(Player.ActionType.death)
+		model.switchTo(Player.ActionType.death)
 
 
 # Flow functionality
@@ -70,7 +70,7 @@ func looseHealth(amount : float) -> void:
 func gainFlow(amount : float) -> void:
 	flow = min(flow + amount, maxFlow)
 
-func looseFlow(amount : float) -> void:
+func loseFlow(amount : float) -> void:
 	flow = max(flow - amount, 0)
 
 func flowToState() -> Player.FlowState:
@@ -82,7 +82,7 @@ func flowToState() -> Player.FlowState:
 func gainEnergy(amount : float) -> void:
 	energy = min(energy + amount, maxEnergy)
 
-func looseEnergy(amount : float) -> void:
+func loseEnergy(amount : float) -> void:
 	energy = max(energy - amount, 0)
 
 

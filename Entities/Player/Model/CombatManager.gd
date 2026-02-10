@@ -10,7 +10,7 @@ class_name PlayerCombatManager
 
 # Member variables
 
-@onready var resources : PlayerResources
+var resources : PlayerResources
 
 @onready var comboTree : PlayerComboAction = PlayerComboAction.new()
 @onready var currentComboAction : PlayerComboAction = comboTree
@@ -20,11 +20,13 @@ var previousCombos : Array[Player.ComboType]
 
 # Member functions
 
-func init() -> void:
+func init(playerResources : PlayerResources) -> void:
+	self.resources = playerResources
+
 	for combo in unlockedCombos:
 		unlockCombo(combo)
 
-func update(delta : float) -> void:
+func tick(_delta : float) -> void:
 	pass
 
 
@@ -33,7 +35,7 @@ func update(delta : float) -> void:
 func unlockCombo(combo : PlayerCombo) -> void:
 	var combos := comboTree
 	for action in combo.ACTIONS:
-		if !combos.tree.has(action.TYPE):
+		if not combos.tree.has(action.TYPE):
 			combos.tree[action.TYPE] = PlayerComboAction.new(action)
 		combos = combos.tree[action.TYPE]
 	combos.FINAL_COMBO_TYPE = combo.TYPE
@@ -57,7 +59,7 @@ func isNextComboAction(action : Player.ActionType) -> bool:
 func registerComboAction(action : Player.ActionType) -> String:
 	assert(isNextComboAction(action), "PlayerCombatManager.registerComboAction(): Action is not next in chain, please check before calling the function!")
 	
-	var current = currentComboAction.tree[action]
+	var current = currentComboAction.tree[action] # The type of this variable will be unsure depending on the position in the tree
 	
 	if current.TYPE != Player.ComboType.none:
 		if previousCombos.size() == PREVIOUS_COMBO_COUNT:

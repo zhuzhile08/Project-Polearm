@@ -1,6 +1,6 @@
 extends PlayerAction
 
-func updateImpl(input : PlayerInputManager.Data, delta : float) -> void:
+func tickImpl(_input : PlayerInputManager.Data, _delta : float) -> void:
 	pass
 
 func enterImpl() -> void:

@@ -77,5 +77,5 @@ func _ready() -> void:
 
 
 func _physics_process(delta: float) -> void:
-	var inputs : PlayerInputManager.Data = inputManager.pollInputs()
-	model.update(inputs, delta)
+	inputManager.pollInputs()
+	model.tick(inputManager.inputs, delta)
