@@ -7,7 +7,7 @@ class Data extends RefCounted:
 	var direction : Vector2
 	var actions : Array[Player.ActionType]
 	
-	func reset():
+	func reset() -> void:
 		direction = Vector2.ZERO
 		actions.clear()
 
@@ -28,7 +28,7 @@ var inputs : Data = Data.new()
 
 #region Public functions
 
-func pollInputs():
+func pollInputs() -> void:
 	inputs.reset()
 	inputs.actions.append(Player.ActionType.idle)
 	
@@ -40,7 +40,7 @@ func pollInputs():
 
 #region Private functions
 
-func processMovementDirection():
+func processMovementDirection() -> void:
 	inputs.direction = Input.get_vector("Move left", "Move right", "Move forwards", "Move backwards")
 	
 	if inputs.direction == Vector2.ZERO:
