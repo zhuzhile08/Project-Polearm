@@ -24,3 +24,4 @@ size = Vector3(20, 1, 20)
 [node name="Player" parent="." unique_id=1658568323 instance=ExtResource("1_c5j3w")]
 
 [node name="SceneCamera" parent="." unique_id=1015597522 instance=ExtResource("2_dlw8r")]
+top_level = true
