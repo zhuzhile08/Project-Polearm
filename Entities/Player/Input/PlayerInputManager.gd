@@ -12,17 +12,21 @@ class Data extends RefCounted:
 		actions.clear()
 
 
-# Configurable variables
+#region Exported variables
 
 @export var WALK_LIMIT_SQUARED : float
 
-
-# Member variables
-
-var inputs : Data
+#endregion
 
 
-# Member functions
+#region Member variables
+
+var inputs : Data = Data.new()
+
+#endregion
+
+
+#region Public functions
 
 func pollInputs():
 	inputs.reset()
@@ -31,8 +35,10 @@ func pollInputs():
 	processMovementDirection()
 	processMovementActions()
 
+#endregion
 
-# Internal functions
+
+#region Private functions
 
 func processMovementDirection():
 	inputs.direction = Input.get_vector("Move left", "Move right", "Move forwards", "Move backwards")
@@ -55,3 +61,5 @@ func processMovementActions():
 	
 	if Input.is_action_pressed("Dodge"):
 		inputs.actions.append(Player.ActionType.dodge)
+
+#endregion

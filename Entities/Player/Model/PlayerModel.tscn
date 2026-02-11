@@ -1,13 +1,13 @@
-[gd_scene load_steps=15 format=3 uid="uid://cy5kumexxfyyb"]
+[gd_scene format=3 uid="uid://cy5kumexxfyyb"]
 
-[ext_resource type="Script" uid="uid://c7ciamuapwubd" path="res://Entities/Player/Model/Model.gd" id="1_5k4v0"]
-[ext_resource type="Script" uid="uid://dgmxstlenay7b" path="res://Entities/Player/Actions/ActionManager.gd" id="1_uhp1s"]
-[ext_resource type="Script" uid="uid://bjw3tygpodtev" path="res://Entities/Player/Model/Resources.gd" id="2_660r0"]
-[ext_resource type="Script" uid="uid://du8txlrr2po7v" path="res://Entities/Player/Actions/Run.gd" id="4_rvbmx"]
-[ext_resource type="Script" uid="uid://ca6i0s8oneqjc" path="res://Entities/Player/Actions/Walk.gd" id="5_m20wt"]
-[ext_resource type="Script" uid="uid://p1qurm2f1bvl" path="res://Entities/Player/Actions/Idle.gd" id="6_dvg17"]
-[ext_resource type="Script" uid="uid://nvdk7gl3vqfs" path="res://Entities/Player/Model/ActionData.gd" id="8_prnb2"]
-[ext_resource type="Script" uid="uid://620any2k6qha" path="res://Entities/Player/Model/CombatManager.gd" id="9_rvbmx"]
+[ext_resource type="Script" uid="uid://c7ciamuapwubd" path="res://Entities/Player/Model/PlayerModel.gd" id="1_660r0"]
+[ext_resource type="Script" uid="uid://bjw3tygpodtev" path="res://Entities/Player/Model/PlayerResources.gd" id="2_rvbmx"]
+[ext_resource type="Script" uid="uid://620any2k6qha" path="res://Entities/Player/Model/PlayerCombatManager.gd" id="3_m20wt"]
+[ext_resource type="Script" uid="uid://nvdk7gl3vqfs" path="res://Entities/Player/Model/PlayerActionData.gd" id="4_dvg17"]
+[ext_resource type="Script" uid="uid://dgmxstlenay7b" path="res://Entities/Player/Actions/PlayerActionManager.gd" id="5_f2y5u"]
+[ext_resource type="Script" uid="uid://du8txlrr2po7v" path="res://Entities/Player/Actions/Run.gd" id="6_kb0qu"]
+[ext_resource type="Script" uid="uid://ca6i0s8oneqjc" path="res://Entities/Player/Actions/Walk.gd" id="7_n82hr"]
+[ext_resource type="Script" uid="uid://p1qurm2f1bvl" path="res://Entities/Player/Actions/Idle.gd" id="8_j3w6i"]
 
 [sub_resource type="Curve" id="Curve_prnb2"]
 _limits = [0.0, 7.0, 0.0, 1.0]
@@ -327,47 +327,44 @@ _data = {
 &"Walk": SubResource("Animation_7bkbp")
 }
 
-[node name="PlayerModel" type="Node3D"]
-script = ExtResource("1_5k4v0")
+[node name="PlayerModel" type="Node3D" unique_id=21598571]
+script = ExtResource("1_660r0")
 
-[node name="Resources" type="Node" parent="."]
-script = ExtResource("2_660r0")
+[node name="Resources" type="Node" parent="." unique_id=2081649325]
+script = ExtResource("2_rvbmx")
 FLOW_CURVE = SubResource("Curve_prnb2")
 metadata/_custom_type_script = "uid://bjw3tygpodtev"
 
-[node name="CombatManager" type="Node" parent="."]
-script = ExtResource("9_rvbmx")
+[node name="CombatManager" type="Node" parent="." unique_id=2042843911]
+script = ExtResource("3_m20wt")
 metadata/_custom_type_script = "uid://620any2k6qha"
 
-[node name="ActionData" type="AnimationPlayer" parent="."]
-libraries = {
-&"": SubResource("AnimationLibrary_prnb2")
-}
-script = ExtResource("8_prnb2")
-transitionable = true
+[node name="ActionData" type="AnimationPlayer" parent="." unique_id=1137306923]
+libraries/ = SubResource("AnimationLibrary_prnb2")
+script = ExtResource("4_dvg17")
 metadata/_custom_type_script = "uid://nvdk7gl3vqfs"
 
-[node name="ActionManager" type="Node" parent="."]
-script = ExtResource("1_uhp1s")
+[node name="ActionManager" type="Node" parent="." unique_id=499464480]
+script = ExtResource("5_f2y5u")
 
-[node name="Run" type="Node" parent="ActionManager"]
-script = ExtResource("4_rvbmx")
+[node name="Run" type="Node" parent="ActionManager" unique_id=1599470530]
+script = ExtResource("6_kb0qu")
 RUN_SPEED = 500.0
 TYPE = 15
 PRIORITY = 1
 DEFAULT_ANIMATION = "Run"
 metadata/_custom_type_script = "uid://jc1g0sv32qq1"
 
-[node name="Walk" type="Node" parent="ActionManager"]
-script = ExtResource("5_m20wt")
+[node name="Walk" type="Node" parent="ActionManager" unique_id=1427857652]
+script = ExtResource("7_n82hr")
 WALK_SPEED = 300.0
 TYPE = 16
 PRIORITY = 1
 DEFAULT_ANIMATION = "Walk"
 metadata/_custom_type_script = "uid://jc1g0sv32qq1"
 
-[node name="Idle" type="Node" parent="ActionManager"]
-script = ExtResource("6_dvg17")
+[node name="Idle" type="Node" parent="ActionManager" unique_id=1155024913]
+script = ExtResource("8_j3w6i")
 TYPE = 20
 DEFAULT_ANIMATION = "Idle"
 metadata/_custom_type_script = "uid://jc1g0sv32qq1"

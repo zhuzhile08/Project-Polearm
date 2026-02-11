@@ -1,24 +1,34 @@
 extends Node
 class_name PlayerCombatManager
 
-# Configurable variables
+
+#region Exported variables
 
 @export var PREVIOUS_COMBO_COUNT : int
 
 @export var unlockedCombos : Array[PlayerCombo]
 
+#endregion
 
-# Member variables
+
+#region Scene members
 
 var resources : PlayerResources
+
+#endregion
+
+
+#region Member variables
 
 @onready var comboTree : PlayerComboAction = PlayerComboAction.new()
 @onready var currentComboAction : PlayerComboAction = comboTree
 
 var previousCombos : Array[Player.ComboType]
 
+#endregion
 
-# Member functions
+
+#region Public functions
 
 func init(playerResources : PlayerResources) -> void:
 	self.resources = playerResources
@@ -29,8 +39,6 @@ func init(playerResources : PlayerResources) -> void:
 func tick(_delta : float) -> void:
 	pass
 
-
-# Combo functions
 
 func unlockCombo(combo : PlayerCombo) -> void:
 	var combos := comboTree
@@ -78,3 +86,5 @@ func comboPreviousUse(combo : Player.ComboType) -> int:
 		if previousCombos[-x] == combo:
 			return x + 1
 	return 0
+
+#endregion

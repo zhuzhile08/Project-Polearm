@@ -1,7 +1,8 @@
 extends Node
 class_name PlayerResources
 
-# Configurable variables
+
+#region Exported variables
 
 @export_category("States")
 
@@ -41,19 +42,28 @@ class_name PlayerResources
 
 @export var FLOW_CURVE : Curve
 
-
-# Member variables
-
-@onready var model := $".." as PlayerModel
+#endregion
 
 
-# Member functions
+#region Scene members
+
+@onready var model : PlayerModel
+
+#endregion
+
+
+#region Public functions
+
+func init(model_ : PlayerModel) -> void:
+	model = model_
 
 func tick(delta: float) -> void:
 	loseFlow(delta * BASE_FLOW_DECREASE_RATE * flowModifier)
 
+#endregion
 
-# Health functionality
+
+#region Health functionality
 
 func gainHealth(amount : float) -> void:
 	health = min(health + amount, maxHealth)
@@ -64,8 +74,10 @@ func loseHealth(amount : float) -> void:
 	if health == 0:
 		model.switchTo(Player.ActionType.death)
 
+#endregion
 
-# Flow functionality
+
+#region Flow functionality
 
 func gainFlow(amount : float) -> void:
 	flow = min(flow + amount, maxFlow)
@@ -76,8 +88,10 @@ func loseFlow(amount : float) -> void:
 func flowToState() -> Player.FlowState:
 	return Player.FlowState.values()[floori(FLOW_CURVE.sample(clampf(flow, 0, FLOW_CURVE.max_value + 0.5)))]
 
+#endregion
 
-# Energy functionality
+
+#region Energy functionality
 
 func gainEnergy(amount : float) -> void:
 	energy = min(energy + amount, maxEnergy)
@@ -85,8 +99,10 @@ func gainEnergy(amount : float) -> void:
 func loseEnergy(amount : float) -> void:
 	energy = max(energy - amount, 0)
 
+#endregion
 
-# Action functionality
+
+#region Action functionality
 
 func canAffordAction(action : PlayerAction) -> bool:
 	if action.ENERGY_COST <= energy:
@@ -95,3 +111,7 @@ func canAffordAction(action : PlayerAction) -> bool:
 
 func payAction(action : PlayerAction) -> void:
 	energy -= action.ENERGY_COST
+
+#endregion
+
+#endregion

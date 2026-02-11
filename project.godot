@@ -15,7 +15,7 @@ compatibility/default_parent_skeleton_in_mesh_instance_3d=true
 [application]
 
 config/name="Project Polearm"
-run/main_scene="uid://bk4ac1gibgvig"
+run/main_scene="uid://bp8dausmqmj6s"
 config/features=PackedStringArray("4.6", "Forward Plus")
 config/icon="res://icon.svg"
 
@@ -42,7 +42,7 @@ version_control/autoload_on_startup=true
 
 [editor_plugins]
 
-enabled=PackedStringArray()
+enabled=PackedStringArray("res://addons/phantom_camera/plugin.cfg")
 
 [gui]
 
@@ -179,3 +179,4 @@ Menu={
 [physics]
 
 3d/physics_engine="Jolt Physics"
+common/physics_interpolation=true

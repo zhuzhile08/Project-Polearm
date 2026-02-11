@@ -1,7 +1,8 @@
 extends Node
 class_name PlayerAction
 
-# Configurable variables
+
+#region Exported variables
 
 @export_category("General")
 @export var TYPE : Player.ActionType
@@ -12,16 +13,21 @@ class_name PlayerAction
 @export var ENERGY_COST : float = 0
 @export var QUEUEABLE : bool = false
 
+#endregion
 
-# Member variables
 
+#region Scene members
+
+var manager : PlayerActionManager
 var actor : CharacterBody3D
 var resources : PlayerResources
 var combatManager : PlayerCombatManager
 var actionData : PlayerActionData
 
-@onready var manager := $".." as PlayerActionManager
+#endregion
 
+
+#region Member variables
 
 var progress : float
 var DURATION : float
@@ -29,15 +35,19 @@ var DURATION : float
 var queue : Player.ActionType = Player.ActionType.none # Queued action, used for combos and buffering, not guaranteed to happen next
 var next : Player.ActionType = Player.ActionType.none # Guaranteed next action after the current one has ended
 
-@onready var animation : String = DEFAULT_ANIMATION
+var animation : String = DEFAULT_ANIMATION
+
+#endregion
 
 
-# Member functions
+#region Public funcitons
 
-# Exposed interface
-
-func init() -> void:
-	pass
+func init(manager_ : PlayerActionManager, actor_ : CharacterBody3D, resources_ : PlayerResources, combatManager_ : PlayerCombatManager, actionData_ : PlayerActionData) -> void:
+	manager = manager_
+	actor = actor_
+	resources = resources_
+	combatManager = combatManager_
+	actionData = actionData_
 
 # This is called on every frame when the action is enabled
 func tick(input : PlayerInputManager.Data, delta : float) -> void:
@@ -85,8 +95,10 @@ func nextAction(input : PlayerInputManager.Data) -> Player.ActionType:
 
 	return highestPriorityAction(input) # If all above cases do not trigger a transition, just check for the input causing the highest priority action
 
+#endregion
 
-# Internal functions
+
+#region Private functions
 
 # Check if the action can accept a queue (i.e. the animation has progressed enough for the move to be queueable)
 func acceptsQueue() -> bool:
@@ -139,8 +151,10 @@ func highestPriorityAction(input : PlayerInputManager.Data) -> Player.ActionType
 func processDirection(_input : PlayerInputManager.Data, _delta : float) -> void:
 	pass
 
+#endregion
 
-# Implementation functions, usually overwritten
+
+#region Implementation functions
 
 func tickImpl(_input : PlayerInputManager.Data, _delta : float) -> void:
 	pass
@@ -150,3 +164,5 @@ func enterImpl() -> void:
 
 func exitImpl() -> void:
 	pass
+
+#endregion

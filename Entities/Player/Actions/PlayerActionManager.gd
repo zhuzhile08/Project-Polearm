@@ -1,28 +1,33 @@
 extends Node
 class_name PlayerActionManager
 
+
 # var actor : CharacterBody3D
 # var model : PlayerModel
 # var resources : PlayerResources
 # var combatManager : PlayerCombatManager
 # var actionData : PlayerActionData
 
+
+#region Member variables
+
 var actions : Dictionary[Player.ActionType, PlayerAction]
 
+#endregion
+
+
+#region Public functions
 
 func init(actor : CharacterBody3D, resources : PlayerResources, combatManager : PlayerCombatManager, actionData : PlayerActionData) -> void:
 	for child in get_children():
 		if child is PlayerAction:
-			child.actor = actor
-			child.resources = resources
-			child.combatManager = combatManager
-			child.actionData = actionData
-			
+			child.init(self, actor, resources, combatManager, actionData)
 			actions[child.TYPE] = child
-			child.init()
 
 
 func actionPrioritySort(a : Player.ActionType, b : Player.ActionType) -> bool:
 	if actions[a].PRIORITY > actions[b].PRIORITY:
 		return true
 	return false
+
+#endregion

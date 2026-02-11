@@ -1,7 +1,8 @@
 extends Node3D
 class_name PlayerModel
 
-var currentAction : PlayerAction
+
+#region Scene members
 
 @onready var actor := $".." as CharacterBody3D
 @onready var resources := $Resources as PlayerResources
@@ -9,13 +10,30 @@ var currentAction : PlayerAction
 @onready var combatManager := $CombatManager as PlayerCombatManager
 @onready var actionData := $ActionData as PlayerActionData
 
+#endregion
+
+
+#region Member variables
+
+var currentAction : PlayerAction = null
+
+#endregion
+
+
+#region Built-in functions
 
 func _ready() -> void:
-	actionManager.init(actor, resources, combatManager, actionData)
+	resources.init(self)
 	combatManager.init(resources)
+	actionManager.init(actor, resources, combatManager, actionData)
 
 	currentAction = actionManager.actions[Player.ActionType.idle]
 	switchTo(Player.ActionType.idle)
+
+#endregion
+
+
+#region Public functions
 
 func tick(input : PlayerInputManager.Data, delta: float) -> void:
 	processInput(input)
@@ -43,3 +61,5 @@ func switchTo(action : Player.ActionType) -> void:
 	currentAction.exit()
 	currentAction = actionManager.actions[action]
 	currentAction.enter()
+
+#endregion

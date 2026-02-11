@@ -1,7 +1,8 @@
-extends CharacterBody3D
+extends Node
 class_name Player
 
-# Helper structures
+
+#region Enums
 
 enum ActionType {
 	none,
@@ -60,22 +61,18 @@ enum FlowState {
 	heavenly,
 }
 
-
-# Member variables
-
-@onready var profile := PlayerProfile.new()
-
-@onready var inputManager := $InputManager as PlayerInputManager
-@onready var model := $Model as PlayerModel
-@onready var cameraAxis := $CameraAxis as Node3D
+#endregion
 
 
-# Member functions
+#region Built-in functions
 
+# Called when the node enters the scene tree for the first time.
 func _ready() -> void:
-	cameraAxis.init(self)
+	pass # Replace with function body.
 
 
-func _physics_process(delta: float) -> void:
-	inputManager.pollInputs()
-	model.tick(inputManager.inputs, delta)
+# Called every frame. 'delta' is the elapsed time since the previous frame.
+func _process(delta: float) -> void:
+	pass
+
+#endregion

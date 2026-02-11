@@ -1,0 +1,27 @@
+[gd_scene format=3 uid="uid://cyti0335fm7s0"]
+
+[ext_resource type="Script" uid="uid://ba0auooa0mv8w" path="res://Entities/Player/Actor/PlayerActor.gd" id="1_e5kic"]
+[ext_resource type="Script" uid="uid://ls6r1csl2o7j" path="res://Entities/Player/Input/PlayerInputManager.gd" id="2_x44r4"]
+[ext_resource type="PackedScene" uid="uid://cy5kumexxfyyb" path="res://Entities/Player/Model/PlayerModel.tscn" id="3_vweq0"]
+
+[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_u36tg"]
+
+[sub_resource type="CapsuleMesh" id="CapsuleMesh_ww0jn"]
+
+[node name="Actor" type="CharacterBody3D" unique_id=2022511123]
+script = ExtResource("1_e5kic")
+
+[node name="Collider" type="CollisionShape3D" parent="." unique_id=1264191582]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0)
+shape = SubResource("CapsuleShape3D_u36tg")
+
+[node name="InputManager" type="Node" parent="." unique_id=1541718122]
+script = ExtResource("2_x44r4")
+WALK_LIMIT_SQUARED = 0.25
+metadata/_custom_type_script = "uid://ls6r1csl2o7j"
+
+[node name="Model" parent="." unique_id=1348245243 instance=ExtResource("3_vweq0")]
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="." unique_id=1799624820]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0)
+mesh = SubResource("CapsuleMesh_ww0jn")

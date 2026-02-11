@@ -1,0 +1,26 @@
+[gd_scene format=3 uid="uid://bp8dausmqmj6s"]
+
+[ext_resource type="PackedScene" uid="uid://cw64kfy2d7e51" path="res://Entities/Player/Player.tscn" id="1_c5j3w"]
+[ext_resource type="PackedScene" uid="uid://2twxnnq3mj7i" path="res://Common/SceneCamera/SceneCamera.tscn" id="2_dlw8r"]
+
+[sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_wa1cp"]
+
+[sub_resource type="Sky" id="Sky_g247f"]
+sky_material = SubResource("ProceduralSkyMaterial_wa1cp")
+
+[sub_resource type="Environment" id="Environment_p2tl5"]
+background_mode = 2
+sky = SubResource("Sky_g247f")
+
+[node name="Test" type="Node" unique_id=1776649826]
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="." unique_id=168132880]
+environment = SubResource("Environment_p2tl5")
+
+[node name="Floor" type="CSGBox3D" parent="." unique_id=321633755]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.5, 0)
+size = Vector3(20, 1, 20)
+
+[node name="Player" parent="." unique_id=1658568323 instance=ExtResource("1_c5j3w")]
+
+[node name="SceneCamera" parent="." unique_id=1015597522 instance=ExtResource("2_dlw8r")]
