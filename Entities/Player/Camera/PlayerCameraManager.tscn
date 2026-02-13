@@ -7,11 +7,18 @@
 [sub_resource type="Resource" id="Resource_i8oxm"]
 script = ExtResource("3_ij7sd")
 
-[node name="PlayerCameraManager" type="Node3D" unique_id=272402309]
+[node name="PlayerCameraManager" type="Node" unique_id=1956657863]
 script = ExtResource("1_gvq4d")
+CONTROLLER_SENSITIVITY = 100.0
 metadata/_custom_type_script = "uid://bjcvtl3iwfvuc"
 
-[node name="PhantomCamera" type="Node3D" parent="." unique_id=113170500]
+[node name="FollowCam" type="Node3D" parent="." unique_id=113170500]
+transform = Transform3D(1, 0, 0, 0, 0.8660254, 0.5, 0, -0.5, 0.8660254, 0, 0, 0)
 script = ExtResource("2_ye1s6")
+follow_mode = 6
 tween_resource = SubResource("Resource_i8oxm")
+tween_on_load = false
+follow_damping = true
+follow_distance = 5.0
+spring_length = 5.0
 metadata/_custom_type_script = "uid://csjccrhj5wnx7"

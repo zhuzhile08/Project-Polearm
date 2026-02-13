@@ -1,13 +1,30 @@
-[gd_scene format=3 uid="uid://cw64kfy2d7e51"]
+[gd_scene format=3 uid="uid://cyti0335fm7s0"]
 
-[ext_resource type="Script" uid="uid://fouq5434l5cd" path="res://Entities/Player/Player.gd" id="1_e5kic"]
-[ext_resource type="PackedScene" uid="uid://cyti0335fm7s0" path="res://Entities/Player/Actor/PlayerActor.tscn" id="2_ww0jn"]
-[ext_resource type="PackedScene" uid="uid://bgf6aphyao331" path="res://Entities/Player/Camera/PlayerCameraManager.tscn" id="3_vweq0"]
+[ext_resource type="Script" uid="uid://ba0auooa0mv8w" path="res://Entities/Player/Player.gd" id="1_05tld"]
+[ext_resource type="Script" uid="uid://ls6r1csl2o7j" path="res://Entities/Player/Input/PlayerInputManager.gd" id="2_aj5cy"]
+[ext_resource type="PackedScene" uid="uid://bgf6aphyao331" path="res://Entities/Player/Camera/PlayerCameraManager.tscn" id="3_1des2"]
+[ext_resource type="PackedScene" uid="uid://c21e3ip2xyf1n" path="res://Entities/Player/Model/PlayerModel.scn" id="4_1des2"]
+[ext_resource type="PackedScene" uid="uid://dbsruilakgfp4" path="res://Entities/Player/Visuals/XBotMesh.scn" id="5_an6q6"]
 
-[node name="Player" type="Node" unique_id=1658568323]
-script = ExtResource("1_e5kic")
-metadata/_custom_type_script = "uid://fouq5434l5cd"
+[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_u36tg"]
 
-[node name="Actor" parent="." unique_id=2022511123 instance=ExtResource("2_ww0jn")]
+[node name="Player" type="CharacterBody3D" unique_id=1997770894]
+script = ExtResource("1_05tld")
+metadata/_custom_type_script = "uid://ba0auooa0mv8w"
 
-[node name="PlayerCameraManager" parent="." unique_id=272402309 instance=ExtResource("3_vweq0")]
+[node name="Collider" type="CollisionShape3D" parent="." unique_id=1264191582]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0)
+shape = SubResource("CapsuleShape3D_u36tg")
+
+[node name="InputManager" type="Node" parent="." unique_id=1541718122]
+script = ExtResource("2_aj5cy")
+WALK_LIMIT_SQUARED = 0.25
+metadata/_custom_type_script = "uid://ls6r1csl2o7j"
+
+[node name="CameraManager" parent="." unique_id=1956657863 instance=ExtResource("3_1des2")]
+
+[node name="Model" parent="." unique_id=21598571 node_paths=PackedStringArray("player", "cameraManager") instance=ExtResource("4_1des2")]
+player = NodePath("..")
+cameraManager = NodePath("../CameraManager")
+
+[node name="XBotMesh" parent="." unique_id=114163421 instance=ExtResource("5_an6q6")]

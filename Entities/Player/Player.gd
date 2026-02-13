@@ -1,8 +1,6 @@
-extends Node
+extends CharacterBody3D
 class_name Player
 
-
-#region Enums
 
 enum ActionType {
 	none,
@@ -64,15 +62,32 @@ enum FlowState {
 #endregion
 
 
+#region Scene Members
+
+@onready var inputManager := $InputManager as PlayerInputManager
+@onready var model := $Model as PlayerModel
+@onready var cameraManager := $CameraManager as PlayerCameraManager
+@onready var visuals := $XBotMesh as XBotMesh
+
+#endregion
+
+
+#region Member variables
+
+@onready var profile := PlayerProfile.new()
+
+#endregion
+
+
 #region Built-in functions
 
-# Called when the node enters the scene tree for the first time.
 func _ready() -> void:
-	pass # Replace with function body.
+	cameraManager.setFollowTarget(self)
+	visuals.acceptSkeleton(model.skeleton)
 
 
-# Called every frame. 'delta' is the elapsed time since the previous frame.
-func _process(delta: float) -> void:
-	pass
+func _physics_process(delta: float) -> void:
+	inputManager.pollInputs(cameraManager.cameraPlaneDirection())
+	model.tick(inputManager.inputs, delta)
 
 #endregion
