@@ -17,18 +17,17 @@ compatibility/default_parent_skeleton_in_mesh_instance_3d=true
 config/name="Project Polearm"
 run/main_scene="uid://bp8dausmqmj6s"
 config/features=PackedStringArray("4.6", "Forward Plus")
-config/icon="res://icon.svg"
 
 [autoload]
 
-IndieBlueprintObjectPoolManager="*uid://nyltou1uqbdp"
 Signal_Debugger="*res://addons/SignalVisualizer/Debugger/SignalDebugger.gd"
 PhantomCameraManager="*uid://duq6jhf6unyis"
 
 [display]
 
-window/size/viewport_width=2304
-window/size/viewport_height=1296
+window/size/viewport_width=1920
+window/size/viewport_height=1080
+window/stretch/mode="canvas_items"
 
 [dotnet]
 
