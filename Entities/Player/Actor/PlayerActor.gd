@@ -7,6 +7,9 @@ class_name PlayerActor
 @onready var inputManager := $InputManager as PlayerInputManager
 @onready var model := $Model as PlayerModel
 
+@export_category("Scene members")
+@export var cameraManager : PlayerCameraManager
+
 #endregion
 
 
@@ -20,12 +23,10 @@ class_name PlayerActor
 #region Built-in functions
 
 func _ready() -> void:
-	# cameraAxis.init(self)
-	pass
-
+	assert(cameraManager != null, "PlayerActor._ready(): Camera manager not assigned!")
 
 func _physics_process(delta: float) -> void:
-	inputManager.pollInputs()
+	inputManager.pollInputs(cameraManager.cameraPlaneDirection())
 	model.tick(inputManager.inputs, delta)
 
 #endregion

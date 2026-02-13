@@ -8,6 +8,7 @@
 script = ExtResource("1_e5kic")
 metadata/_custom_type_script = "uid://fouq5434l5cd"
 
-[node name="Actor" parent="." unique_id=2022511123 instance=ExtResource("2_ww0jn")]
+[node name="Actor" parent="." unique_id=2022511123 node_paths=PackedStringArray("cameraManager") instance=ExtResource("2_ww0jn")]
+cameraManager = NodePath("../Cameras")
 
-[node name="PlayerCameraManager" parent="." unique_id=272402309 instance=ExtResource("3_vweq0")]
+[node name="Cameras" parent="." unique_id=272402309 instance=ExtResource("3_vweq0")]

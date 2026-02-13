@@ -4,8 +4,10 @@ class_name PlayerCombatManager
 
 #region Exported variables
 
+@export_category("Combat config")
 @export var PREVIOUS_COMBO_COUNT : int
 
+@export_category("Combat data")
 @export var unlockedCombos : Array[PlayerCombo]
 
 #endregion
@@ -13,7 +15,8 @@ class_name PlayerCombatManager
 
 #region Scene members
 
-var resources : PlayerResources
+@export_category("Scene members")
+@export var resources : PlayerResources
 
 #endregion
 
@@ -28,13 +31,18 @@ var previousCombos : Array[Player.ComboType]
 #endregion
 
 
-#region Public functions
+#region Built-in functions
 
-func init(playerResources : PlayerResources) -> void:
-	self.resources = playerResources
+func _ready() -> void:
+	assert(resources != null, "PlayerCombatManager._ready(): Resource container not assigned!")
 
 	for combo in unlockedCombos:
 		unlockCombo(combo)
+
+#endregion
+
+
+#region Public functions
 
 func tick(_delta : float) -> void:
 	pass

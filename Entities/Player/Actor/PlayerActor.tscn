@@ -8,8 +8,9 @@
 
 [sub_resource type="CapsuleMesh" id="CapsuleMesh_ww0jn"]
 
-[node name="Actor" type="CharacterBody3D" unique_id=2022511123]
+[node name="Actor" type="CharacterBody3D" unique_id=1997770894]
 script = ExtResource("1_e5kic")
+metadata/_custom_type_script = "uid://ba0auooa0mv8w"
 
 [node name="Collider" type="CollisionShape3D" parent="." unique_id=1264191582]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0)
@@ -20,7 +21,8 @@ script = ExtResource("2_x44r4")
 WALK_LIMIT_SQUARED = 0.25
 metadata/_custom_type_script = "uid://ls6r1csl2o7j"
 
-[node name="Model" parent="." unique_id=1348245243 instance=ExtResource("3_vweq0")]
+[node name="Model" parent="." unique_id=1348245243 node_paths=PackedStringArray("actor") instance=ExtResource("3_vweq0")]
+actor = NodePath("..")
 
 [node name="MeshInstance3D" type="MeshInstance3D" parent="." unique_id=1799624820]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0)

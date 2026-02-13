@@ -4,16 +4,18 @@ class_name PlayerInputManager
 
 # Input data container
 class Data extends RefCounted:
+	var cameraDirection : Vector2
 	var direction : Vector2
+
 	var actions : Array[Player.ActionType]
 	
 	func reset() -> void:
-		direction = Vector2.ZERO
-		actions.clear()
+		actions.clear() # Both directions don't have to be reset because they will be reassigned every time
 
 
 #region Exported variables
 
+@export_category("Config")
 @export var WALK_LIMIT_SQUARED : float
 
 #endregion
@@ -28,9 +30,11 @@ var inputs : Data = Data.new()
 
 #region Public functions
 
-func pollInputs() -> void:
+func pollInputs(cameraDirection : Vector2) -> void:
 	inputs.reset()
 	inputs.actions.append(Player.ActionType.idle)
+
+	inputs.cameraDirection = cameraDirection
 	
 	processMovementDirection()
 	processMovementActions()

@@ -4,7 +4,9 @@ class_name PlayerModel
 
 #region Scene members
 
-@onready var actor := $".." as CharacterBody3D
+@export_category("Scene members")
+@export var actor : PlayerActor
+
 @onready var resources := $Resources as PlayerResources
 @onready var actionManager := $ActionManager as PlayerActionManager
 @onready var combatManager := $CombatManager as PlayerCombatManager
@@ -23,8 +25,8 @@ var currentAction : PlayerAction = null
 #region Built-in functions
 
 func _ready() -> void:
-	resources.init(self)
-	combatManager.init(resources)
+	assert(actor != null, "PlayerModel._ready(): Player actor not assigned!")
+
 	actionManager.init(actor, resources, combatManager, actionData)
 
 	currentAction = actionManager.actions[Player.ActionType.idle]

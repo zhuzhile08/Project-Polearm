@@ -18,7 +18,7 @@ var actions : Dictionary[Player.ActionType, PlayerAction]
 
 #region Public functions
 
-func init(actor : CharacterBody3D, resources : PlayerResources, combatManager : PlayerCombatManager, actionData : PlayerActionData) -> void:
+func init(actor : PlayerActor, resources : PlayerResources, combatManager : PlayerCombatManager, actionData : PlayerActionData) -> void:
 	for child in get_children():
 		if child is PlayerAction:
 			child.init(self, actor, resources, combatManager, actionData)

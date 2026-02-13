@@ -47,15 +47,21 @@ class_name PlayerResources
 
 #region Scene members
 
+@export_category("Scene members")
 @onready var model : PlayerModel
 
 #endregion
 
 
-#region Public functions
+#region Built-in functions
 
-func init(model_ : PlayerModel) -> void:
-	model = model_
+func _ready() -> void:
+	assert(model != null, "PlayerResources._ready(): Player model not assigned!")
+
+#endregion
+
+
+#region Public functions
 
 func tick(delta: float) -> void:
 	loseFlow(delta * BASE_FLOW_DECREASE_RATE * flowModifier)

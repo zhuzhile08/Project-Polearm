@@ -335,8 +335,9 @@ script = ExtResource("2_rvbmx")
 FLOW_CURVE = SubResource("Curve_prnb2")
 metadata/_custom_type_script = "uid://bjw3tygpodtev"
 
-[node name="CombatManager" type="Node" parent="." unique_id=2042843911]
+[node name="CombatManager" type="Node" parent="." unique_id=2042843911 node_paths=PackedStringArray("resources")]
 script = ExtResource("3_m20wt")
+resources = NodePath("../Resources")
 metadata/_custom_type_script = "uid://620any2k6qha"
 
 [node name="ActionData" type="AnimationPlayer" parent="." unique_id=1137306923]

@@ -19,7 +19,7 @@ class_name PlayerAction
 #region Scene members
 
 var manager : PlayerActionManager
-var actor : CharacterBody3D
+var actor : PlayerActor
 var resources : PlayerResources
 var combatManager : PlayerCombatManager
 var actionData : PlayerActionData
@@ -42,7 +42,7 @@ var animation : String = DEFAULT_ANIMATION
 
 #region Public funcitons
 
-func init(manager_ : PlayerActionManager, actor_ : CharacterBody3D, resources_ : PlayerResources, combatManager_ : PlayerCombatManager, actionData_ : PlayerActionData) -> void:
+func init(manager_ : PlayerActionManager, actor_ : PlayerActor, resources_ : PlayerResources, combatManager_ : PlayerCombatManager, actionData_ : PlayerActionData) -> void:
 	manager = manager_
 	actor = actor_
 	resources = resources_
