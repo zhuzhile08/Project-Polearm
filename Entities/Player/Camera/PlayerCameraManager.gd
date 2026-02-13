@@ -37,8 +37,6 @@ var activeCam : PhantomCamera3D
 var heldTargetToggle : bool = false
 var isTargeting : bool = false # Only active if the above toggle is true
 
-var mouseCamera : bool = false
-
 #endregion
 
 
@@ -52,7 +50,7 @@ func _physics_process(delta: float) -> void:
 
 func _unhandled_input(event: InputEvent) -> void:
 	if event is InputEventMouseMotion:
-		mouseCamera = true
+		pass
 	
 
 #endregion
@@ -74,7 +72,7 @@ func setFollowTarget(node : Node3D) -> void:
 
 
 func cameraPlaneDirection() -> Vector2:
-	var direction = activeCam.position - activeCam._follow_target_position # Private variable of the phantom camera, better method possible?
+	var direction = activeCam.global_position - activeCam._follow_target_position # Private variable of the phantom camera, better method possible?
 	return Vector2(direction.x, direction.z).normalized()
 
 
@@ -84,8 +82,6 @@ func cameraPlaneDirection() -> Vector2:
 #region Private functions
 
 func rotateCamera(camera : PhantomCamera3D, angle : Vector2) -> void:
-	print(angle)
-
 	var cameraRotation := camera.get_third_person_rotation_degrees()
 
 	cameraRotation.y = wrapf(cameraRotation.y - angle.y, 0, 360)
@@ -96,8 +92,8 @@ func rotateCamera(camera : PhantomCamera3D, angle : Vector2) -> void:
 func handleInput() -> CameraInputData:
 	var data : CameraInputData = CameraInputData.new()
 
-	if not mouseCamera: # Mouse rotation is handled in _unhandled_input()
-		data.direction = Input.get_vector("Camera left", "Camera right", "Camera down", "Camera up").normalized()
+	# if not mouseCamera: # Mouse rotation is handled in _unhandled_input() # How to check?
+	data.direction = Input.get_vector("Camera left", "Camera right", "Camera down", "Camera up").normalized()
 
 	data.targetDirection = Input.get_axis("Target left", "Target right")
 	data.heldTargetToggle = Input.is_action_pressed("Held target toggle")

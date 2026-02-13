@@ -5,12 +5,14 @@ class_name PlayerModel
 #region Scene members
 
 @export_category("Scene members")
-@export var actor : PlayerActor
+@export var player : Player
+@export var cameraManager : PlayerCameraManager
 
-@onready var resources := $Resources as PlayerResources
 @onready var actionManager := $ActionManager as PlayerActionManager
 @onready var combatManager := $CombatManager as PlayerCombatManager
 @onready var actionData := $ActionData as PlayerActionData
+@onready var resources := $Resources as PlayerResources
+@onready var skeleton := $Skeleton as Skeleton3D
 
 #endregion
 
@@ -25,9 +27,7 @@ var currentAction : PlayerAction = null
 #region Built-in functions
 
 func _ready() -> void:
-	assert(actor != null, "PlayerModel._ready(): Player actor not assigned!")
-
-	actionManager.init(actor, resources, combatManager, actionData)
+	assert(player != null, "PlayerModel._ready(): Player player not assigned!")
 
 	currentAction = actionManager.actions[Player.ActionType.idle]
 	switchTo(Player.ActionType.idle)
@@ -54,8 +54,6 @@ func processInput(input : PlayerInputManager.Data):
 	input.actions.sort_custom(actionManager.actionPrioritySort)
 	
 	# Check sidearm --> What did I mean by this?
-	
-	#
 
 
 # Forces a swith to a given action type

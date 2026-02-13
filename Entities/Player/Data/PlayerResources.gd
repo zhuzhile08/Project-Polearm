@@ -48,7 +48,7 @@ class_name PlayerResources
 #region Scene members
 
 @export_category("Scene members")
-@onready var model : PlayerModel
+@export var model : PlayerModel
 
 #endregion
 

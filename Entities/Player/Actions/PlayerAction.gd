@@ -8,21 +8,23 @@ class_name PlayerAction
 @export var TYPE : Player.ActionType
 @export var PRIORITY : int = 0
 @export var DEFAULT_ANIMATION : String
+@export var ROTATION_TRACKING_SPEED : float = 10
 
 @export_category("Combat")
 @export var ENERGY_COST : float = 0
-@export var QUEUEABLE : bool = false
+# @export var QUEUEABLE : bool = false # For what?
 
 #endregion
 
 
 #region Scene members
 
+var player : Player
 var manager : PlayerActionManager
-var actor : PlayerActor
-var resources : PlayerResources
 var combatManager : PlayerCombatManager
+var cameraManager : PlayerCameraManager
 var actionData : PlayerActionData
+var resources : PlayerResources
 
 #endregion
 
@@ -35,28 +37,37 @@ var DURATION : float
 var queue : Player.ActionType = Player.ActionType.none # Queued action, used for combos and buffering, not guaranteed to happen next
 var next : Player.ActionType = Player.ActionType.none # Guaranteed next action after the current one has ended
 
-var animation : String = DEFAULT_ANIMATION
+@onready var animation : String = DEFAULT_ANIMATION
 
 #endregion
 
 
 #region Public funcitons
 
-func init(manager_ : PlayerActionManager, actor_ : PlayerActor, resources_ : PlayerResources, combatManager_ : PlayerCombatManager, actionData_ : PlayerActionData) -> void:
+func init(
+	player_ : Player, \
+	manager_ : PlayerActionManager, \
+	combatManager_ : PlayerCombatManager, \
+	cameraManager_ : PlayerCameraManager, \
+	actionData_ : PlayerActionData, \
+	resources_ : PlayerResources \
+) -> void:
+	player = player_
 	manager = manager_
-	actor = actor_
-	resources = resources_
 	combatManager = combatManager_
+	cameraManager = cameraManager_
 	actionData = actionData_
+	resources = resources_
+
 
 # This is called on every frame when the action is enabled
 func tick(input : PlayerInputManager.Data, delta : float) -> void:
 	progress += delta
 
-	if actionData.animTracksDirection(animation, progress):
-		processDirection(input, delta)
+	processDirection(input, delta)
 	
 	tickImpl(input, delta)
+
 
 # This is executed on action enter
 func enter() -> void:
@@ -65,7 +76,7 @@ func enter() -> void:
 	if combatManager.isNextComboAction(TYPE):
 		animation = combatManager.registerComboAction(TYPE)
 		
-		# Play animation
+	actionData.play(animation)
 	
 	enterImpl()
 
@@ -102,23 +113,25 @@ func nextAction(input : PlayerInputManager.Data) -> Player.ActionType:
 
 # Check if the action can accept a queue (i.e. the animation has progressed enough for the move to be queueable)
 func acceptsQueue() -> bool:
-	return actionData.animAcceptsQueue(animation, progress)
+	return actionData.acceptsQueue(animation, progress)
 
 # Check if the action can start it's transition to another action
 func canTransition() -> bool:
-	return actionData.animTransitionable(animation, progress)
+	return actionData.transitionable(animation, progress)
 
 
 # Check if a queueable move is present, can be queued with the current action and set it if these are the case
 func checkAndSetQueue(input : PlayerInputManager.Data) -> void:
 	if input.actions.size() == 0:
 		return
-	
-	if actionData.animComboPause(animation, progress) && combatManager.isNextComboAction(Player.ActionType.idle):
+
+	if actionData.comboPause(animation, progress) && combatManager.isNextComboAction(Player.ActionType.idle):
 		combatManager.registerComboAction(Player.ActionType.idle)
 	
-	if manager.actions[input.actions[0]].QUEUEABLE:
-		queue = input.actions[0]
+	# if manager.actions[input.actions[0]].QUEUEABLE:
+	#	queue = input.actions[0]
+
+	queue = input.actions[0]
 
 # Check if the next action can be set (i.e. has a higher priority than the current next action)
 func checkAndSetNext(actionType : Player.ActionType) -> void:
@@ -148,8 +161,11 @@ func highestPriorityAction(input : PlayerInputManager.Data) -> Player.ActionType
 
 
 # If enabled, this will influence the direction the player faces using the direction of the input package
-func processDirection(_input : PlayerInputManager.Data, _delta : float) -> void:
-	pass
+func processDirection(input : PlayerInputManager.Data, delta : float) -> void:
+	if actionData.trackDirection(animation, progress):
+		player.rotate_y(clampf( \
+			player.basis.z.signed_angle_to(Vector3(input.direction.x, 0, input.direction.y), Vector3.UP), \
+			-ROTATION_TRACKING_SPEED * delta, ROTATION_TRACKING_SPEED * delta))
 
 #endregion
 
