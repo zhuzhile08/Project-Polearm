@@ -9,6 +9,7 @@ export_credentials.cfg
 
 # Godot addon ignors
 addons/*/examples
+addons/godot-git-plugin/
 
 # Imported translations (automatically generated from CSV files)
 *.translation
