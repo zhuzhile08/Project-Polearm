@@ -1,0 +1,23 @@
+[gd_scene format=3 uid="uid://bnntia6vd8g6u"]
+
+[ext_resource type="Shader" uid="uid://xd7q7e7yivnc" path="res://Assets/Shaders/PS1 Shader/Main.gdshader" id="1_0wesc"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_n2ew2"]
+render_priority = -1
+shader = ExtResource("1_0wesc")
+shader_parameter/color_depth = 5
+shader_parameter/dithering = true
+shader_parameter/resolution_scale = 4
+
+[sub_resource type="QuadMesh" id="QuadMesh_g247f"]
+flip_faces = true
+size = Vector2(2, 2)
+
+[node name="ShaderCamera" type="Camera3D" unique_id=571340486]
+
+[node name="Shader" type="MeshInstance3D" parent="." unique_id=120087243]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -1)
+material_override = SubResource("ShaderMaterial_n2ew2")
+extra_cull_margin = 16384.0
+mesh = SubResource("QuadMesh_g247f")
+skeleton = NodePath("../..")
