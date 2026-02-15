@@ -10,7 +10,6 @@ class_name PlayerModel
 
 @onready var actionManager := $ActionManager as PlayerActionManager
 @onready var combatManager := $CombatManager as PlayerCombatManager
-@onready var actionData := $ActionData as PlayerActionData
 @onready var resources := $Resources as PlayerResources
 @onready var skeleton := $Skeleton as Skeleton3D
 
