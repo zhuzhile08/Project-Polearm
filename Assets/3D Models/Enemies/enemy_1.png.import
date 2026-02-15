@@ -2,20 +2,20 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://bmootuh32kf3b"
-path.s3tc="res://.godot/imported/enemy_0.png-7197b0e88fa20090a723b84cd9a1760a.s3tc.ctex"
+uid="uid://boexbcfn8eg38"
+path.s3tc="res://.godot/imported/enemy_1.png-792c32da880a4d17d8238598388b3e25.s3tc.ctex"
 metadata={
 "imported_formats": ["s3tc_bptc"],
 "vram_texture": true
 }
 generator_parameters={
-"md5": "930b0a6096f078b6ac22b99c5a802b7e"
+"md5": "b90bc23a6cc7c6f702695e8adefcef04"
 }
 
 [deps]
 
-source_file="res://Assets/3D Models/Enemy/enemy_0.png"
-dest_files=["res://.godot/imported/enemy_0.png-7197b0e88fa20090a723b84cd9a1760a.s3tc.ctex"]
+source_file="res://Assets/3D Models/Enemies/enemy_1.png"
+dest_files=["res://.godot/imported/enemy_1.png-792c32da880a4d17d8238598388b3e25.s3tc.ctex"]
 
 [params]
 
