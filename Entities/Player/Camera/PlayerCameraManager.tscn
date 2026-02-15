@@ -19,6 +19,7 @@ follow_mode = 6
 tween_resource = SubResource("Resource_i8oxm")
 tween_on_load = false
 follow_damping = true
+follow_damping_value = Vector3(0, 0, 0)
 follow_distance = 5.0
 spring_length = 5.0
 metadata/_custom_type_script = "uid://csjccrhj5wnx7"

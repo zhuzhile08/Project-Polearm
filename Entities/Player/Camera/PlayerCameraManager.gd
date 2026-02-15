@@ -72,7 +72,7 @@ func setFollowTarget(node : Node3D) -> void:
 
 
 func cameraPlaneDirection() -> Vector2:
-	var direction = activeCam.global_position - activeCam._follow_target_position # Private variable of the phantom camera, better method possible?
+	var direction = activeCam.global_position - activeCam._follow_target_output_position # Private variable of PhantomCamera3D, maybe someday open PR to add a proper getter function
 	return Vector2(direction.x, direction.z).normalized()
 
 
