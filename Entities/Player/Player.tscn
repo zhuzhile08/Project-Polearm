@@ -3,7 +3,7 @@
 [ext_resource type="Script" uid="uid://ba0auooa0mv8w" path="res://Entities/Player/Player.gd" id="1_05tld"]
 [ext_resource type="Script" uid="uid://ls6r1csl2o7j" path="res://Entities/Player/Input/PlayerInputManager.gd" id="2_aj5cy"]
 [ext_resource type="PackedScene" uid="uid://bgf6aphyao331" path="res://Entities/Player/Camera/PlayerCameraManager.tscn" id="3_1des2"]
-[ext_resource type="PackedScene" uid="uid://c21e3ip2xyf1n" path="res://Entities/Player/Model/PlayerModel.scn" id="4_1des2"]
+[ext_resource type="PackedScene" uid="uid://c2p04rki08xh5" path="res://Entities/Player/Model/PlayerModel.tscn" id="4_an6q6"]
 [ext_resource type="PackedScene" uid="uid://dbsruilakgfp4" path="res://Entities/Player/Visuals/XBotMesh.scn" id="5_an6q6"]
 
 [sub_resource type="CapsuleShape3D" id="CapsuleShape3D_u36tg"]
@@ -24,7 +24,7 @@ metadata/_custom_type_script = "uid://ls6r1csl2o7j"
 [node name="CameraManager" parent="." unique_id=1956657863 instance=ExtResource("3_1des2")]
 INVERT_VERTICAL = 1.0
 
-[node name="Model" parent="." unique_id=21598571 node_paths=PackedStringArray("player", "cameraManager") instance=ExtResource("4_1des2")]
+[node name="Model" parent="." unique_id=2130243074 node_paths=PackedStringArray("player", "cameraManager") instance=ExtResource("4_an6q6")]
 player = NodePath("..")
 cameraManager = NodePath("../CameraManager")
 
