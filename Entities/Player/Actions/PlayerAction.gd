@@ -2,12 +2,29 @@ extends Node
 class_name PlayerAction
 
 
+#region Enums
+
+enum Priority {
+	idle = 0,
+	groundedMovementTypes = 1,
+	interactionTypes = 10,
+	fallingTypes = 20,
+	jumpingTypes = 30,
+	combatTypes = 40,
+	evasionTypes = 50,
+	damageTypes = 60,
+	overwrite = 999,
+}
+
+#endregion
+
+
 #region Exported variables
 
 @export_category("General")
 @export var TYPE : Player.ActionType
 @export var PRIORITY : int = 0
-@export var DEFAULT_ANIMATION : String
+@export var animation : String
 @export var ROTATION_TRACKING_SPEED : float = 10
 
 @export_category("Combat")
@@ -25,6 +42,7 @@ var combatManager : PlayerCombatManager
 var cameraManager : PlayerCameraManager
 var actionData : PlayerActionData
 var resources : PlayerResources
+var animationPlayer : AnimationPlayer
 
 #endregion
 
@@ -37,8 +55,6 @@ var DURATION : float
 var queue : Player.ActionType = Player.ActionType.none # Queued action, used for combos and buffering, not guaranteed to happen next
 var next : Player.ActionType = Player.ActionType.none # Guaranteed next action after the current one has ended
 
-@onready var animation : String = DEFAULT_ANIMATION
-
 #endregion
 
 
@@ -50,7 +66,8 @@ func init(
 	combatManager_ : PlayerCombatManager, \
 	cameraManager_ : PlayerCameraManager, \
 	actionData_ : PlayerActionData, \
-	resources_ : PlayerResources \
+	resources_ : PlayerResources, \
+	animationPlayer_ : AnimationPlayer \
 ) -> void:
 	player = player_
 	manager = manager_
@@ -58,6 +75,7 @@ func init(
 	cameraManager = cameraManager_
 	actionData = actionData_
 	resources = resources_
+	animationPlayer = animationPlayer_
 
 
 # This is called on every frame when the action is enabled
@@ -76,7 +94,7 @@ func enter() -> void:
 	if combatManager.isNextComboAction(TYPE):
 		animation = combatManager.registerComboAction(TYPE)
 		
-	actionData.play(animation)
+	animationPlayer.play(animation)
 	
 	enterImpl()
 
@@ -86,58 +104,48 @@ func exit() -> void:
 	
 	progress = 0
 	
-	animation = DEFAULT_ANIMATION
 	queue = Player.ActionType.none
 	next = Player.ActionType.none
 
 # This checks if the current action should continue or if not, the action to transition to based on all inputs
 func nextAction(input : PlayerInputManager.Data) -> Player.ActionType:
-	if acceptsQueue(): # Set the queued action
+	if actionData.acceptsQueue(animation, progress) and input.actions.size() == 0: # Set the queued action
 		checkAndSetQueue(input)
 
-	if not canTransition():
+	if not actionData.transitionable(animation, progress):
 		return Player.ActionType.none
 	
 	if queue != Player.ActionType.none: # If a transition can occur and the queue is set, push the queue as the next action
 		checkAndSetNext(queue)
-	
-	if next != Player.ActionType.none: # If the next guranteed action is set, we give that action as the next transition
-		return next
 
-	return highestPriorityAction(input) # If all above cases do not trigger a transition, just check for the input causing the highest priority action
+	if next == Player.ActionType.none: # If all above cases do not trigger a transition, just check for the input causing the highest priority action
+		next = highestPriorityAction(input)
+	
+	nextStateImpl(input)
+
+	return next
 
 #endregion
 
 
 #region Private functions
 
-# Check if the action can accept a queue (i.e. the animation has progressed enough for the move to be queueable)
-func acceptsQueue() -> bool:
-	return actionData.acceptsQueue(animation, progress)
-
-# Check if the action can start it's transition to another action
-func canTransition() -> bool:
-	return actionData.transitionable(animation, progress)
-
-
 # Check if a queueable move is present, can be queued with the current action and set it if these are the case
 func checkAndSetQueue(input : PlayerInputManager.Data) -> void:
-	if input.actions.size() == 0:
-		return
-
-	if actionData.comboPause(animation, progress) && combatManager.isNextComboAction(Player.ActionType.idle):
-		combatManager.registerComboAction(Player.ActionType.idle)
-	
-	# if manager.actions[input.actions[0]].QUEUEABLE:
-	#	queue = input.actions[0]
-
 	queue = input.actions[0]
+
+	# Checks if a pause has been detected and a pause is part of the combo
+	if actionData.comboPause(animation, progress):
+		if combatManager.isNextComboAction(Player.ActionType.idle):
+			combatManager.registerComboAction(Player.ActionType.idle)
+		# else: # This can be uncommented and the function below implemented to add punishment for button mashing
+		#	combatManager.breakCombo()
 
 # Check if the next action can be set (i.e. has a higher priority than the current next action)
 func checkAndSetNext(actionType : Player.ActionType) -> void:
 	if next != Player.ActionType.none: # If it were none, just set the action type
 		var action := manager.actions[actionType]
-		if !resources.canAffordAction(action) || manager.actions[next].PRIORITY < action.PRIORITY: # Check for the priorities of the potential next actions
+		if !resources.canAffordAction(action) or manager.actions[next].PRIORITY < action.PRIORITY: # Check for the priorities of the potential next actions
 			return
 	
 	next = actionType
@@ -176,6 +184,10 @@ func tickImpl(_input : PlayerInputManager.Data, _delta : float) -> void:
 	pass
 
 func enterImpl() -> void:
+	pass
+
+# Modify the next variable in this function
+func nextStateImpl(_input : PlayerInputManager.Data):
 	pass
 
 func exitImpl() -> void:

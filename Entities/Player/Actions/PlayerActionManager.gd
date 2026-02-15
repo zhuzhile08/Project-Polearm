@@ -8,7 +8,9 @@ class_name PlayerActionManager
 @export var model : PlayerModel
 @export var resources : PlayerResources
 @export var combatManager : PlayerCombatManager
-@export var actionData : PlayerActionData
+@export var animationPlayer : AnimationPlayer
+
+@onready var actionData := $ActionData as PlayerActionData
 
 var player : Player
 var cameraManager : PlayerCameraManager
@@ -29,14 +31,14 @@ func _ready() -> void:
 	assert(model != null, "PlayerActionManager._ready(): Player model not assigned!")
 	assert(resources != null, "PlayerActionManager._ready(): Player resources not assigned!")
 	assert(combatManager != null, "PlayerActionManager._ready(): Player combat manager not assigned!")
-	assert(actionData != null, "PlayerActionData._ready(): Player action data not assigned!")
+	assert(animationPlayer != null, "PlayerActionManager._ready(): Player skeleton animation player not assigned!")
 
 	player = model.player
 	cameraManager = model.cameraManager
 
 	for child in get_children():
 		if child is PlayerAction:
-			child.init(player, self, combatManager, cameraManager, actionData, resources)
+			child.init(player, self, combatManager, cameraManager, actionData, resources, animationPlayer)
 			actions[child.TYPE] = child
 
 #endregion
