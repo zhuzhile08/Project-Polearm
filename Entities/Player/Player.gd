@@ -2,19 +2,48 @@ extends CharacterBody3D
 class_name Player
 
 
+#region Enums
+
 enum ActionType {
 	none,
 	
-	# Special states
+
+	# Idle
+	idle,
+	
+
+	# Ground movement actions
+	walk,
+	run,
+	sprint,
+	
+
+	# Jumping
+	jumpBasic,
+	jumpStill, jumpRun, jumpSprint,
+
+	fall,
+
+	# The landing animation can always determined, hence it needs no intermediate action
+	landingStill, landingRun,
+	
+
+	# Dodge states
+	dodgeBasic,
+	dodgeGround, dodgeAir,
+
+
+	# Hit states
+	hitBasic,
+	hitGround, hitAir, downedGround, downedAir, downedLanding,
+
+	# u ded lmao skill issue
 	death,
-	hit,
-	
-	# Dodges can cancel everything
-	dodge,
-	
+
+
 	# Combat can cancel out movement, but not eachother, but may be queried
-	lightAttack,
-	heavyAttack,
+	lightAttackBasic,
+	heavyAttackBasic,
 	
 	# The sidearm type cannot be determined during polling time
 	sidearm,
@@ -25,21 +54,8 @@ enum ActionType {
 	piercingShot,
 	sonOfHeaven,
 
-	taunt,
-	
-	# Primary movement actions
-	jumpStart,
-	sprint,
-	run,
-	walk,
-	
-	# Secondary movement actions
-	jump,
-	fall,
-	landing,
-	
-	# Idle
-	idle,
+	# Taunts
+	tauntBasic,
 }
 
 enum ComboType {

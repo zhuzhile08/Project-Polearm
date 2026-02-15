@@ -76,9 +76,9 @@ func processMovementDirection() -> void:
 
 func processMovementActions():
 	if Input.is_action_pressed("Jump"):
-		inputs.actions.append(Player.ActionType.jump)
+		inputs.actions.append(Player.ActionType.jumpBasic)
 	
 	if Input.is_action_pressed("Dodge"):
-		inputs.actions.append(Player.ActionType.dodge)
+		inputs.actions.append(Player.ActionType.dodgeBasic)
 
 #endregion
