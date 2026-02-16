@@ -3,6 +3,7 @@
 [ext_resource type="PackedScene" uid="uid://cyti0335fm7s0" path="res://Entities/Player/Player.tscn" id="1_7wju8"]
 [ext_resource type="PackedScene" uid="uid://2twxnnq3mj7i" path="res://Common/Camera/SceneCamera/SceneCamera.tscn" id="2_vb1o1"]
 [ext_resource type="Shader" uid="uid://xd7q7e7yivnc" path="res://Assets/Shaders/PSX/ResolutionAndDither.gdshader" id="3_vb1o1"]
+[ext_resource type="PackedScene" uid="uid://b8hqumrxhfvmn" path="res://Common/Interfaces/HUD.tscn" id="4_pd186"]
 
 [sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_wa1cp"]
 
@@ -45,3 +46,5 @@ material_override = SubResource("ShaderMaterial_pd186")
 extra_cull_margin = 16384.0
 mesh = SubResource("QuadMesh_43rtr")
 skeleton = NodePath("../..")
+
+[node name="InterfaceControler" parent="." unique_id=1191320930 instance=ExtResource("4_pd186")]
