@@ -1,0 +1,59 @@
+[gd_scene format=3 uid="uid://bbf2d281jeq4y"]
+
+[node name="OptionsMenu" type="MarginContainer" unique_id=1199451818]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+
+[node name="HBoxContainer" type="HBoxContainer" parent="." unique_id=2101487307]
+layout_mode = 2
+size_flags_horizontal = 0
+size_flags_vertical = 4
+theme_override_constants/separation = 150
+
+[node name="Control" type="Control" parent="HBoxContainer" unique_id=496331462]
+layout_mode = 2
+
+[node name="VBoxContainer" type="VBoxContainer" parent="HBoxContainer" unique_id=1791295312]
+custom_minimum_size = Vector2(300, 536)
+layout_mode = 2
+theme_override_constants/separation = 9
+
+[node name="Game" type="Button" parent="HBoxContainer/VBoxContainer" unique_id=1782292192]
+layout_mode = 2
+size_flags_vertical = 3
+focus_neighbor_top = NodePath("../Keyboard")
+focus_neighbor_bottom = NodePath("../Video")
+text = "Game"
+
+[node name="Video" type="Button" parent="HBoxContainer/VBoxContainer" unique_id=1311041032]
+layout_mode = 2
+size_flags_vertical = 3
+focus_neighbor_top = NodePath("../Game")
+focus_neighbor_bottom = NodePath("../Audio")
+text = "Video"
+
+[node name="Audio" type="Button" parent="HBoxContainer/VBoxContainer" unique_id=39059709]
+layout_mode = 2
+size_flags_vertical = 3
+focus_neighbor_top = NodePath("../Video")
+focus_neighbor_bottom = NodePath("../Controller")
+text = "Audio"
+
+[node name="Controller" type="Button" parent="HBoxContainer/VBoxContainer" unique_id=1959844565]
+layout_mode = 2
+size_flags_vertical = 3
+focus_neighbor_top = NodePath("../Audio")
+focus_neighbor_bottom = NodePath("../Keyboard")
+text = "Controller"
+
+[node name="Keyboard" type="Button" parent="HBoxContainer/VBoxContainer" unique_id=1797674113]
+layout_mode = 2
+size_flags_vertical = 3
+focus_neighbor_top = NodePath("../Controller")
+focus_neighbor_bottom = NodePath("../Game")
+text = "Keyboard"
