@@ -22,6 +22,10 @@ config/icon="res://icon.svg"
 
 [autoload]
 
+SignalBus="*uid://dpb7sogyqfen2"
+GameManager="*uid://c8adwre3mpr46"
+SettingsManager="*uid://1fa6k27is0sv"
+SceneLoader="*uid://qpojlu46mkfw"
 PhantomCameraManager="*uid://duq6jhf6unyis"
 
 [display]
