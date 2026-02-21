@@ -35,9 +35,9 @@ visible = false
 [node name="PauseMenu" parent="." unique_id=416010714 instance=ExtResource("3_hcvf1")]
 visible = false
 
-[connection signal="_exit_game" from="MainMenu" to="." method="_onExitPressed"]
-[connection signal="_open_options" from="MainMenu" to="." method="_onOptionsPressed"]
-[connection signal="_start_game" from="MainMenu" to="." method="_onPlayPressed"]
-[connection signal="_continue" from="PauseMenu" to="." method="menuGoBack"]
-[connection signal="_open_main_menu" from="PauseMenu" to="." method="_openMainMenu"]
-[connection signal="_open_options" from="PauseMenu" to="." method="_onOptionsPressed"]
+[connection signal="openOptionsPressed" from="MainMenu" to="." method="onOptionsPressed"]
+[connection signal="quitGamePressed" from="MainMenu" to="." method="onQuitGamePressed"]
+[connection signal="startGamePressed" from="MainMenu" to="." method="onPlayPressed"]
+[connection signal="continuePressed" from="PauseMenu" to="." method="onContinuePressed"]
+[connection signal="openMainMenuPressed" from="PauseMenu" to="." method="onMainMenuPressed"]
+[connection signal="openOptionsPressed" from="PauseMenu" to="." method="onOptionsPressed"]

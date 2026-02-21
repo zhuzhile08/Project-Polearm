@@ -1,26 +1,19 @@
 extends Control
 
 # Signals that get redirected to the Interface Controller
-signal _start_game
-signal _new_game
-signal _open_options
-signal _exit_game
-
-func _ready() -> void:
-	$HBoxContainer/MarginContainer/VBoxContainer/Continue.grab_focus() # The "Continue" button is imediately highlighted when the Node opens
+signal startGamePressed
+signal newGamePressed
+signal openOptionsPressed
+signal quitGamePressed
 
 func _on_continue_pressed() -> void:
-	_start_game.emit()
-
+	startGamePressed.emit()
 
 func _on_new_game_pressed() -> void:
-	_new_game.emit()
-
+	newGamePressed.emit()
 
 func _on_options_pressed() -> void:
-	_open_options.emit()
-
+	openOptionsPressed.emit()
 
 func _on_exit_game_pressed() -> void:
-	_exit_game.emit()
-	
+	quitGamePressed.emit()

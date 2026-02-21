@@ -16,16 +16,41 @@ func _ready() -> void:
 	# Connect to the Wiring (SignalBus)
 	SignalBus.backRequested.connect(menuGoBack)
 	SignalBus.menuRequested.connect(switchMenuTo)
-	SignalBus.gamePaused.connect(_onGamePaused)
+	SignalBus.gamePaused.connect(onGamePaused)
 	
 	# 2. Start at Main Menu
 	switchMenuTo(SubMenus.MAIN)
+	
+	for button in get_tree().get_nodes_in_group("hover_buttons"):
+		if button is Button:
+			button.mouse_entered.connect(focusToMouseHover.bind(button))
 
-# --- THE LOGIC ---
+# --- Visuals ---
+func findAllButtons() -> void:
+	var currentMenu = menuHistory.back()
+	if not currentMenu:
+		return
+	
+	var buttons = currentMenu.find_children("*", "BaseButton", true, false)
+	
+	for button in buttons:
+		if not button.mouse_entered.is_connected(focusToMouseHover):
+			button.mouse_entered.connect(focusToMouseHover.bind(button))
+
+func grabFirstButton() -> void:
+	var firstButton = menuHistory.back().find_next_valid_focus()
+	if firstButton:
+		firstButton.grab_focus()
+
+func focusToMouseHover(button: BaseButton) -> void:
+	if not button.has_focus():
+		button.grab_focus()
+
+# --- Basic Menu Operations ---
 func hideMenu() -> void:
 	for menu in menuMapping.values():
 		menu.hide()
-	
+
 func switchMenuTo(target: int) -> void:
 	# Hide everything first
 	hideMenu()
@@ -39,6 +64,7 @@ func switchMenuTo(target: int) -> void:
 	targetMenu.show()
 	
 	# Focus for controller support
+	findAllButtons()
 	grabFirstButton()
 
 func menuGoBack() -> void:
@@ -55,40 +81,34 @@ func menuGoBack() -> void:
 	menuHistory.pop_back()
 	menuHistory.back().show()
 	
+	findAllButtons()
 	grabFirstButton()
 
 # --- SIGNAL REACTIONS ---
-
-func _onGamePaused(is_paused: bool) -> void:
-	if is_paused and GameManager.current_state != GameManager.GameState.MAIN_MENU:
+func onGamePaused(is_paused: bool) -> void:
+	if is_paused and GameManager.current_state != GameManager.GameState.MAINMENU:
 		switchMenuTo(SubMenus.PAUSE)
 	else:
 		# Hide all menus when resuming
 		hideMenu()
 		menuHistory.clear()
 
-# --- BUTTON LINKS (Call these from your Button signals) ---
-
-func _onPlayPressed() -> void:
+# --- BUTTON LINKS (Call these from the Button signals) ---
+func onPlayPressed() -> void:
 	# Tell the SceneLoader to take over!
-	GameManager.current_state = GameManager.GameState.PLAYING
 	SignalBus.startSceneRequested.emit("res://Stages/ShaderTest.tscn")
 	menuHistory.clear()
 	hideMenu()
 
-func grabFirstButton() -> void:
-	var firstButton = menuHistory.back().find_next_valid_focus()
-	if firstButton:
-		firstButton.grab_focus()
-
-func _onOptionsPressed() -> void:
+func onOptionsPressed() -> void:
 	switchMenuTo(SubMenus.OPTIONS)
 
-func _onExitPressed() -> void:
+func onQuitGamePressed() -> void:
 	get_tree().quit()
 
-
-func _openMainMenu() -> void:
+func onMainMenuPressed() -> void:
 	switchMenuTo(SubMenus.MAIN)
-	SceneLoader.load_level("res://Stages/MainMenuBackground.tscn")
-	GameManager.current_state = GameManager.GameState.MAIN_MENU
+	SignalBus.goMainMenu.emit()
+
+func onContinuePressed() -> void:
+	menuGoBack()

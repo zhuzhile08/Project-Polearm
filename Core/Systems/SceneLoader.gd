@@ -7,7 +7,7 @@ func _ready() -> void:
 	# This ensures the script keeps running even when get_tree().paused = true
 	process_mode = Node.PROCESS_MODE_ALWAYS
 
-func load_level(path: String) -> void:
+func loadLevel(path: String) -> void:
 	# 1. Safety Check: Make sure we have a place to put the level
 	if worldContainer == null:
 		print("Critical Error: SceneLoader doesn't have a world_container reference!")
