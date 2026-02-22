@@ -1,0 +1,43 @@
+[gd_scene format=3 uid="uid://b8hqumrxhfvmn"]
+
+[ext_resource type="Script" uid="uid://0451ufl23215" path="res://Interfaces/InterfaceController.gd" id="1_m563q"]
+[ext_resource type="PackedScene" uid="uid://c0atl8ffoeq5u" path="res://Interfaces/Menus/MainMenu.tscn" id="1_n0vwa"]
+[ext_resource type="PackedScene" uid="uid://c4osl43hbuh14" path="res://Interfaces/Menus/PauseMenu.tscn" id="3_hcvf1"]
+[ext_resource type="PackedScene" uid="uid://bbf2d281jeq4y" path="res://Interfaces/Menus/OptionsMenu.tscn" id="3_th1fc"]
+
+[node name="InterfaceController" type="CanvasLayer" unique_id=1191320930]
+process_mode = 3
+script = ExtResource("1_m563q")
+
+[node name="HUD" type="Control" parent="." unique_id=817713237]
+visible = false
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Effects" type="Control" parent="." unique_id=660847339]
+visible = false
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="MainMenu" parent="." unique_id=2089339401 instance=ExtResource("1_n0vwa")]
+visible = false
+
+[node name="OptionsMenu" parent="." unique_id=1199451818 instance=ExtResource("3_th1fc")]
+
+[node name="PauseMenu" parent="." unique_id=416010714 instance=ExtResource("3_hcvf1")]
+visible = false
+
+[connection signal="openOptionsPressed" from="MainMenu" to="." method="onOptionsPressed"]
+[connection signal="quitGamePressed" from="MainMenu" to="." method="onQuitGamePressed"]
+[connection signal="startGamePressed" from="MainMenu" to="." method="onPlayPressed"]
+[connection signal="continuePressed" from="PauseMenu" to="." method="onContinuePressed"]
+[connection signal="openMainMenuPressed" from="PauseMenu" to="." method="onMainMenuPressed"]
+[connection signal="openOptionsPressed" from="PauseMenu" to="." method="onOptionsPressed"]

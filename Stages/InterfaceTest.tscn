@@ -1,0 +1,13 @@
+[gd_scene format=3 uid="uid://d1t21heudjsue"]
+
+[ext_resource type="Script" uid="uid://ew0g31ryp865" path="res://Stages/Main.gd" id="1_t3jir"]
+[ext_resource type="PackedScene" uid="uid://b8hqumrxhfvmn" path="res://Interfaces/InterfaceController.tscn" id="4_8dxha"]
+
+[node name="Test" type="Node" unique_id=1776649826]
+process_mode = 3
+script = ExtResource("1_t3jir")
+
+[node name="WorldContainer" type="Node" parent="." unique_id=814856815]
+process_mode = 1
+
+[node name="InterfaceControler" parent="." unique_id=1191320930 instance=ExtResource("4_8dxha")]

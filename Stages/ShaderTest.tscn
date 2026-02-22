@@ -1,0 +1,47 @@
+[gd_scene format=3 uid="uid://d02s4s6jpbnei"]
+
+[ext_resource type="PackedScene" uid="uid://cyti0335fm7s0" path="res://Entities/Player/Player.tscn" id="1_7wju8"]
+[ext_resource type="PackedScene" uid="uid://2twxnnq3mj7i" path="res://Common/Camera/SceneCamera/SceneCamera.tscn" id="2_vb1o1"]
+[ext_resource type="Shader" uid="uid://xd7q7e7yivnc" path="res://Assets/Shaders/PSX/ResolutionAndDither.gdshader" id="3_vb1o1"]
+
+[sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_wa1cp"]
+
+[sub_resource type="Sky" id="Sky_g247f"]
+sky_material = SubResource("ProceduralSkyMaterial_wa1cp")
+
+[sub_resource type="Environment" id="Environment_p2tl5"]
+background_mode = 2
+sky = SubResource("Sky_g247f")
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_pd186"]
+render_priority = -1
+shader = ExtResource("3_vb1o1")
+shader_parameter/color_depth = 6
+shader_parameter/dithering = true
+shader_parameter/resolution_scale = 3
+
+[sub_resource type="QuadMesh" id="QuadMesh_43rtr"]
+flip_faces = true
+size = Vector2(2, 2)
+
+[node name="Test" type="Node" unique_id=1776649826]
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="." unique_id=168132880]
+environment = SubResource("Environment_p2tl5")
+
+[node name="Floor" type="CSGBox3D" parent="." unique_id=321633755]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.5, 0)
+size = Vector3(20, 1, 20)
+
+[node name="Player" parent="." unique_id=1658568323 instance=ExtResource("1_7wju8")]
+
+[node name="SceneCamera" parent="." unique_id=1015597522 instance=ExtResource("2_vb1o1")]
+transform = Transform3D(1, 0, 0, 0, 0.8660254, 0.5, 0, -0.5, 0.8660254, 0, 0, 0)
+top_level = true
+
+[node name="Shader" type="MeshInstance3D" parent="SceneCamera" unique_id=1915472063]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -1)
+material_override = SubResource("ShaderMaterial_pd186")
+extra_cull_margin = 16384.0
+mesh = SubResource("QuadMesh_43rtr")
+skeleton = NodePath("../..")
