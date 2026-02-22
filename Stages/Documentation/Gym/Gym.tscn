@@ -1,3 +1,220 @@
 [gd_scene format=3 uid="uid://bbifbqx1x67ct"]
 
-[node name="Gym_tscn" type="Node3D" unique_id=2056279026]
+[ext_resource type="PackedScene" uid="uid://2twxnnq3mj7i" path="res://Common/Camera/SceneCamera/SceneCamera.tscn" id="1_6ld1k"]
+[ext_resource type="Material" uid="uid://cgj2lr4vp41pl" path="res://Assets/Materials/Prototype/FloorGray.tres" id="1_r3mhs"]
+[ext_resource type="Shader" uid="uid://exx180lp74b0" path="res://Assets/Shaders/Sky/StylizedSky.gdshader" id="1_tsewk"]
+[ext_resource type="PackedScene" uid="uid://cyti0335fm7s0" path="res://Entities/Player/Player.tscn" id="2_d2u3u"]
+[ext_resource type="Material" uid="uid://p2ekc74yxtq1" path="res://Assets/Materials/Prototype/ObstacleGreen.tres" id="3_cpyv8"]
+[ext_resource type="Material" uid="uid://bihtu5l32o8it" path="res://Assets/Materials/Prototype/ObsctacleOrange.tres" id="3_gfyed"]
+[ext_resource type="Material" uid="uid://chpk81hfx4o7x" path="res://Assets/Materials/Prototype/ObstacleRed.tres" id="3_ji2m5"]
+[ext_resource type="Material" uid="uid://bxph5pp01vonr" path="res://Assets/Materials/Prototype/Obstacle.tres" id="4_gfyed"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_jiqka"]
+shader = ExtResource("1_tsewk")
+shader_parameter/day_top_color = Color(0.1, 0.6, 1, 1)
+shader_parameter/day_bottom_color = Color(0.4, 0.8, 1, 1)
+shader_parameter/sunset_top_color = Color(0.7, 0.75, 1, 1)
+shader_parameter/sunset_bottom_color = Color(1, 0.5, 0.7, 1)
+shader_parameter/night_top_color = Color(0.02, 0, 0.04, 1)
+shader_parameter/night_bottom_color = Color(0.1, 0, 0.2, 1)
+shader_parameter/horizon_color = Color(0, 0.7, 0.8, 1)
+shader_parameter/horizon_blur = 0.05
+shader_parameter/sun_color = Color(10, 8, 1, 1)
+shader_parameter/sun_sunset_color = Color(10, 0, 0, 1)
+shader_parameter/sun_size = 0.2
+shader_parameter/sun_blur = 10.0
+shader_parameter/moon_color = Color(1, 0.95, 0.7, 1)
+shader_parameter/moon_size = 0.06
+shader_parameter/moon_blur = 0.1
+shader_parameter/clouds_edge_color = Color(0.8, 0.8, 0.98, 1)
+shader_parameter/clouds_top_color = Color(1, 1, 1, 1)
+shader_parameter/clouds_middle_color = Color(0.92, 0.92, 0.98, 1)
+shader_parameter/clouds_bottom_color = Color(0.83, 0.83, 0.94, 1)
+shader_parameter/clouds_speed = 2.0
+shader_parameter/clouds_direction = 0.2
+shader_parameter/clouds_scale = 1.0
+shader_parameter/clouds_cutoff = 0.3
+shader_parameter/clouds_fuzziness = 0.5
+shader_parameter/clouds_weight = 0.0
+shader_parameter/clouds_blur = 0.25
+shader_parameter/stars_speed = 1.0
+shader_parameter/overwritten_time = 0.0
+
+[sub_resource type="Sky" id="Sky_uesqs"]
+sky_material = SubResource("ShaderMaterial_jiqka")
+
+[sub_resource type="Environment" id="Environment_0qwk7"]
+background_mode = 2
+sky = SubResource("Sky_uesqs")
+
+[node name="Gym" type="Node" unique_id=1076830952]
+
+[node name="Visuals" type="Node" parent="." unique_id=1391791017]
+
+[node name="SceneCamera" parent="Visuals" unique_id=1015597522 instance=ExtResource("1_6ld1k")]
+transform = Transform3D(1, 0, 0, 0, 0.8660254, 0.5, 0, -0.5, 0.8660254, 0, 0, 0)
+top_level = true
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="Visuals" unique_id=2034854936]
+environment = SubResource("Environment_0qwk7")
+
+[node name="SunAxis" type="Node3D" parent="Visuals" unique_id=269714516]
+transform = Transform3D(1, 0, 0, 0, 0.49999997, 0.86602545, 0, -0.86602545, 0.49999997, 0, 0, 0)
+
+[node name="Sun" type="DirectionalLight3D" parent="Visuals/SunAxis" unique_id=80417960]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 1000)
+shadow_enabled = true
+shadow_blur = 0.02
+
+[node name="Player" parent="." unique_id=1997770894 instance=ExtResource("2_d2u3u")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.5, 2.1386669)
+
+[node name="Geometry" type="Node" parent="." unique_id=255614809]
+
+[node name="JumpHeight" type="Node3D" parent="Geometry" unique_id=1328271858]
+
+[node name="JumpDistance" type="Node3D" parent="Geometry" unique_id=1794139538]
+
+[node name="Ramps" type="Node3D" parent="Geometry" unique_id=705986626]
+transform = Transform3D(-4.371139e-08, 0, 1, 0, 1, 0, -1, 0, -4.371139e-08, 4.5, 0, 8.878095)
+
+[node name="SmallRamp" type="CSGBox3D" parent="Geometry/Ramps" unique_id=130642693]
+transform = Transform3D(0.9848077, 0.17364818, 0, -0.17364818, 0.9848077, 0, 0, 0, 1, -3.7479916, 0.21544087, -2)
+material_override = ExtResource("4_gfyed")
+use_collision = true
+collision_layer = 32768
+collision_mask = 0
+size = Vector3(8, 2, 5)
+
+[node name="Label3D" type="Label3D" parent="Geometry/Ramps/SmallRamp" unique_id=13395691]
+transform = Transform3D(-4.371139e-08, 1.490116e-08, 1, 0, 1, -1.4901161e-08, -1, 0, -4.371139e-08, -3.632026, 2.966577, 1.4206202e-07)
+pixel_size = 0.008
+text = "10' incline"
+
+[node name="MediumRamp" type="CSGBox3D" parent="Geometry/Ramps" unique_id=1588667458]
+transform = Transform3D(0.90630776, 0.42261827, 0, -0.42261827, 0.90630776, 0, 0, 0, 1, -4.3158827, -0.082255535, -7)
+material_override = ExtResource("4_gfyed")
+use_collision = true
+collision_layer = 32768
+collision_mask = 0
+size = Vector3(8, 5, 5)
+
+[node name="Label3D" type="Label3D" parent="Geometry/Ramps/MediumRamp" unique_id=281490014]
+transform = Transform3D(-4.371139e-08, 1.490116e-08, 1, 0, 1, -1.4901161e-08, -1, 0, -4.371139e-08, -3.632026, 2.966577, 1.4206202e-07)
+pixel_size = 0.008
+text = "25' incline"
+
+[node name="LargeRamp" type="CSGBox3D" parent="Geometry/Ramps" unique_id=1429716719]
+transform = Transform3D(0.819152, 0.57357645, 0, -0.57357645, 0.819152, 0, 0, 0, 1, -4.907365, -0.09173429, -12)
+material_override = ExtResource("3_cpyv8")
+use_collision = true
+collision_layer = 32768
+collision_mask = 0
+size = Vector3(8, 7, 5)
+
+[node name="Label3D" type="Label3D" parent="Geometry/Ramps/LargeRamp" unique_id=732863443]
+transform = Transform3D(-4.371138e-08, 0, 1, 0, 1, 0, -1, 0, -4.371139e-08, -3.8328612, 3.863607, 0)
+pixel_size = 0.008
+text = "35' incline"
+
+[node name="SteepestRamp" type="CSGBox3D" parent="Geometry/Ramps" unique_id=1264474753]
+transform = Transform3D(0.70710677, 0.70710677, 0, -0.70710677, 0.70710677, 0, 0, 0, 1, -5.658059, 0.15086767, -17)
+material_override = ExtResource("3_gfyed")
+use_collision = true
+collision_layer = 32768
+collision_mask = 0
+size = Vector3(8, 9, 5)
+
+[node name="Label3D" type="Label3D" parent="Geometry/Ramps/SteepestRamp" unique_id=1343091847]
+transform = Transform3D(-4.3711392e-08, 0, 1, 0, 1, 0, -1, 0, -4.371139e-08, -3.8795142, 5.0525427, 0)
+pixel_size = 0.008
+text = "45' incline"
+
+[node name="TooSteep" type="CSGBox3D" parent="Geometry/Ramps" unique_id=1157661798]
+transform = Transform3D(0.6427876, 0.7660444, 0, -0.7660444, 0.6427876, 0, 0, 0, 1, -6.416752, 0.017838001, -22)
+material_override = ExtResource("3_ji2m5")
+use_collision = true
+collision_layer = 32768
+collision_mask = 0
+size = Vector3(8, 11, 5)
+
+[node name="Label3D" type="Label3D" parent="Geometry/Ramps/TooSteep" unique_id=169562882]
+transform = Transform3D(-4.371139e-08, -2.9802322e-08, 1, -7.1054274e-15, 1, 2.9802322e-08, -1, -7.1054274e-15, -4.3711402e-08, -4.6415844, 6.866859, 0)
+pixel_size = 0.008
+text = "50' incline"
+
+[node name="Bumps" type="Node3D" parent="Geometry" unique_id=740124405]
+
+[node name="Limit" type="CSGBox3D" parent="Geometry/Bumps" unique_id=1828962277]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -6.5, 0.70000005, -1)
+material_override = ExtResource("3_gfyed")
+use_collision = true
+collision_layer = 32768
+collision_mask = 0
+size = Vector3(1, 0.4, 3)
+
+[node name="Label3D" type="Label3D" parent="Geometry/Bumps/Limit" unique_id=1567760448]
+transform = Transform3D(-4.371139e-08, 0, 1, 0, 1, 0, -1, 0, -4.371139e-08, 0, 2.5, -2.3841858e-07)
+pixel_size = 0.008
+text = "Step Height 0.4m"
+
+[node name="Large" type="CSGBox3D" parent="Geometry/Bumps" unique_id=1577387821]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -3.5, 0.65000004, -1)
+material_override = ExtResource("3_cpyv8")
+use_collision = true
+collision_layer = 32768
+collision_mask = 0
+size = Vector3(1, 0.3, 3)
+
+[node name="Label3D" type="Label3D" parent="Geometry/Bumps/Large" unique_id=1119728918]
+transform = Transform3D(-4.371139e-08, 0, 1, 0, 1, 0, -1, 0, -4.371139e-08, 0, 2.5499997, -2.3841858e-07)
+pixel_size = 0.008
+text = "Step Height 0.3m"
+
+[node name="Middle" type="CSGBox3D" parent="Geometry/Bumps" unique_id=1314326092]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.5, 0.6, -1)
+material_override = ExtResource("4_gfyed")
+use_collision = true
+collision_layer = 32768
+collision_mask = 0
+size = Vector3(1, 0.2, 3)
+
+[node name="Label3D" type="Label3D" parent="Geometry/Bumps/Middle" unique_id=2048739871]
+transform = Transform3D(-4.371139e-08, 0, 1, 0, 1, 0, -1, 0, -4.371139e-08, 0, 2.6, -2.3841858e-07)
+pixel_size = 0.008
+text = "Step Height 0.2m"
+
+[node name="Small" type="CSGBox3D" parent="Geometry/Bumps" unique_id=823278636]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.5, 0.55, -1)
+material_override = ExtResource("4_gfyed")
+use_collision = true
+collision_layer = 32768
+collision_mask = 0
+size = Vector3(1, 0.1, 3)
+material = ExtResource("3_cpyv8")
+
+[node name="Label3D" type="Label3D" parent="Geometry/Bumps/Small" unique_id=1206184330]
+transform = Transform3D(-4.371139e-08, 0, 1, 0, 1, 0, -1, 0, -4.371139e-08, 0, 2.6499999, -2.3841858e-07)
+pixel_size = 0.008
+text = "Step Height 0.1m"
+
+[node name="TooLarge" type="CSGBox3D" parent="Geometry/Bumps" unique_id=2084627907]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -9.5, 0.75, -1)
+material_override = ExtResource("3_ji2m5")
+use_collision = true
+collision_layer = 32768
+collision_mask = 0
+size = Vector3(1, 0.5, 3)
+
+[node name="Label3D" type="Label3D" parent="Geometry/Bumps/TooLarge" unique_id=733379295]
+transform = Transform3D(-4.371139e-08, 0, 1, 0, 1, 0, -1, 0, -4.371139e-08, 0, 2.5, -2.3841858e-07)
+pixel_size = 0.008
+text = "Step Height 0.5m"
+
+[node name="Ground" type="CSGBox3D" parent="Geometry" unique_id=1174585820]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.4, 0, -0.6)
+material_override = ExtResource("1_r3mhs")
+use_collision = true
+collision_layer = 32768
+collision_mask = 0
+size = Vector3(200, 1, 200)
