@@ -24,7 +24,7 @@ enum Priority {
 @export_category("General")
 @export var TYPE : Player.ActionType
 @export var PRIORITY : int = 0
-@export var animation : String
+@export var ANIMATION_NAME : String
 @export var ROTATION_TRACKING_SPEED : float = 10
 
 @export_category("Combat")
@@ -37,6 +37,7 @@ enum Priority {
 #region Scene members
 
 var player : Player
+var physics : PlayerPhysics
 var manager : PlayerActionManager
 var combatManager : PlayerCombatManager
 var cameraManager : PlayerCameraManager
@@ -63,14 +64,16 @@ var next : Player.ActionType = Player.ActionType.none # Guaranteed next action a
 func init(
 	player_ : Player, \
 	manager_ : PlayerActionManager, \
+	physics_ : PlayerPhysics, \
 	combatManager_ : PlayerCombatManager, \
 	cameraManager_ : PlayerCameraManager, \
 	actionData_ : PlayerActionData, \
 	resources_ : PlayerResources, \
-	animationPlayer_ : AnimationPlayer \
+	animationPlayer_ : AnimationPlayer, \
 ) -> void:
 	player = player_
 	manager = manager_
+	physics = physics_
 	combatManager = combatManager_
 	cameraManager = cameraManager_
 	actionData = actionData_
@@ -92,9 +95,9 @@ func enter() -> void:
 	resources.payAction(self)
 	
 	if combatManager.isNextComboAction(TYPE):
-		animation = combatManager.registerComboAction(TYPE)
+		ANIMATION_NAME = combatManager.registerComboAction(TYPE)
 		
-	animationPlayer.play(animation)
+	animationPlayer.play(ANIMATION_NAME)
 	
 	enterImpl()
 
@@ -109,10 +112,10 @@ func exit() -> void:
 
 # This checks if the current action should continue or if not, the action to transition to based on all inputs
 func nextAction(input : PlayerInputManager.Data) -> Player.ActionType:
-	if actionData.acceptsQueue(animation, progress) and input.actions.size() == 0: # Set the queued action
+	if actionData.acceptsQueue(ANIMATION_NAME, progress) and input.actions.size() == 0: # Set the queued action
 		checkAndSetQueue(input)
 
-	if not actionData.transitionable(animation, progress):
+	if not actionData.transitionable(ANIMATION_NAME, progress):
 		return Player.ActionType.none
 	
 	if queue != Player.ActionType.none: # If a transition can occur and the queue is set, push the queue as the next action
@@ -135,7 +138,7 @@ func checkAndSetQueue(input : PlayerInputManager.Data) -> void:
 	queue = input.actions[0]
 
 	# Checks if a pause has been detected and a pause is part of the combo
-	if actionData.comboPause(animation, progress):
+	if actionData.comboPause(ANIMATION_NAME, progress):
 		if combatManager.isNextComboAction(Player.ActionType.idle):
 			combatManager.registerComboAction(Player.ActionType.idle)
 		# else: # This can be uncommented and the function below implemented to add punishment for button mashing
@@ -158,7 +161,7 @@ func highestPriorityAction(input : PlayerInputManager.Data) -> Player.ActionType
 		var action := manager.actions[actionType]
 		
 		# If both animations have the same type, just ignore it and break
-		# If the current action is not yet finished and the other has the same priority, don't play the animation
+		# If the current action is not yet finished and the other has the same priority, don't play the ANIMATION_NAME
 		if action.TYPE == TYPE or action.PRIORITY <= PRIORITY and progress < DURATION:
 			break # We can directly break instead of continuing, since the actions are sorted
 		
@@ -170,7 +173,7 @@ func highestPriorityAction(input : PlayerInputManager.Data) -> Player.ActionType
 
 # If enabled, this will influence the direction the player faces using the direction of the input package
 func processDirection(input : PlayerInputManager.Data, delta : float) -> void:
-	if actionData.trackDirection(animation, progress):
+	if actionData.trackDirection(ANIMATION_NAME, progress):
 		player.rotate_y(clampf( \
 			player.basis.z.signed_angle_to(Vector3(input.direction.x, 0, input.direction.y), Vector3.UP), \
 			-ROTATION_TRACKING_SPEED * delta, ROTATION_TRACKING_SPEED * delta))

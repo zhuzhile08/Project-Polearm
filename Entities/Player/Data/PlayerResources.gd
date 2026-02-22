@@ -25,7 +25,7 @@ class_name PlayerResources
 @export var maxEnergy : float = 1000
 
 @export var flow : float = 0 # 道势
-@export var maxFlow : float = 1000
+@export var MAX_FLOW : float = 1000
 
 @export var spiritOrbs : int = 0 # 魄
 @export var healthUpgrades : int = 0 # 3 for a full upgrade
@@ -86,7 +86,7 @@ func loseHealth(amount : float) -> void:
 #region Flow functionality
 
 func gainFlow(amount : float) -> void:
-	flow = min(flow + amount, maxFlow)
+	flow = min(flow + amount, MAX_FLOW)
 
 func loseFlow(amount : float) -> void:
 	flow = max(flow - amount, 0)

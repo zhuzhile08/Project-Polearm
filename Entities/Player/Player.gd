@@ -1,3 +1,7 @@
+# The architectual decisions and structure are heavily guided by https://github.com/Gab-ani/Godot_Universal-Controller-tutorial/tree/episode-5-overview-and-cleanup
+# and it's accompanying YouTube tutorial series. Implementation details are heavily customized
+
+
 extends CharacterBody3D
 class_name Player
 
@@ -84,6 +88,7 @@ enum FlowState {
 @onready var model := $Model as PlayerModel
 @onready var cameraManager := $CameraManager as PlayerCameraManager
 @onready var visuals := $XBotMesh as XBotMesh
+@onready var collider := $Collider as CollisionShape3D
 
 #endregion
 

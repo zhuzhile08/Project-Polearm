@@ -6,6 +6,7 @@ class_name PlayerActionManager
 
 @export_category("Scene members")
 @export var model : PlayerModel
+@export var physics : PlayerPhysics
 @export var resources : PlayerResources
 @export var combatManager : PlayerCombatManager
 @export var animationPlayer : AnimationPlayer
@@ -29,6 +30,7 @@ var actions : Dictionary[Player.ActionType, PlayerAction]
 
 func _ready() -> void:
 	assert(model != null, "PlayerActionManager._ready(): Player model not assigned!")
+	assert(physics != null, "PlayerActionManager._ready(): Player physics processor not assigned!")
 	assert(resources != null, "PlayerActionManager._ready(): Player resources not assigned!")
 	assert(combatManager != null, "PlayerActionManager._ready(): Player combat manager not assigned!")
 	assert(animationPlayer != null, "PlayerActionManager._ready(): Player skeleton animation player not assigned!")
@@ -38,7 +40,7 @@ func _ready() -> void:
 
 	for child in get_children():
 		if child is PlayerAction:
-			child.init(player, self, combatManager, cameraManager, actionData, resources, animationPlayer)
+			child.init(player, self, physics, combatManager, cameraManager, actionData, resources, animationPlayer)
 			actions[child.TYPE] = child
 
 #endregion

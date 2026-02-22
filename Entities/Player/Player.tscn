@@ -9,12 +9,16 @@
 [sub_resource type="CapsuleShape3D" id="CapsuleShape3D_u36tg"]
 
 [node name="Player" type="CharacterBody3D" unique_id=1997770894]
+collision_mask = 32768
+floor_max_angle = 0.0
+floor_snap_length = 0.0
 script = ExtResource("1_05tld")
 metadata/_custom_type_script = "uid://ba0auooa0mv8w"
 
 [node name="Collider" type="CollisionShape3D" parent="." unique_id=1264191582]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0)
 shape = SubResource("CapsuleShape3D_u36tg")
+debug_fill = false
 
 [node name="InputManager" type="Node" parent="." unique_id=1541718122]
 script = ExtResource("2_aj5cy")

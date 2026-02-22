@@ -2,10 +2,10 @@
 
 [ext_resource type="Script" uid="uid://c7ciamuapwubd" path="res://Entities/Player/Model/PlayerModel.gd" id="1_rvbmx"]
 [ext_resource type="AnimationLibrary" uid="uid://cayi6t5cuf7gy" path="res://Entities/Player/Visuals/Resources/XBotAnimations.res" id="2_dvg17"]
+[ext_resource type="PackedScene" uid="uid://djyqxmgh8kuy3" path="res://Entities/Player/Physics/PlayerPhysics.tscn" id="2_f2y5u"]
 [ext_resource type="Script" uid="uid://nvdk7gl3vqfs" path="res://Entities/Player/Data/PlayerActionData.gd" id="2_m20wt"]
 [ext_resource type="Script" uid="uid://bjw3tygpodtev" path="res://Entities/Player/Data/PlayerResources.gd" id="3_dvg17"]
 [ext_resource type="Script" uid="uid://620any2k6qha" path="res://Entities/Player/Actions/PlayerCombatManager.gd" id="4_f2y5u"]
-[ext_resource type="Script" uid="uid://8021jir3ob1a" path="res://Entities/Player/Visuals/DownCastDebug.gd" id="5_kb0qu"]
 [ext_resource type="Script" uid="uid://dgmxstlenay7b" path="res://Entities/Player/Actions/PlayerActionManager.gd" id="6_n82hr"]
 [ext_resource type="Script" uid="uid://du8txlrr2po7v" path="res://Entities/Player/Actions/States/Run.gd" id="7_j3w6i"]
 [ext_resource type="Script" uid="uid://ca6i0s8oneqjc" path="res://Entities/Player/Actions/States/Walk.gd" id="8_afecr"]
@@ -17,9 +17,6 @@ _data = [Vector2(0, 0), 0.0, 0.0, 0, 0, Vector2(0.114286, 1), 0.0, 0.0, 0, 0, Ve
 point_count = 8
 metadata/_snap_count = 70
 metadata/_snap_enabled = true
-
-[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_gjs4v"]
-albedo_color = Color(0.9547488, 0, 0.17590988, 1)
 
 [sub_resource type="Animation" id="Animation_m20wt"]
 resource_name = "Idle"
@@ -380,6 +377,11 @@ _data = {
 [node name="Model" type="Node3D" unique_id=2130243074]
 script = ExtResource("1_rvbmx")
 metadata/_custom_type_script = "uid://c7ciamuapwubd"
+
+[node name="Physics" parent="." unique_id=1399611852 node_paths=PackedStringArray("_model") instance=ExtResource("2_f2y5u")]
+COLLIDER_FLOATING_HEIGHT = 0.3
+MIN_STEP_LENGTH = 0.1
+_model = NodePath("..")
 
 [node name="Skeleton" type="Skeleton3D" parent="." unique_id=1842490949]
 transform = Transform3D(0.01, 0, 0, 0, 0, -0.01, 0, 0.01, 0, 0, 0, 0)
@@ -843,31 +845,21 @@ bones/64/scale = Vector3(1.0000001, 1, 1)
 libraries/ = ExtResource("2_dvg17")
 script = ExtResource("2_m20wt")
 _rootMotionVelocityFactor = 0.0
-metadata/_custom_type_script = "uid://nvdk7gl3vqfs"
 
 [node name="Resources" type="Node" parent="." unique_id=2081649325 node_paths=PackedStringArray("model")]
 script = ExtResource("3_dvg17")
 FLOW_CURVE = SubResource("Curve_prnb2")
 model = NodePath("..")
-metadata/_custom_type_script = "uid://bjw3tygpodtev"
 
 [node name="CombatManager" type="Node" parent="." unique_id=2042843911 node_paths=PackedStringArray("resources")]
 script = ExtResource("4_f2y5u")
 resources = NodePath("../Resources")
 metadata/_custom_type_script = "uid://620any2k6qha"
 
-[node name="DownCast" type="RayCast3D" parent="." unique_id=1027622921 node_paths=PackedStringArray("root")]
-target_position = Vector3(0, -100, 0)
-script = ExtResource("5_kb0qu")
-root = NodePath("..")
-
-[node name="CollisionPoint" type="CSGSphere3D" parent="DownCast" unique_id=148906050]
-radius = 0.2
-material = SubResource("StandardMaterial3D_gjs4v")
-
-[node name="ActionManager" type="Node" parent="." unique_id=1256291964 node_paths=PackedStringArray("model", "resources", "combatManager", "animationPlayer")]
+[node name="ActionManager" type="Node" parent="." unique_id=1256291964 node_paths=PackedStringArray("model", "physics", "resources", "combatManager", "animationPlayer")]
 script = ExtResource("6_n82hr")
 model = NodePath("..")
+physics = NodePath("../Physics")
 resources = NodePath("../Resources")
 combatManager = NodePath("../CombatManager")
 animationPlayer = NodePath("../AnimationPlayer")
@@ -876,12 +868,11 @@ metadata/_custom_type_script = "uid://dgmxstlenay7b"
 [node name="ActionData" type="AnimationPlayer" parent="ActionManager" unique_id=613980959]
 libraries/ = SubResource("AnimationLibrary_kb0qu")
 script = ExtResource("2_m20wt")
-metadata/_custom_type_script = "uid://nvdk7gl3vqfs"
 
 [node name="Idle" type="Node" parent="ActionManager" unique_id=1155024913]
 script = ExtResource("9_4yxky")
 TYPE = 1
-animation = "Idle"
+ANIMATION_NAME = "Idle"
 metadata/_custom_type_script = "uid://jc1g0sv32qq1"
 
 [node name="Run" type="Node" parent="ActionManager" unique_id=1599470530]
@@ -889,7 +880,7 @@ script = ExtResource("7_j3w6i")
 RUN_SPEED = 5.0
 TYPE = 3
 PRIORITY = 1
-animation = "Run"
+ANIMATION_NAME = "Run"
 metadata/_custom_type_script = "uid://jc1g0sv32qq1"
 
 [node name="Walk" type="Node" parent="ActionManager" unique_id=1427857652]
@@ -897,5 +888,5 @@ script = ExtResource("8_afecr")
 WALK_SPEED = 2.0
 TYPE = 2
 PRIORITY = 1
-animation = "Walk"
+ANIMATION_NAME = "Walk"
 metadata/_custom_type_script = "uid://jc1g0sv32qq1"
