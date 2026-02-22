@@ -16,42 +16,23 @@ func _ready() -> void:
 	# Connect to the Wiring (SignalBus)
 	SignalBus.backRequested.connect(menuGoBack)
 	SignalBus.menuRequested.connect(switchMenuTo)
-	SignalBus.gamePaused.connect(onGamePaused)
+	SignalBus.gamePauseRequested.connect(onGamePaused)
 	
 	# 2. Start at Main Menu
 	switchMenuTo(SubMenus.MAIN)
-	
-	for button in get_tree().get_nodes_in_group("hover_buttons"):
-		if button is Button:
-			button.mouse_entered.connect(focusToMouseHover.bind(button))
 
 # --- Visuals ---
-func findAllButtons() -> void:
-	var currentMenu = menuHistory.back()
-	if not currentMenu:
-		return
-	
-	var buttons = currentMenu.find_children("*", "BaseButton", true, false)
-	
-	for button in buttons:
-		if not button.mouse_entered.is_connected(focusToMouseHover):
-			button.mouse_entered.connect(focusToMouseHover.bind(button))
-
 func grabFocusToFirstButton() -> void:
 	var firstButton = menuHistory.back().find_next_valid_focus()
 	if firstButton:
 		firstButton.grab_focus()
-
-func focusToMouseHover(button: BaseButton) -> void:
-	if not button.has_focus():
-		button.grab_focus()
 
 # --- Basic Menu Operations ---
 func hideMenu() -> void:
 	for menu in menuMapping.values():
 		menu.hide()
 
-func switchMenuTo(target: int) -> void:
+func switchMenuTo(target: SubMenus) -> void:
 	# Hide everything first
 	hideMenu()
 	var targetMenu = menuMapping[target]
@@ -59,12 +40,14 @@ func switchMenuTo(target: int) -> void:
 	# Add to history if it's not already the top
 	if target == SubMenus.PAUSE or target == SubMenus.MAIN:
 		menuHistory.clear()
-		
-	menuHistory.append(targetMenu)
+	
+	# To prevent duplication
+	if menuHistory.is_empty() or menuHistory.back() != targetMenu:
+		menuHistory.append(targetMenu)
+	
 	targetMenu.show()
 	
 	# Focus for controller support
-	findAllButtons()
 	grabFocusToFirstButton()
 
 func menuGoBack() -> void:
@@ -81,7 +64,6 @@ func menuGoBack() -> void:
 	menuHistory.pop_back()
 	menuHistory.back().show()
 	
-	findAllButtons()
 	grabFocusToFirstButton()
 
 # --- SIGNAL REACTIONS ---
@@ -108,7 +90,7 @@ func onQuitGamePressed() -> void:
 
 func onMainMenuPressed() -> void:
 	switchMenuTo(SubMenus.MAIN)
-	SignalBus.goMainMenu.emit()
+	SignalBus.mainMenuRequested.emit()
 
 func onContinuePressed() -> void:
 	menuGoBack()

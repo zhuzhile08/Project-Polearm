@@ -1,6 +1,7 @@
 [gd_scene format=3 uid="uid://c0atl8ffoeq5u"]
 
 [ext_resource type="Script" uid="uid://da7enr8axqhyb" path="res://Interfaces/Menus/MainMenu.gd" id="1_006fw"]
+[ext_resource type="Script" uid="uid://cfdlgc8aalbtr" path="res://Interfaces/Elements/GameMenuButton.gd" id="2_1kon5"]
 
 [node name="MainMenu" type="Control" unique_id=2089339401]
 layout_mode = 3
@@ -39,6 +40,7 @@ size_flags_vertical = 3
 focus_neighbor_top = NodePath("../Exit Game")
 focus_neighbor_bottom = NodePath("../New Game")
 text = "Continue"
+script = ExtResource("2_1kon5")
 
 [node name="New Game" type="Button" parent="HBoxContainer/MarginContainer/VBoxContainer" unique_id=1951452282]
 layout_mode = 2
@@ -46,6 +48,7 @@ size_flags_vertical = 3
 focus_neighbor_top = NodePath("../Continue")
 focus_neighbor_bottom = NodePath("../Options")
 text = "New Game"
+script = ExtResource("2_1kon5")
 
 [node name="Options" type="Button" parent="HBoxContainer/MarginContainer/VBoxContainer" unique_id=1089722731]
 layout_mode = 2
@@ -53,6 +56,7 @@ size_flags_vertical = 3
 focus_neighbor_top = NodePath("../New Game")
 focus_neighbor_bottom = NodePath("../Exit Game")
 text = "Options"
+script = ExtResource("2_1kon5")
 
 [node name="Exit Game" type="Button" parent="HBoxContainer/MarginContainer/VBoxContainer" unique_id=248575094]
 layout_mode = 2
@@ -60,6 +64,7 @@ size_flags_vertical = 3
 focus_neighbor_top = NodePath("../Options")
 focus_neighbor_bottom = NodePath("../Continue")
 text = "Exit Game"
+script = ExtResource("2_1kon5")
 
 [connection signal="pressed" from="HBoxContainer/MarginContainer/VBoxContainer/Continue" to="." method="_on_continue_pressed"]
 [connection signal="pressed" from="HBoxContainer/MarginContainer/VBoxContainer/New Game" to="." method="_on_new_game_pressed"]

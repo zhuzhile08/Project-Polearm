@@ -1,28 +1,41 @@
 extends Node
 
 
-var worldContainer: Node # This is the Node where the 3D Scenes are loaded into
+var worldContainer: Node = null# This is the Node where the 3D Scenes are loaded into
 
 func _ready() -> void:
 	process_mode = Node.PROCESS_MODE_ALWAYS
 
-func loadLevel(path: String) -> void:
-	# 1. Safety Check: Make sure we have a place to put the level
+func registerWorldContainer(container: Node) -> void:
+	assert(container != null, "SceneLoader: Attempted to register a null worldContainer!")
+	worldContainer = container
+	print("SceneLoader: worldContainer registered successfully by ", container.name)
+	
+func loadLevel(path: String) -> bool:
+	
+	# Safety Check: Makes sure there is a place to put the level
 	if worldContainer == null:
-		print("Critical Error: SceneLoader doesn't have a world_container reference!")
-		return
-
-	# 2. Clean up: Remove any level currently in the container
+		push_error("Critical Error: SceneLoader doesn't have a world_container reference!")
+		return false
+	
+	# Safety Check: Makes sure the path is valide
+	if not ResourceLoader.exists(path):
+		push_error("SceneLoader Error: File path does not exist: " + path)
+		return false
+	
+	var sceneResource = ResourceLoader.load(path)
+	
+	if not sceneResource is PackedScene:
+		push_error("SceneLoader Error: Resource at path is not a Scene: " + path)
+		return false
+	
+	# 2. Clean up
 	for child in worldContainer.get_children():
 		child.queue_free()
 
 	# 3. Load & Instantiate: The "Birth" of the new level
-	var scene_resource = load(path)
-	if scene_resource:
-		var level_instance = scene_resource.instantiate()
-		
-		# 4. Add to Tree: Put the level into the "Slot"
-		worldContainer.add_child(level_instance)
-		
-	else:
-		print("Error: Could not load level file at ", path)
+	var levelInstance = sceneResource.instantiate()
+	worldContainer.add_child(levelInstance)
+	
+	print("SceneLoader: Successfully loaded " + path)
+	return true

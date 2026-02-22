@@ -8,13 +8,13 @@ func _ready() -> void:
 	
 	# Connecting SignlaBus signals
 	SignalBus.startSceneRequested.connect(startGame)
-	SignalBus.goMainMenu.connect(goMainMenu)
-	SignalBus.intention.connect(receiveIntention)
+	SignalBus.mainMenuRequested.connect(goMainMenu)
+	SignalBus.intentionReceived.connect(receiveIntention)
 
 # --- Input Intentions ---
-func receiveIntention(intention: String) -> void:
+func receiveIntention(intention: SignalBus.Intent) -> void:
 	match intention:
-		"cancelOrPause":
+		SignalBus.Intent.CANCELORPAUSE:
 			handleEscapeLogic()
 
 func handleEscapeLogic() -> void:
@@ -31,20 +31,25 @@ func handleEscapeLogic() -> void:
 			# If already paused, Escape goes back in the menu or resumes
 			SignalBus.backRequested.emit()
 
+# --- Changes to GameState ---
+func changeGameState(targetState: GameState) -> void:
+	current_state = targetState
+	
 func toggle_pause(should_pause: bool) -> void:
 	get_tree().paused = should_pause
 	if should_pause:
-		current_state = GameState.PAUSED
+		changeGameState(GameState.PAUSED)
 	else:
-		current_state = GameState.PLAYING
+		changeGameState(GameState.PLAYING)
 	
-	SignalBus.gamePaused.emit(should_pause)
+	SignalBus.gamePauseRequested.emit(should_pause)
 
-# --- Changes to GameState ---
 func startGame(_path: String) -> void:
-	current_state = GameState.PLAYING
+	changeGameState(GameState.PLAYING)
+	get_tree().paused = false
 	SceneLoader.loadLevel(_path)
 
 func goMainMenu() -> void:
-	current_state = GameState.MAINMENU
+	changeGameState(GameState.MAINMENU)
+	get_tree().paused = false
 	SceneLoader.loadLevel("res://Stages/MainMenuBackground.tscn")

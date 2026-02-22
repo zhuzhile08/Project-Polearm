@@ -1,6 +1,7 @@
 [gd_scene format=3 uid="uid://c4osl43hbuh14"]
 
 [ext_resource type="Script" uid="uid://vyxsiwv005q" path="res://Interfaces/Menus/PauseMenu.gd" id="1_w0rmh"]
+[ext_resource type="Script" uid="uid://cfdlgc8aalbtr" path="res://Interfaces/Elements/GameMenuButton.gd" id="2_yj8jp"]
 
 [node name="PauseMenu" type="Control" unique_id=416010714]
 process_mode = 2
@@ -37,6 +38,7 @@ size_flags_vertical = 3
 focus_neighbor_top = NodePath("../Main Menu")
 focus_neighbor_bottom = NodePath("../Options")
 text = "Continue"
+script = ExtResource("2_yj8jp")
 
 [node name="Options" type="Button" parent="MarginContainer/VBoxContainer" unique_id=844106616]
 layout_mode = 2
@@ -44,6 +46,7 @@ size_flags_vertical = 3
 focus_neighbor_top = NodePath("../Continue")
 focus_neighbor_bottom = NodePath("../Main Menu")
 text = "Options"
+script = ExtResource("2_yj8jp")
 
 [node name="Main Menu" type="Button" parent="MarginContainer/VBoxContainer" unique_id=263316376]
 layout_mode = 2
@@ -51,6 +54,7 @@ size_flags_vertical = 3
 focus_neighbor_top = NodePath("../Options")
 focus_neighbor_bottom = NodePath("../Continue")
 text = "Main Menu"
+script = ExtResource("2_yj8jp")
 
 [connection signal="pressed" from="MarginContainer/VBoxContainer/Continue" to="." method="_on_continue_pressed"]
 [connection signal="pressed" from="MarginContainer/VBoxContainer/Options" to="." method="_on_options_pressed"]

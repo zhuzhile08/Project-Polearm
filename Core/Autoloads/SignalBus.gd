@@ -10,12 +10,13 @@ signal menuRequested(menuIndex: int)
 signal backRequested()
 
 # --- GAME FLOW SIGNALS ---
-signal goMainMenu()
+signal mainMenuRequested()
 signal startSceneRequested(levelPath: String)
-signal gamePaused(isPaused: bool)
+signal gamePauseRequested(isPaused: bool)
 
 # --- DATA SIGNALS ---
 signal settingsUpdated()
 
 # --- INPUT SIGNALS ---
-signal intention(intention: String)
+enum Intent { CANCELORPAUSE }
+signal intentionReceived(intention: Intent)

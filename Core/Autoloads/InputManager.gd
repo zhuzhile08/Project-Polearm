@@ -3,11 +3,11 @@ extends Node
 func _ready() -> void:
 	process_mode = Node.PROCESS_MODE_ALWAYS
 
-# --- Maps Inputs with multiple usecases to intentions ---
+# --- Maps inputs with multiple usecases to intentions ---
 func _process(_delta: float) -> void:
 	if Input.is_action_just_pressed("ui_cancel"):
-		sendIntention("cancelOrPause")
+		sendIntention(SignalBus.Intent.CANCELORPAUSE)
 
 # --- Intention Communication ---
-func sendIntention(intention: String) -> void:
-	SignalBus.intention.emit(intention)
+func sendIntention(intention: SignalBus.Intent) -> void:
+	SignalBus.intentionReceived.emit(intention)

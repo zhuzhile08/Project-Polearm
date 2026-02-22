@@ -1,5 +1,7 @@
 [gd_scene format=3 uid="uid://bbf2d281jeq4y"]
 
+[ext_resource type="Script" uid="uid://cfdlgc8aalbtr" path="res://Interfaces/Elements/GameMenuButton.gd" id="1_4i0wx"]
+
 [node name="OptionsMenu" type="MarginContainer" unique_id=1199451818]
 anchors_preset = 15
 anchor_right = 1.0
@@ -29,6 +31,7 @@ size_flags_vertical = 3
 focus_neighbor_top = NodePath("../Keyboard")
 focus_neighbor_bottom = NodePath("../Video")
 text = "Game"
+script = ExtResource("1_4i0wx")
 
 [node name="Video" type="Button" parent="HBoxContainer/VBoxContainer" unique_id=1311041032]
 layout_mode = 2
@@ -36,6 +39,7 @@ size_flags_vertical = 3
 focus_neighbor_top = NodePath("../Game")
 focus_neighbor_bottom = NodePath("../Audio")
 text = "Video"
+script = ExtResource("1_4i0wx")
 
 [node name="Audio" type="Button" parent="HBoxContainer/VBoxContainer" unique_id=39059709]
 layout_mode = 2
@@ -43,6 +47,7 @@ size_flags_vertical = 3
 focus_neighbor_top = NodePath("../Video")
 focus_neighbor_bottom = NodePath("../Controller")
 text = "Audio"
+script = ExtResource("1_4i0wx")
 
 [node name="Controller" type="Button" parent="HBoxContainer/VBoxContainer" unique_id=1959844565]
 layout_mode = 2
@@ -50,6 +55,7 @@ size_flags_vertical = 3
 focus_neighbor_top = NodePath("../Audio")
 focus_neighbor_bottom = NodePath("../Keyboard")
 text = "Controller"
+script = ExtResource("1_4i0wx")
 
 [node name="Keyboard" type="Button" parent="HBoxContainer/VBoxContainer" unique_id=1797674113]
 layout_mode = 2
@@ -57,3 +63,4 @@ size_flags_vertical = 3
 focus_neighbor_top = NodePath("../Controller")
 focus_neighbor_bottom = NodePath("../Game")
 text = "Keyboard"
+script = ExtResource("1_4i0wx")
