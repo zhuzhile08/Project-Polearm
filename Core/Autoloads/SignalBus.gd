@@ -6,8 +6,8 @@ func _ready() -> void:
 	process_mode = Node.PROCESS_MODE_ALWAYS
 
 # --- UI SIGNALS ---
-signal menuRequested(menuIndex: int) # For switching sub-menus
-signal backRequested()                # For the "Escape" or "Back" logic
+signal menuRequested(menuIndex: int)
+signal backRequested()
 
 # --- GAME FLOW SIGNALS ---
 signal goMainMenu()
@@ -15,7 +15,7 @@ signal startSceneRequested(levelPath: String)
 signal gamePaused(isPaused: bool)
 
 # --- DATA SIGNALS ---
-signal settingsUpdated() # When volume or graphics change
+signal settingsUpdated()
 
 # --- INPUT SIGNALS ---
 signal intention(intention: String)

@@ -37,7 +37,7 @@ func findAllButtons() -> void:
 		if not button.mouse_entered.is_connected(focusToMouseHover):
 			button.mouse_entered.connect(focusToMouseHover.bind(button))
 
-func grabFirstButton() -> void:
+func grabFocusToFirstButton() -> void:
 	var firstButton = menuHistory.back().find_next_valid_focus()
 	if firstButton:
 		firstButton.grab_focus()
@@ -65,7 +65,7 @@ func switchMenuTo(target: int) -> void:
 	
 	# Focus for controller support
 	findAllButtons()
-	grabFirstButton()
+	grabFocusToFirstButton()
 
 func menuGoBack() -> void:
 	# Check if we can actually go back
@@ -82,7 +82,7 @@ func menuGoBack() -> void:
 	menuHistory.back().show()
 	
 	findAllButtons()
-	grabFirstButton()
+	grabFocusToFirstButton()
 
 # --- SIGNAL REACTIONS ---
 func onGamePaused(is_paused: bool) -> void:
@@ -93,7 +93,7 @@ func onGamePaused(is_paused: bool) -> void:
 		hideMenu()
 		menuHistory.clear()
 
-# --- BUTTON LINKS (Call these from the Button signals) ---
+# --- BUTTON LINKS ---
 func onPlayPressed() -> void:
 	# Tell the SceneLoader to take over!
 	SignalBus.startSceneRequested.emit("res://Stages/ShaderTest.tscn")

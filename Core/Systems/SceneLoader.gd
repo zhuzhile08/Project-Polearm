@@ -1,10 +1,9 @@
 extends Node
 
-# This variable will be "filled" by your Main.gd script when the game starts
-var worldContainer: Node
+
+var worldContainer: Node # This is the Node where the 3D Scenes are loaded into
 
 func _ready() -> void:
-	# This ensures the script keeps running even when get_tree().paused = true
 	process_mode = Node.PROCESS_MODE_ALWAYS
 
 func loadLevel(path: String) -> void:

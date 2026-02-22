@@ -4,26 +4,19 @@ enum GameState { MAINMENU, PLAYING, PAUSED, LOADING }
 var current_state: GameState = GameState.MAINMENU
 
 func _ready() -> void:
-	# This ensures the script keeps running even when get_tree().paused = true
 	process_mode = Node.PROCESS_MODE_ALWAYS
-	# Listen for the start request
+	
+	# Connecting SignlaBus signals
 	SignalBus.startSceneRequested.connect(startGame)
 	SignalBus.goMainMenu.connect(goMainMenu)
 	SignalBus.intention.connect(receiveIntention)
 
+# --- Input Intentions ---
 func receiveIntention(intention: String) -> void:
 	match intention:
 		"cancelOrPause":
 			handleEscapeLogic()
 
-func startGame(_path: String) -> void:
-	current_state = GameState.PLAYING
-	SceneLoader.loadLevel(_path)
-
-func goMainMenu() -> void:
-	current_state = GameState.MAINMENU
-	SceneLoader.loadLevel("res://Stages/MainMenuBackground.tscn")
-	
 func handleEscapeLogic() -> void:
 	match current_state:
 		GameState.MAINMENU:
@@ -46,3 +39,12 @@ func toggle_pause(should_pause: bool) -> void:
 		current_state = GameState.PLAYING
 	
 	SignalBus.gamePaused.emit(should_pause)
+
+# --- Changes to GameState ---
+func startGame(_path: String) -> void:
+	current_state = GameState.PLAYING
+	SceneLoader.loadLevel(_path)
+
+func goMainMenu() -> void:
+	current_state = GameState.MAINMENU
+	SceneLoader.loadLevel("res://Stages/MainMenuBackground.tscn")
