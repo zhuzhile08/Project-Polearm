@@ -78,7 +78,7 @@ func onGamePaused(is_paused: bool) -> void:
 # --- BUTTON LINKS ---
 func onPlayPressed() -> void:
 	# Tell the SceneLoader to take over!
-	SignalBus.startSceneRequested.emit("res://Stages/ShaderTest.tscn")
+	SignalBus.startSceneRequested.emit("res://Stages/Documentation/Gym/Gym.tscn")
 	menuHistory.clear()
 	hideMenu()
 
