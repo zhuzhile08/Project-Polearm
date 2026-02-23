@@ -27,6 +27,9 @@ func grabFocusToFirstButton() -> void:
 	if firstButton:
 		firstButton.grab_focus()
 
+func hideMouseWhenNotUsed() -> void:
+	pass
+	
 # --- Basic Menu Operations ---
 func hideMenu() -> void:
 	for menu in menuMapping.values():

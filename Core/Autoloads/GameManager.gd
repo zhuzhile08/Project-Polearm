@@ -11,6 +11,9 @@ func _ready() -> void:
 	SignalBus.mainMenuRequested.connect(goMainMenu)
 	SignalBus.intentionReceived.connect(receiveIntention)
 
+func _input(event: InputEvent) -> void:
+	updateMouseVisibility(event)
+	
 # --- Input Intentions ---
 func receiveIntention(intention: SignalBus.Intent) -> void:
 	match intention:
@@ -47,13 +50,22 @@ func handleControllerBLogic() -> void:
 			# If already paused, B goes back in the menu or resumes
 			SignalBus.backRequested.emit()
 
+func updateMouseVisibility(event: InputEvent) -> void:
+	if event is InputEventMouse:
+		return
+		
+		# Handels the visibility of the mouse depending on the gamestate and last input
+	if current_state == GameState.PLAYING:
+		Input.mouse_mode = Input.MOUSE_MODE_CAPTURED
+	else:
+		if event is InputEventKey or event is InputEventJoypadButton or event is InputEventJoypadMotion:
+			Input.mouse_mode = Input.MOUSE_MODE_CAPTURED
+		else:
+			Input.mouse_mode = Input.MOUSE_MODE_VISIBLE
+
 # --- Changes to GameState ---
 func changeGameState(targetState: GameState) -> void:
 	current_state = targetState
-	if targetState == GameState.PLAYING:
-		Input.mouse_mode = Input.MOUSE_MODE_CAPTURED
-	else:
-		Input.mouse_mode = Input.MOUSE_MODE_VISIBLE
 	
 func toggle_pause(should_pause: bool) -> void:
 	get_tree().paused = should_pause
