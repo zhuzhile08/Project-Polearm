@@ -9,7 +9,7 @@ func _ready() -> void:
 	# Connecting SignlaBus signals
 	SignalBus.startSceneRequested.connect(startGame)
 	SignalBus.mainMenuRequested.connect(goMainMenu)
-	SignalBus.intentionReceived.connect(receiveIntention)
+	SignalBus.intentionReceiveds.connect(receiveIntention)
 
 # --- Input Intentions ---
 func receiveIntention(intention: SignalBus.Intent) -> void:
