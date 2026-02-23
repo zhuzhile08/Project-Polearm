@@ -21,7 +21,7 @@ var Settings : Dictionary = {
 		"Light attack": null,
 		"Heavy attack": null,
 		"Jump": null,
-		"Shoot": null,
+		"Shoot": JOY_BUTTON_B,
 		"Target left": null,
 		"Target right": null,
 		"Dodge": null,
@@ -82,8 +82,17 @@ func loadSettings():
 	# Load Video
 	Settings.video.fullscreen = config.get_value("video", "fullscreen", true)
 	apply_video_settings(Settings.video.fullscreen)
-
-	# Load Input Map
+	
+	# Load Keyboard
+	for action in Settings.keyboard.keys():
+		if config.has_section_key("keyboard", action):
+			Settings.keyboard[action] = config.get_value("keyboard", action)
+		
+	# Load Controller
+	for action in Settings.controller.keys():
+		if config.has_section_key("controller", action):
+			Settings.controller[action] = config.get_value("controller", action)
+			
 	apply_input_settings()
 	
 func saveSettings():
@@ -108,7 +117,7 @@ func apply_video_settings(is_fullscreen: bool):
 func apply_input_settings() -> void:
 	for actionName in Settings.keyboard:
 		# Cleans all the button mappings
-		InputMap.action_erase_events(actionName)
+		# InputMap.action_erase_events(actionName)
 		
 		# Adds keyboard binds
 		var keyID = Settings.keyboard[actionName]

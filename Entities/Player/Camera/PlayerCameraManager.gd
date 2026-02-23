@@ -50,8 +50,9 @@ func _physics_process(delta: float) -> void:
 
 func _unhandled_input(event: InputEvent) -> void:
 	if event is InputEventMouseMotion:
-		pass
+		var mouseDelta = event.relative * MOUSE_SENSITIVITY
 	
+		rotateCamera(followCam, Vector2(-mouseDelta.y, mouseDelta.x))
 
 #endregion
 

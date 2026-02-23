@@ -10,6 +10,7 @@ script = ExtResource("3_ij7sd")
 [node name="PlayerCameraManager" type="Node" unique_id=1956657863]
 script = ExtResource("1_gvq4d")
 CONTROLLER_SENSITIVITY = 100.0
+MOUSE_SENSITIVITY = 0.31
 metadata/_custom_type_script = "uid://bjcvtl3iwfvuc"
 
 [node name="FollowCam" type="Node3D" parent="." unique_id=113170500]

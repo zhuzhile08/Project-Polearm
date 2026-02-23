@@ -18,5 +18,5 @@ signal gamePauseRequested(isPaused: bool)
 signal settingsUpdated()
 
 # --- INPUT SIGNALS ---
-enum Intent { CANCELORPAUSE }
+enum Intent { CANCELORPAUSE, CANCELORSHOOT }
 signal intentionReceived(intention: Intent)
