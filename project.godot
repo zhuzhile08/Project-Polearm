@@ -22,11 +22,13 @@ config/icon="res://icon.svg"
 
 [autoload]
 
+IndieBlueprintObjectPoolManager="*uid://nyltou1uqbdp"
+Signal_Debugger="*res://addons/SignalVisualizer/Debugger/SignalDebugger.gd"
+PhantomCameraManager="*uid://duq6jhf6unyis"
 SignalBus="*uid://dpb7sogyqfen2"
 GameManager="*uid://c8adwre3mpr46"
 SettingsManager="*uid://1fa6k27is0sv"
 SceneLoader="*uid://qpojlu46mkfw"
-PhantomCameraManager="*uid://duq6jhf6unyis"
 InputManager="*uid://cdq1urmwdb5ib"
 
 [debug_draw_3d]
@@ -35,8 +37,8 @@ settings/addon_root_folder="res://addons/debug_draw_3d"
 
 [display]
 
-window/size/viewport_width=1920
-window/size/viewport_height=1080
+window/size/viewport_width=2304
+window/size/viewport_height=1296
 
 [dotnet]
 
@@ -130,11 +132,6 @@ Shoot={
 "events": [Object(InputEventJoypadButton,"resource_local_to_scene":false,"resource_name":"","device":-1,"button_index":9,"pressure":0.0,"pressed":true,"script":null)
 ]
 }
-"Target right"={
-"deadzone": 0.2,
-"events": [Object(InputEventJoypadButton,"resource_local_to_scene":false,"resource_name":"","device":-1,"button_index":10,"pressure":0.0,"pressed":true,"script":null)
-]
-}
 Dodge={
 "deadzone": 0.2,
 "events": [Object(InputEventJoypadMotion,"resource_local_to_scene":false,"resource_name":"","device":-1,"axis":4,"axis_value":1.0,"script":null)
@@ -143,6 +140,11 @@ Dodge={
 Sprint={
 "deadzone": 0.2,
 "events": [Object(InputEventJoypadButton,"resource_local_to_scene":false,"resource_name":"","device":-1,"button_index":7,"pressure":0.0,"pressed":true,"script":null)
+]
+}
+"Target right"={
+"deadzone": 0.2,
+"events": [Object(InputEventJoypadButton,"resource_local_to_scene":false,"resource_name":"","device":-1,"button_index":10,"pressure":0.0,"pressed":true,"script":null)
 ]
 }
 Launcher={
@@ -218,8 +220,9 @@ Menu={
 
 [layer_names]
 
-3d_physics/layer_1="_Player"
-3d_physics/layer_16="World_Ground"
+3d_physics/layer_1="Entities"
+3d_physics/layer_2="Player"
+3d_physics/layer_16="World"
 
 [physics]
 
