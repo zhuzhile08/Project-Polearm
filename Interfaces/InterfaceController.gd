@@ -27,6 +27,9 @@ func grabFocusToFirstButton() -> void:
 	if firstButton:
 		firstButton.grab_focus()
 
+func hideMouseWhenNotUsed() -> void:
+	pass
+	
 # --- Basic Menu Operations ---
 func hideMenu() -> void:
 	for menu in menuMapping.values():
@@ -78,7 +81,7 @@ func onGamePaused(is_paused: bool) -> void:
 # --- BUTTON LINKS ---
 func onPlayPressed() -> void:
 	# Tell the SceneLoader to take over!
-	SignalBus.startSceneRequested.emit("res://Stages/ShaderTest.tscn")
+	SignalBus.startSceneRequested.emit("res://Stages/Documentation/Gym/Gym.tscn")
 	menuHistory.clear()
 	hideMenu()
 

@@ -11,11 +11,17 @@ func _ready() -> void:
 	SignalBus.mainMenuRequested.connect(goMainMenu)
 	SignalBus.intentionReceived.connect(receiveIntention)
 
+func _input(event: InputEvent) -> void:
+	updateMouseVisibility(event)
+	
 # --- Input Intentions ---
 func receiveIntention(intention: SignalBus.Intent) -> void:
 	match intention:
 		SignalBus.Intent.CANCELORPAUSE:
 			handleEscapeLogic()
+			
+		SignalBus.Intent.CANCELORSHOOT:
+			handleControllerBLogic()
 
 func handleEscapeLogic() -> void:
 	match current_state:
@@ -30,6 +36,32 @@ func handleEscapeLogic() -> void:
 		GameState.PAUSED:
 			# If already paused, Escape goes back in the menu or resumes
 			SignalBus.backRequested.emit()
+
+func handleControllerBLogic() -> void:
+	match current_state:
+		GameState.MAINMENU:
+			# On the Main Menu, B might do nothing or show a "Quit" pop-up
+			SignalBus.backRequested.emit()
+		
+		GameState.PLAYING:
+			pass
+		
+		GameState.PAUSED:
+			# If already paused, B goes back in the menu or resumes
+			SignalBus.backRequested.emit()
+
+func updateMouseVisibility(event: InputEvent) -> void:
+	if event is InputEventMouse:
+		return
+		
+		# Handels the visibility of the mouse depending on the gamestate and last input
+	if current_state == GameState.PLAYING:
+		Input.mouse_mode = Input.MOUSE_MODE_CAPTURED
+	else:
+		if event is InputEventKey or event is InputEventJoypadButton or event is InputEventJoypadMotion:
+			Input.mouse_mode = Input.MOUSE_MODE_CAPTURED
+		else:
+			Input.mouse_mode = Input.MOUSE_MODE_VISIBLE
 
 # --- Changes to GameState ---
 func changeGameState(targetState: GameState) -> void:
