@@ -25,6 +25,13 @@ class_name Convention
 #endregion
 
 
+#region Constants
+
+
+
+#endregion
+
+
 #region Exported variables
 
 
