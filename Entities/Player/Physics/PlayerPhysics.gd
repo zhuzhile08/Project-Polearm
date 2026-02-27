@@ -1,12 +1,43 @@
 extends Node3D
+# Referred to internally as Player Physics Processor
 class_name PlayerPhysics
+
+
+var comment = """
+#region Helper classes
+
+class LedgeData:
+	var frontNormal : Vector3
+	var grabPointLeft : Vector3
+	var grabPointRight : Vector3
+	var topFree : bool
+
+#endregion
+
+
+#region Constants
+
+# Generall physics and collision settings
+
+const MAX_COLLISIONS : int = 4
+const COLLISION_EPSILON : float = 0.001
+
+
+# Hitbox configuration settings
+
+const GROUND_CAST_DIST_TO_GROUND : float = 1
+const STEP_RAY_VERTICAL_OFFSET : float = 0.01
+const STEP_RAY_VERTICAL_OFFSET_EP : float = STEP_RAY_VERTICAL_OFFSET - COLLISION_EPSILON
+const PASSIVE_GRAVITY_VALUE = 3
+const ATTACHED_TO_GROUND_BUFFER = 0.1
+
+#endregion
 
 
 #region Exported variables
 
-@export_category("PHYSICS_SETTINGS")
-@export var MAX_COLLISIONS : int = 4
-@export var COLLIDER_FLOATING_HEIGHT : float = 0.25
+@export_category("Physics settings")
+@export var GROUND_CAST_RADIUS_DIFFERENCE : float = 0.2
 
 @export_category("Slope settings")
 @export_range(-360, 360, 0.001, "radians_as_degrees") var MAX_SLOPE_ANGLE : float = 0.786
@@ -18,48 +49,43 @@ class_name PlayerPhysics
 @export var STEP_UP_SPEED : float = 15
 @export var STEP_DOWN_SPEED : float = 25
 
+@export_category("Ledge settings")
+@export var MAX_LEDGE_DISTANCE : float = 0.4
+@export var MAX_LEDGE_HEIGHT : float = 2.4
+@export var MIN_LEDGE_HEIGHT : float = 1.4
+
 @export_category("Jump settings")
 @export var JUMP_BUFFER : float
 
 #endregion
 
 
-#region Scene members
-
-@export_category("Scene members")
-@export var _model : PlayerModel
-
-var _player : Player
-
-@onready var groundCast := $GroundCast as ShapeCast3D
-@onready var downCast := $DownCast as RayCast3D
-@onready var stepCast := $StepCast as RayCast3D
-
-#endregion
-
-
 #region Member variables
 
-const COLLISION_EPSILON : float = 0.001
-const GROUND_CAST_DIST_TO_GROUND : float = 1
-const STEP_RAY_VERTICAL_OFFSET : float = 0.01
-const STEP_RAY_VERTICAL_OFFSET_EP : float = STEP_RAY_VERTICAL_OFFSET - COLLISION_EPSILON
-const PASSIVE_GRAVITY_VALUE = 3
-const ATTACHED_TO_GROUND_BUFFER = 0.2
+# Player collision references
+
+var _bodyCollider : CollisionShape3D
+var _bodyColliderShape : CapsuleShape3D
+
+var _footCollider : CollisionShape3D
+var _footColliderShape : CapsuleShape3D
 
 
-# Collision
-
-var _collider : CollisionShape3D
-var _colliderShape : CapsuleShape3D
+# Physics processor references
 
 var _groundCastShape : SphereShape3D
+
+
+# Proper variables
 
 var _stepUp : bool = false
 var _stepDown : bool = false
 
 var _grounded : bool = false
 var _trueGrounded : bool = false
+var _lastDistToGround : float = 0
+
+var _currentGroundPointIndex : int = 0
 
 
 # Physics
@@ -77,45 +103,50 @@ var _attachToGround : bool = true
 func _ready() -> void:
 	assert(_model != null, "PlayerPhysics._ready(): Player model not assigned!")
 
-	groundCast.max_results = MAX_COLLISIONS
-	_groundCastShape = groundCast.shape as SphereShape3D
-
-	await _model.player.ready
-	_initHitboxConfig()
-
 
 func _physics_process(delta : float) -> void:
-	if not groundCast.is_colliding():
-		_trueGrounded = false
-		return
+	#if not groundCast.is_colliding():
+	#	_trueGrounded = false
+	#	return
 
-	var groundPoint := _highestGroundPointGlobal()
-	var distToPlayer := _vertDistToPlayer(groundPoint)
+	#var groundPoint := _highestGroundPointGlobal()
+	#var distToPlayer := _vertDistToPlayer(groundPoint)
 
-	if _stepUp: # Step up smoothing
-		_player.position.y += lerpf(0, -distToPlayer, minf(STEP_UP_SPEED * delta, 1.0))
-	elif _stepDown: # Step down smoothing
-		_aimDownCast(_player.global_position)
-		_player.position.y -= lerpf(0, _vertDistToPlayer(downCast.get_collision_point()), minf(STEP_DOWN_SPEED * delta, 1.0))
-	else: # Attempt to keep the player on the ground
-		if _attachToGround:
-			_aimDownCast(groundPoint)
-			var walkableGround = downCast.is_colliding() and downCast.get_collision_normal().angle_to(Vector3.UP) <= MAX_SLOPE_ANGLE
+	#if _stepUp: # Step up smoothing
+	#	if distToPlayer < -COLLISION_EPSILON and distToPlayer >= -MAX_STEP_HEIGHT - COLLISION_EPSILON:
+	#		_player.position.y += lerpf(0, -distToPlayer, minf(STEP_UP_SPEED * delta, 1.0))
+	#	else:
+	#		_stepUp = false
+	#elif _stepDown: # Step down smoothing
+	#	_aimDownCast(_player.global_position)
+	#	var stepDownDist := _vertDistToPlayer(downCast.get_collision_point())
 
-			if distToPlayer > 0: # We apply a tiny amount of passive gravity
-				_player.position.y -= minf(0.05, distToPlayer)
-			elif distToPlayer < 0 and walkableGround: # We push the player back upwards if they are clipped into the box
-					_player.position.y += lerpf(0, -distToPlayer, 0.6)
+	#	if stepDownDist > COLLISION_EPSILON and stepDownDist <= MAX_STEP_HEIGHT + COLLISION_EPSILON:
+	#		_player.position.y -= lerpf(0, stepDownDist, minf(STEP_DOWN_SPEED * delta, 1.0))
+	#	else:
+	#		_stepDown = false
+	#else: # Attempt to keep the player on the ground
+	#	if _attachToGround:
+			# You can walk on the edge of a steep slope. This is to move the point in by a tiny amount so that the ray always hits
+	#		_aimDownCast(groundPoint - groundCast.get_collision_normal(_groundPtIdx) * 0.01)
+	#		var walkableGround = downCast.is_colliding() and downCast.get_collision_normal().angle_to(Vector3.UP) <= MAX_SLOPE_ANGLE
 
-			_trueGrounded = walkableGround and distToPlayer < COLLISION_EPSILON
-			_grounded = walkableGround and distToPlayer < ATTACHED_TO_GROUND_BUFFER
-		else:
-			_trueGrounded = distToPlayer < COLLISION_EPSILON
-			_grounded = _trueGrounded
+	#		if distToPlayer > 0: # We apply a tiny amount of passive gravity
+	#			_player.position.y -= minf(0.05, distToPlayer)
+	#		elif distToPlayer < 0 and walkableGround: # We push the player back upwards if they are clipped into the box
+	#			_player.position.y += minf(0.1, -distToPlayer)
+
+	#		_trueGrounded = walkableGround and distToPlayer < COLLISION_EPSILON
+	#		_grounded = walkableGround and distToPlayer < ATTACHED_TO_GROUND_BUFFER
+	#		_lastDistToGround = distToPlayer
+	#	else:
+	#		_trueGrounded = distToPlayer < COLLISION_EPSILON
+	# print(_player.is_on_floor())
+	pass
 
 
 func _process(_delta : float) -> void:
-	DEBUG_drawCollisionPoints()
+	pass#DEBUG_drawCollisionPoints()
 
 
 #endregion
@@ -126,40 +157,51 @@ func _process(_delta : float) -> void:
 # Movement functions
 
 func moveAndSlide(delta : float) -> void:
-	if not groundCast.is_colliding(): # Just move if the player is in the air
-		_player.velocity = velocity
-		_player.move_and_slide()
-		return
+	_player.velocity = velocity
+	_player.move_and_slide()
 
-	groundCast.force_shapecast_update()
-	var groundPoint := _highestGroundPointGlobal()
+	#if not groundCast.is_colliding(): # Just move if the player is in the air
+	#	_player.velocity = velocity
+	#	_player.move_and_slide()
+	#	return
+
+
+	# Initial setup
+
+	# groundCast.force_shapecast_update()
+	var groundPoint := _highestGlobalGroundPoint()
 	var distToPlayer := _vertDistToPlayer(groundPoint)
 
 	var possibleStepUp : bool = _stepUp
 	var possibleStepDown : bool = _stepDown
 
-	# Only check for potential steps when the player is not in the air
-	if _trueGrounded:
-		var nextPredictedPos := _player.global_position + Vector3(velocity.x, 0, velocity.z) * delta
-		nextPredictedPos.y += 1
+	var stepDownDist : float = 0
 
-		# We first take a look at the ground under the player in it's predicted position
-		_aimDownCast(nextPredictedPos)
-		var stepDownPoint := downCast.get_collision_point()
 
-		# If we are going down, we aren't going up anyways, which is why we first check for the down direction
-		if downCast.is_colliding() and _vertDistToPlayer(stepDownPoint) > STEP_RAY_VERTICAL_OFFSET_EP:
-			if not _stepDown: # The step up function doesn't care if we've been stepping down or not, only if we are actually going up
+	# Initial step detection phase
+	
+	if _player.is_on_floor(): # Only check for potential steps when the player is not in the air
+		# We check the floor directly under the player
+		_aimDownCast(_player.global_position)
+		var stepDownPoint := _downCast.get_collision_point()
+		stepDownDist = _vertDistToPlayer(stepDownPoint)
 
+		# If this check is true, we are definetly going down by an amount and therefore definetly going up
+		if _downCast.is_colliding() and stepDownDist > STEP_RAY_VERTICAL_OFFSET_EP:
+			if not _stepDown: # No need to do this check if we are already going down
 				# We have also only verified that the current step is going down, but not if the lower point is steppable. We will wait
 				# until the player is far out enough, as stepping logic only starts when the player is not on a sloped wall anymore.
 
-				# Pointing at the current groundPoint is not reliable, as we may have already overshot
+				# Checking for the validity of the step wall, as we don't want to step down if we are on a slope.
+				# Given that we have detected that we are going down, Pointing at the current groundPoint is not reliable, as if the step wall is perfectly vertical,
+				# there is a large chance that we have overshot it.
 				# This is a variant of the _aimStepCast algorithm
 
-				stepCast.global_position = Vector3(nextPredictedPos.x, max(groundPoint.y - STEP_RAY_VERTICAL_OFFSET, stepDownPoint.y), nextPredictedPos.z)
-				stepCast.target_position = stepCast.to_local(_player.global_position) * 8
-				stepCast.target_position.y = 0
+				_stepCast.global_position = Vector3(_player.global_position.x, \
+													max(groundPoint.y - STEP_RAY_VERTICAL_OFFSET, stepDownPoint.y), \
+													_player.global_position.z)
+				_stepCast.target_position = stepCast.to_local(_player.global_position) * 8
+				_stepCast.target_position.y = 0
 
 				stepCast.force_raycast_update()
 
@@ -193,6 +235,7 @@ func moveAndSlide(delta : float) -> void:
 		if groundAngle != 0.0 and distToPlayer < SLOPE_SNAP_LENGTH:
 			if not possibleStepDown and distToPlayer > 0: # Snap player to the ground only when going down slopes
 				_player.position.y -= distToPlayer
+				distToPlayer = 0
 
 			# Project velocity to the slope
 			_player.velocity = (_player.velocity - _player.velocity.dot(groundNormal) * groundNormal).normalized() * _player.velocity.length()
@@ -210,13 +253,12 @@ func moveAndSlide(delta : float) -> void:
 	# Move the player based on the calculated velocity
 	_player.move_and_slide()
 
-
 	# Stepping logic
 	# At this point, if either of the stepping flags are true, the player will be on walkable ground. We don't need to check for that anymore
-	if possibleStepDown and distToPlayer <= MAX_STEP_HEIGHT + COLLISION_EPSILON:
+	if possibleStepDown and stepDownDist > 0 and stepDownDist <= MAX_STEP_HEIGHT + COLLISION_EPSILON:
 		_stepDown = true
 		_stepUp = false
-	elif possibleStepUp and distToPlayer >= -MAX_STEP_HEIGHT - COLLISION_EPSILON:
+	elif possibleStepUp and distToPlayer < 0 and distToPlayer >= -MAX_STEP_HEIGHT - COLLISION_EPSILON:
 		_stepUp = true
 		_stepDown = false
 
@@ -229,18 +271,21 @@ func moveAndSlide(delta : float) -> void:
 	groundCast.force_shapecast_update()
 	if abs(_vertDistToPlayer(_highestGroundPointGlobal())) < COLLISION_EPSILON: # The player is snapped to the ground if they are close enougth
 		_player.global_position.y = groundPoint.y
+	
+	_lastDistToGround = distToPlayer
 
 
 func snapToFloor() -> void:
-	groundCast.force_shapecast_update()
-	var groundPoint := _highestGroundPointGlobal()
-	_player.global_position.y = groundPoint.y
+	#groundCast.force_shapecast_update()
+	#var groundPoint := _highestGroundPointGlobal()
+	#_player.global_position.y = groundPoint.y
+	pass
 
 
 
 # Floor math
 
-# func groundCollisionPointGlobal() -> Vector3
+# func groundCollisionPointGlobal() -> Vector3:
 # func groundCollisionPointNormal() -> Vector3
 # func distanceToGround() -> float:
 
@@ -249,19 +294,16 @@ func snapToFloor() -> void:
 # Collision state check
 
 func grounded(buffered : bool = false) -> bool:
-	#if steppingDownGrounded:
-	#	return true
+	if buffered:
+		return _lastDistToGround < -JUMP_BUFFER
 
-	if not groundCast.is_colliding():
-		return false
-
-	if _vertDistToPlayer(_highestGroundPointGlobal()) > GROUND_CAST_DIST_TO_GROUND + (JUMP_BUFFER if buffered else 0.0):
-		return false
-
-	return true
+	if _attachToGround:
+		return _grounded
+	else:
+		return _trueGrounded
 
 func groundedOnly(buffered : bool = false) -> bool:
-	return grounded and not _player.is_on_ceiling() and not _player.is_on_wall()
+	return grounded(buffered) and not _player.is_on_ceiling() and not _player.is_on_wall()
 
 
 func attachGround() -> void:
@@ -278,24 +320,29 @@ func attachedToGround() -> bool:
 
 #region Private functions
 
-func _initHitboxConfig() -> void:
+# Initialization functions
+
+func _configureHitboxes() -> void:
+	await _model.player.ready
+
 	_player = _model.player
-	_collider = _player.collider
-	_colliderShape = _collider.shape as CapsuleShape3D
 
-	_colliderShape.height -= COLLIDER_FLOATING_HEIGHT
-	_collider.position.y += COLLIDER_FLOATING_HEIGHT / 2
+	_groundCast.add_exception(_player as CollisionObject3D)
+	_groundCast.max_results = MAX_COLLISIONS
 
-	var groundCastRadius := _colliderShape.radius - MIN_STEP_LENGTH
-	_groundCastShape.radius = maxf(groundCastRadius, 0.1)
+	_groundCastShape = _groundCast.shape as SphereShape3D
+	_groundCastShape.radius = maxf(_player.BODY_COLLIDER_RADIUS - GROUND_CAST_RADIUS_DIFFERENCE, 0.1)
+
+func _configureLedgeDetection() -> void:
+	pass
 
 
 # Aim supplementary raycasts
 
 func _aimDownCast(pos : Vector3) -> void:
-	downCast.global_position = Vector3(pos.x, pos.y + 1, pos.z)
+	_downCast.global_position = Vector3(pos.x, pos.y + 1, pos.z) # Should be enougth to always hit the point
 
-	downCast.force_raycast_update()
+	_downCast.force_raycast_update()
 
 func _aimStepCast(pos : Vector3) -> void:
 	stepCast.global_position = Vector3(_player.global_position.x, pos.y - STEP_RAY_VERTICAL_OFFSET, _player.global_position.z)
@@ -307,24 +354,26 @@ func _aimStepCast(pos : Vector3) -> void:
 
 # Collision point functions
 
-func _highestGroundPointGlobal() -> Vector3:
-	assert(groundCast.is_colliding(), "PlayerPhysics.pickHighestPoint(): The player ground detection cast is not colliding. Always check collisions first!")
+func _highestGlobalGroundPoint() -> Vector3:
+	assert(_groundCast.is_colliding(), "PlayerPhysics._highestGlobalGroundPoint(): The player ground detection cast is not colliding. Always check collisions first!")
 
-	var result : Vector3 = groundCast.get_collision_point(0)
-	for i in range(1, groundCast.get_collision_count()):
-		var curr := groundCast.get_collision_point(i)
+	var result : Vector3 = _groundCast.get_collision_point(0)
+	_currentGroundPointIndex = 0
+
+	for i in range(1, _groundCast.get_collision_count()):
+		var curr := _groundCast.get_collision_point(i)
 
 		if curr.y > result.y:
 			result = curr
+			_currentGroundPointIndex = i
 	
 	return result
 
-func _vertDistToPlayer(vec : Vector3) -> float:
-	return _player.global_position.y - vec.y
+func _vertDistToPlayer(globalPos : Vector3) -> float:
+	return _player.global_position.y - globalPos.y
 
 
 # Debug functionality
-
 func DEBUG_drawCollisionPoints() -> void:
 	if groundCast.is_colliding():
 		var points : PackedVector3Array
@@ -351,3 +400,4 @@ func DEBUG_drawCollisionPoints() -> void:
 		DebugDraw3D.draw_arrow(pt, pt + stepCast.get_collision_normal(), Color.DARK_TURQUOISE, 0.05)
 
 #endregion
+"""

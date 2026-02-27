@@ -2,7 +2,7 @@
 # and it's accompanying YouTube tutorial series. Implementation details are heavily customized
 
 
-extends CharacterBody3D
+extends FloatingBody
 class_name Player
 
 
@@ -88,7 +88,6 @@ enum FlowState {
 @onready var model := $Model as PlayerModel
 @onready var cameraManager := $CameraManager as PlayerCameraManager
 @onready var visuals := $XBotMesh as XBotMesh
-@onready var collider := $Collider as CollisionShape3D
 
 #endregion
 
@@ -103,6 +102,8 @@ enum FlowState {
 #region Built-in functions
 
 func _ready() -> void:
+	super._ready()
+
 	cameraManager.setFollowTarget(self)
 	visuals.acceptSkeleton(model.skeleton)
 
@@ -110,5 +111,7 @@ func _ready() -> void:
 func _physics_process(delta: float) -> void:
 	inputManager.pollInputs(cameraManager.cameraPlaneDirection())
 	model.tick(inputManager.inputs, delta)
+
+	super._physics_process(delta)
 
 #endregion

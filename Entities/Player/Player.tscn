@@ -6,19 +6,29 @@
 [ext_resource type="PackedScene" uid="uid://c2p04rki08xh5" path="res://Entities/Player/Model/PlayerModel.tscn" id="4_an6q6"]
 [ext_resource type="PackedScene" uid="uid://dbsruilakgfp4" path="res://Entities/Player/Visuals/XBotMesh.scn" id="5_an6q6"]
 
-[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_u36tg"]
+[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_an6q6"]
 
-[node name="Player" type="CharacterBody3D" unique_id=1997770894]
+[sub_resource type="SphereShape3D" id="SphereShape3D_t38ms"]
+
+[node name="Player" type="CharacterBody3D" unique_id=102432183 node_paths=PackedStringArray("bodyCollider", "groundCast")]
 collision_mask = 32768
 floor_max_angle = 0.0
 floor_snap_length = 0.0
 script = ExtResource("1_05tld")
-metadata/_custom_type_script = "uid://ba0auooa0mv8w"
+bodyCollider = NodePath("BodyCollider")
+groundCast = NodePath("GroundCast")
+metadata/_custom_type_script = "uid://c4qocsfubevqb"
 
-[node name="Collider" type="CollisionShape3D" parent="." unique_id=1264191582]
+[node name="BodyCollider" type="CollisionShape3D" parent="." unique_id=810581492]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0)
-shape = SubResource("CapsuleShape3D_u36tg")
+shape = SubResource("CapsuleShape3D_an6q6")
 debug_fill = false
+
+[node name="GroundCast" type="ShapeCast3D" parent="." unique_id=706087073]
+transform = Transform3D(-1, 0, 0, 0, 1, 0, 0, 0, -1, 0, 1, 0)
+shape = SubResource("SphereShape3D_t38ms")
+target_position = Vector3(0, -10, 0)
+collision_mask = 32768
 
 [node name="InputManager" type="Node" parent="." unique_id=1541718122]
 script = ExtResource("2_aj5cy")

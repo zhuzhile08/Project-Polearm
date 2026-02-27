@@ -12,7 +12,7 @@ class_name PlayerModel
 @onready var combatManager := $CombatManager as PlayerCombatManager
 @onready var resources := $Resources as PlayerResources
 @onready var skeleton := $Skeleton as Skeleton3D
-@onready var physics := $Physics as PlayerPhysics
+# @onready var physics := $Physics as PlayerPhysics
 
 #endregion
 

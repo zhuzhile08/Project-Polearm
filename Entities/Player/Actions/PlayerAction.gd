@@ -37,7 +37,7 @@ enum Priority {
 #region Scene members
 
 var player : Player
-var physics : PlayerPhysics
+# var physics : PlayerPhysics
 var manager : PlayerActionManager
 var combatManager : PlayerCombatManager
 var cameraManager : PlayerCameraManager
@@ -64,7 +64,7 @@ var next : Player.ActionType = Player.ActionType.none # Guaranteed next action a
 func init(
 	player_ : Player, \
 	manager_ : PlayerActionManager, \
-	physics_ : PlayerPhysics, \
+	# physics_ : PlayerPhysics, \
 	combatManager_ : PlayerCombatManager, \
 	cameraManager_ : PlayerCameraManager, \
 	actionData_ : PlayerActionData, \
@@ -73,7 +73,7 @@ func init(
 ) -> void:
 	player = player_
 	manager = manager_
-	physics = physics_
+	# physics = physics_
 	combatManager = combatManager_
 	cameraManager = cameraManager_
 	actionData = actionData_

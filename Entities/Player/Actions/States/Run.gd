@@ -5,12 +5,10 @@ extends PlayerAction
 
 
 func tickImpl(input : PlayerInputManager.Data, delta : float) -> void:
-	physics.velocity = Vector3(input.direction.x, 0, input.direction.y) * RUN_SPEED
-	
-	physics.moveAndSlide(delta)
+	player.move(Vector3(input.direction.x, 0, input.direction.y) * RUN_SPEED)
 
 func enterImpl() -> void:
-	pass
+	player.move(Vector3.ZERO)
 
 func exitImpl() -> void:
 	pass

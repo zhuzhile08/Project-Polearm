@@ -2,7 +2,6 @@
 
 [ext_resource type="Script" uid="uid://c7ciamuapwubd" path="res://Entities/Player/Model/PlayerModel.gd" id="1_rvbmx"]
 [ext_resource type="AnimationLibrary" uid="uid://cayi6t5cuf7gy" path="res://Entities/Player/Visuals/Resources/XBotAnimations.res" id="2_dvg17"]
-[ext_resource type="PackedScene" uid="uid://djyqxmgh8kuy3" path="res://Entities/Player/Physics/PlayerPhysics.tscn" id="2_f2y5u"]
 [ext_resource type="Script" uid="uid://nvdk7gl3vqfs" path="res://Entities/Player/Data/PlayerActionData.gd" id="2_m20wt"]
 [ext_resource type="Script" uid="uid://bjw3tygpodtev" path="res://Entities/Player/Data/PlayerResources.gd" id="3_dvg17"]
 [ext_resource type="Script" uid="uid://620any2k6qha" path="res://Entities/Player/Actions/PlayerCombatManager.gd" id="4_f2y5u"]
@@ -377,11 +376,6 @@ _data = {
 [node name="Model" type="Node3D" unique_id=2130243074]
 script = ExtResource("1_rvbmx")
 metadata/_custom_type_script = "uid://c7ciamuapwubd"
-
-[node name="Physics" parent="." unique_id=1399611852 node_paths=PackedStringArray("_model") instance=ExtResource("2_f2y5u")]
-COLLIDER_FLOATING_HEIGHT = 0.3
-MIN_STEP_LENGTH = 0.1
-_model = NodePath("..")
 
 [node name="Skeleton" type="Skeleton3D" parent="." unique_id=1842490949]
 transform = Transform3D(0.01, 0, 0, 0, 0, -0.01, 0, 0.01, 0, 0, 0, 0)
@@ -856,10 +850,9 @@ script = ExtResource("4_f2y5u")
 resources = NodePath("../Resources")
 metadata/_custom_type_script = "uid://620any2k6qha"
 
-[node name="ActionManager" type="Node" parent="." unique_id=1256291964 node_paths=PackedStringArray("model", "physics", "resources", "combatManager", "animationPlayer")]
+[node name="ActionManager" type="Node" parent="." unique_id=1256291964 node_paths=PackedStringArray("model", "resources", "combatManager", "animationPlayer")]
 script = ExtResource("6_n82hr")
 model = NodePath("..")
-physics = NodePath("../Physics")
 resources = NodePath("../Resources")
 combatManager = NodePath("../CombatManager")
 animationPlayer = NodePath("../AnimationPlayer")
