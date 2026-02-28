@@ -223,8 +223,8 @@ func _processCollisions() -> void:
 
 	# Stepping collision checks
 
-    # We are checking for downwards steps first because stopping after stepping down and moving again may confuse
-    # the system into thinking that we are stepping up before quickly stepping down again if we check step up first
+	# We are checking for downwards steps first because stopping after stepping down and moving again may confuse
+	# the system into thinking that we are stepping up before quickly stepping down again if we check step up first
 
 	var direction := Vector3(_targetVelocity.x, 0, _targetVelocity.z).normalized()
 
