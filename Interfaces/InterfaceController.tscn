@@ -5,12 +5,15 @@
 [ext_resource type="PackedScene" uid="uid://dfkfhq058ie8w" path="res://Interfaces/Elements/InputLegend.tscn" id="2_dnn8h"]
 [ext_resource type="PackedScene" uid="uid://c4osl43hbuh14" path="res://Interfaces/Menus/PauseMenu.tscn" id="3_hcvf1"]
 [ext_resource type="PackedScene" uid="uid://bbf2d281jeq4y" path="res://Interfaces/Menus/OptionsMenu.tscn" id="3_th1fc"]
+[ext_resource type="PackedScene" uid="uid://cthgc7cm7suej" path="res://Interfaces/Menus/KeyboardMapping.tscn" id="5_uxr4c"]
+[ext_resource type="PackedScene" uid="uid://cnusbpv84eyf0" path="res://Interfaces/Menus/ControllerMapping.tscn" id="6_adaf4"]
 
 [node name="InterfaceController" type="CanvasLayer" unique_id=1191320930]
 process_mode = 3
 script = ExtResource("1_m563q")
 
 [node name="InputLegend" parent="." unique_id=805978301 instance=ExtResource("2_dnn8h")]
+visible = false
 mouse_filter = 2
 
 [node name="MainMenu" parent="." unique_id=2089339401 instance=ExtResource("1_n0vwa")]
@@ -18,7 +21,12 @@ visible = false
 mouse_filter = 2
 
 [node name="OptionsMenu" parent="." unique_id=1199451818 instance=ExtResource("3_th1fc")]
+visible = false
 mouse_filter = 2
+
+[node name="ControllerMapping" parent="." unique_id=1452140931 instance=ExtResource("6_adaf4")]
+
+[node name="KeyboardMapping" parent="." unique_id=1565302024 instance=ExtResource("5_uxr4c")]
 
 [node name="PauseMenu" parent="." unique_id=416010714 instance=ExtResource("3_hcvf1")]
 visible = false
@@ -27,6 +35,11 @@ mouse_filter = 2
 [connection signal="openOptionsPressed" from="MainMenu" to="." method="onOptionsPressed"]
 [connection signal="quitGamePressed" from="MainMenu" to="." method="onQuitGamePressed"]
 [connection signal="startGamePressed" from="MainMenu" to="." method="onPlayPressed"]
+[connection signal="onAudioOptionsPressed" from="OptionsMenu" to="." method="onAudioOptionsPressed"]
+[connection signal="onControllerOptionsPressed" from="OptionsMenu" to="." method="onControllerOptionsPressed"]
+[connection signal="onGameOptionsPressed" from="OptionsMenu" to="." method="onGameOptionsPressed"]
+[connection signal="onKeyboardOptionsPressed" from="OptionsMenu" to="." method="onKeyboardOptionsPressed"]
+[connection signal="onVideoOptionsPressed" from="OptionsMenu" to="." method="onVideoOptionsPressed"]
 [connection signal="continuePressed" from="PauseMenu" to="." method="onContinuePressed"]
 [connection signal="openMainMenuPressed" from="PauseMenu" to="." method="onMainMenuPressed"]
 [connection signal="openOptionsPressed" from="PauseMenu" to="." method="onOptionsPressed"]
