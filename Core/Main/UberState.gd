@@ -8,6 +8,7 @@ enum Type {
 	none,
 
 	boot,
+	quit,
 	mainMenu,
 	game,
 }

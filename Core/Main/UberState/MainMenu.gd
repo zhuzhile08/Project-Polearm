@@ -2,14 +2,6 @@ extends UberState
 class_name MainMenuUberState
 
 
-#region Built-in functions
-
-func _physics_process(delta : float) -> void:
-	pass
-
-#endregion
-
-
 #region Implementation functions
 
 func enterImpl() -> void:
@@ -19,7 +11,15 @@ func exitImpl() -> void:
 	pass
 
 
-func nextState(_input : MainInputManager.Data) -> Type:
+func nextState(input : MainInputManager.Data) -> Type:
+	scene.manageStates(input)
+
+	var exitType := scene.exitType()
+
+	if exitType == MainMenu.ExitType.game:
+		return Type.game
+	elif exitType == MainMenu.ExitType.quit:
+		return Type.quit
 	return Type.none
 
 #endregion
