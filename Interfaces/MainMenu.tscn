@@ -1,0 +1,34 @@
+[gd_scene format=3 uid="uid://b8hqumrxhfvmn"]
+
+[ext_resource type="Script" uid="uid://0451ufl23215" path="res://Interfaces/MainMenu.gd" id="1_87kmv"]
+[ext_resource type="PackedScene" uid="uid://c0atl8ffoeq5u" path="res://Interfaces/Menus/StartMenu.tscn" id="2_4mftg"]
+[ext_resource type="PackedScene" uid="uid://bbf2d281jeq4y" path="res://Interfaces/Menus/OptionsMenu.tscn" id="3_f6nv7"]
+[ext_resource type="PackedScene" uid="uid://cnusbpv84eyf0" path="res://Interfaces/Menus/ControllerMapping.tscn" id="4_fvlcm"]
+[ext_resource type="PackedScene" uid="uid://cthgc7cm7suej" path="res://Interfaces/Menus/KeyboardMapping.tscn" id="5_3xha2"]
+
+[node name="MainMenu" type="CanvasLayer" unique_id=1191320930]
+process_mode = 3
+script = ExtResource("1_87kmv")
+
+[node name="StartMenu" parent="." unique_id=2089339401 instance=ExtResource("2_4mftg")]
+visible = false
+mouse_filter = 2
+
+[node name="OptionsMenu" parent="." unique_id=1199451818 instance=ExtResource("3_f6nv7")]
+visible = false
+mouse_filter = 2
+
+[node name="ControllerMapping" parent="." unique_id=1452140931 instance=ExtResource("4_fvlcm")]
+visible = false
+
+[node name="KeyboardMapping" parent="." unique_id=1565302024 instance=ExtResource("5_3xha2")]
+visible = false
+
+[connection signal="openOptionsPressed" from="StartMenu" to="." method="onOptionsPressed"]
+[connection signal="quitGamePressed" from="StartMenu" to="." method="onQuitGamePressed"]
+[connection signal="startGamePressed" from="StartMenu" to="." method="onPlayPressed"]
+[connection signal="onAudioOptionsPressed" from="OptionsMenu" to="." method="onAudioOptionsPressed"]
+[connection signal="onControllerOptionsPressed" from="OptionsMenu" to="." method="onControllerOptionsPressed"]
+[connection signal="onGameOptionsPressed" from="OptionsMenu" to="." method="onGameOptionsPressed"]
+[connection signal="onKeyboardOptionsPressed" from="OptionsMenu" to="." method="onKeyboardOptionsPressed"]
+[connection signal="onVideoOptionsPressed" from="OptionsMenu" to="." method="onVideoOptionsPressed"]
