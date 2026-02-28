@@ -1,19 +1,39 @@
-extends Control
+extends InterfaceState
 
-# Signals that get redirected to the Interface Controller
-signal startGamePressed
-signal newGamePressed
-signal openOptionsPressed
-signal quitGamePressed
+
+var _startGamePressed : bool = false
+var _newGamePressed : bool = false
+var _openOptionsPressed : bool = false
+var _quitGamePressed : bool = false
+
 
 func _on_continue_pressed() -> void:
-	startGamePressed.emit()
+	_startGamePressed = true
 
 func _on_new_game_pressed() -> void:
-	newGamePressed.emit()
+	_newGamePressed = true
 
 func _on_options_pressed() -> void:
-	openOptionsPressed.emit()
+	_openOptionsPressed = true
 
 func _on_exit_game_pressed() -> void:
-	quitGamePressed.emit()
+	_quitGamePressed = true
+
+
+func nextMenu(inputs : MainInputManager.Data) -> Type:
+	if inputs.cancel:
+		pass
+	
+	if _openOptionsPressed:
+		return Type.options
+	
+	return Type.none
+
+func exitType() -> int:
+	if _startGamePressed:
+		return MainMenuUberState.ExitType.startGame
+	if _quitGamePressed:
+		return MainMenuUberState.ExitType.quitGame
+
+	return MainMenuUberState.ExitType.none
+

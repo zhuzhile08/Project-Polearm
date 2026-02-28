@@ -1,4 +1,5 @@
-extends MarginContainer
+extends InterfaceState
+
 
 signal onGameOptionsPressed
 signal onVideoOptionsPressed

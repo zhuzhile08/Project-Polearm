@@ -2,6 +2,13 @@ extends CanvasLayer
 class_name InterfaceStateMachine
 
 
+#region Exported variables
+
+@export var INITIAL_MENU_TYPE : InterfaceState.Type
+
+#endregion
+
+
 #region Member variables
 
 var menus : Dictionary[InterfaceState.Type, InterfaceState]
@@ -19,7 +26,7 @@ func _ready() -> void:
 			child.hideMenu()
 			menus[child.TYPE] = child
 	
-	initImpl()
+	_currentMenu = menus[INITIAL_MENU_TYPE]
 	_currentMenu.enter()
 
 #endregion
@@ -33,7 +40,7 @@ func manageStates(input : MainInputManager.Data) -> void:
 		_switchTo(nextMenu)
 
 func exitType() -> int:
-	return 0
+	return _currentMenu.exitType()
 
 #endregion
 
@@ -44,13 +51,5 @@ func _switchTo(nextState):
 	_currentMenu.exit()
 	_currentMenu = menus[nextState]
 	_currentMenu.enter()
-
-#endregion
-
-
-#region Implementation functions
-
-func initImpl() -> void:
-	pass
 
 #endregion

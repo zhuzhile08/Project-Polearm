@@ -1,11 +1,12 @@
 extends Control
+class_name InterfaceState
 
 
 #region Enums
 
 enum Type { 
 	none,
-	mainMenu,
+	startMenu,
 	options,
 	pause,
 	gameOptions,
@@ -18,21 +19,31 @@ enum Type {
 #endregion
 
 
+#region Exported variables
+
+@export var TYPE : Type
+
+#endregion
+
+
 #region Member functions
 
-func enter():
+func enter() -> void:
 	show()
 
-func exit():
+func exit() -> void:
 	hide()
 
-func nextMenu(inputs: MainInputManager.Data):
-	pass
+func nextMenu(inputs : MainInputManager.Data) -> Type:
+	return Type.none
 
-func showMenu():
+func exitType() -> int:
+	return 0
+
+func showMenu() -> void:
 	show()
 
-func hideMenu():
+func hideMenu() -> void:
 	hide()
 	
 #endregion

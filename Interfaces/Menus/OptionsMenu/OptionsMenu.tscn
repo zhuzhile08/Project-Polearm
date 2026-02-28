@@ -3,7 +3,7 @@
 [ext_resource type="Script" uid="uid://cfdlgc8aalbtr" path="res://Interfaces/Elements/GameMenuButton.gd" id="1_4i0wx"]
 [ext_resource type="Script" uid="uid://c73r1egyvrr3f" path="res://Interfaces/Menus/OptionsMenu/OptionsMenu.gd" id="1_5i6ub"]
 
-[node name="OptionsMenu" type="Control" unique_id=1328641856]
+[node name="OptionsMenu" type="Control" unique_id=865326453]
 layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
@@ -13,6 +13,8 @@ grow_vertical = 2
 size_flags_horizontal = 4
 size_flags_vertical = 4
 script = ExtResource("1_5i6ub")
+TYPE = 2
+metadata/_custom_type_script = "uid://cyn28bbc16luj"
 
 [node name="HBoxContainer" type="HBoxContainer" parent="." unique_id=2101487307]
 layout_mode = 0
@@ -70,9 +72,3 @@ focus_neighbor_top = NodePath("../Controller")
 focus_neighbor_bottom = NodePath("../Game")
 text = "Keyboard"
 script = ExtResource("1_4i0wx")
-
-[connection signal="pressed" from="HBoxContainer/VBoxContainer/Game" to="." method="_on_game_pressed"]
-[connection signal="pressed" from="HBoxContainer/VBoxContainer/Video" to="." method="_on_video_pressed"]
-[connection signal="pressed" from="HBoxContainer/VBoxContainer/Audio" to="." method="_on_audio_pressed"]
-[connection signal="pressed" from="HBoxContainer/VBoxContainer/Controller" to="." method="_on_controller_pressed"]
-[connection signal="pressed" from="HBoxContainer/VBoxContainer/Keyboard" to="." method="_on_keyboard_pressed"]

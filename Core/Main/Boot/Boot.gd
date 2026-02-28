@@ -1,7 +1,7 @@
 extends Node3D
 
 
-@export var timer : float = 10
+@export var timer : float = 1
 
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.

@@ -2,6 +2,17 @@ extends UberState
 class_name MainMenuUberState
 
 
+#region Enums
+
+enum ExitType {
+	none,
+	startGame,
+	quitGame,
+}
+
+#endregion
+
+
 #region Implementation functions
 
 func enterImpl() -> void:
@@ -14,11 +25,11 @@ func exitImpl() -> void:
 func nextState(input : MainInputManager.Data) -> Type:
 	scene.manageStates(input)
 
-	var exitType := scene.exitType()
+	var exitType := scene.exitType() as int
 
-	if exitType == MainMenu.ExitType.game:
+	if exitType == ExitType.startGame:
 		return Type.game
-	elif exitType == MainMenu.ExitType.quit:
+	elif exitType == ExitType.quitGame:
 		return Type.quit
 	return Type.none
 
