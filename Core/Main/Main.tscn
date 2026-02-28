@@ -3,6 +3,7 @@
 [ext_resource type="Script" uid="uid://c31gnbehqoq8y" path="res://Core/Main/Main.gd" id="1_ycf5l"]
 [ext_resource type="Script" uid="uid://7cjw5im7rxvp" path="res://Core/Main/InputManager/InputManager.gd" id="2_2cw8b"]
 [ext_resource type="Script" uid="uid://cfycea7ifi2y2" path="res://Core/Main/UberState/Boot.gd" id="3_1s610"]
+[ext_resource type="Script" uid="uid://28puagxgn2db" path="res://Core/Main/UberState/MainMenu.gd" id="4_jgmb7"]
 
 [node name="Main" type="Node" unique_id=371259075]
 script = ExtResource("1_ycf5l")
@@ -18,3 +19,9 @@ script = ExtResource("3_1s610")
 TYPE = 1
 SCENE_PATH = "res://Core/Main/Boot/Boot.tscn"
 metadata/_custom_type_script = "uid://cfycea7ifi2y2"
+
+[node name="MainMenuUberState" type="Node" parent="." unique_id=740024008]
+script = ExtResource("4_jgmb7")
+TYPE = 2
+SCENE_PATH = "res://Interfaces/InterfaceController.tscn"
+metadata/_custom_type_script = "uid://28puagxgn2db"
