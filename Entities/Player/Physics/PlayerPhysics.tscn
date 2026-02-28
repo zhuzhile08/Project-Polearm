@@ -2,42 +2,9 @@
 
 [ext_resource type="Script" uid="uid://jth8cpsjn3vy" path="res://Entities/Player/Physics/PlayerPhysics.gd" id="1_72kpf"]
 
-[sub_resource type="SphereShape3D" id="SphereShape3D_5fg56"]
-
 [node name="PlayerPhysics" type="Node3D" unique_id=1399611852]
 script = ExtResource("1_72kpf")
-MAX_COLLISIONS = null
-COLLIDER_FLOATING_HEIGHT = null
-MAX_SLOPE_ANGLE = null
-SLOPE_SNAP_LENGTH = null
-MAX_STEP_HEIGHT = null
-MIN_STEP_LENGTH = null
-STEP_UP_SPEED = null
-STEP_DOWN_SPEED = null
-MAX_LEDGE_DISTANCE = null
-MAX_LEDGE_HEIGHT = null
-MIN_LEDGE_HEIGHT = null
-JUMP_BUFFER = null
 metadata/_custom_type_script = "uid://jth8cpsjn3vy"
-
-[node name="GroundCast" type="ShapeCast3D" parent="." unique_id=1847783571]
-transform = Transform3D(-1, 0, 0, 0, 1, 0, 0, 0, -1, 0, 1, 0)
-shape = SubResource("SphereShape3D_5fg56")
-exclude_parent = false
-target_position = Vector3(0, -100, 0)
-collision_mask = 32768
-
-[node name="DownCast" type="RayCast3D" parent="." unique_id=52991761]
-process_mode = 4
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0)
-exclude_parent = false
-target_position = Vector3(0, -100, 0)
-collision_mask = 32768
-
-[node name="StepCast" type="RayCast3D" parent="." unique_id=60261082]
-process_mode = 4
-exclude_parent = false
-collision_mask = 32768
 
 [node name="LedgeSideCast" type="RayCast3D" parent="." unique_id=1595255139]
 

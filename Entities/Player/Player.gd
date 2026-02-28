@@ -102,7 +102,7 @@ enum FlowState {
 #region Built-in functions
 
 func _ready() -> void:
-	super._ready()
+	init()
 
 	cameraManager.setFollowTarget(self)
 	visuals.acceptSkeleton(model.skeleton)
@@ -112,6 +112,6 @@ func _physics_process(delta: float) -> void:
 	inputManager.pollInputs(cameraManager.cameraPlaneDirection())
 	model.tick(inputManager.inputs, delta)
 
-	super._physics_process(delta)
+	tick(delta)
 
 #endregion

@@ -63,15 +63,15 @@ const STEP_RAY_VERTICAL_OFFSET : float = 0.01
 
 #region Exported variables
 
-@export_category("Physics settings")
+@export_group("Physics settings")
 @export var BODY_COLLIDER_RADIUS = 0.5
 @export var BODY_COLLIDER_FLOATING_HEIGHT : float = 0.3
 @export var GROUND_CAST_RADIUS : float = 0.4
 
-@export_category("Slope settings")
+@export_group("Slope settings")
 @export_range(-360, 360, 0.001, "radians_as_degrees") var SLOPE_MAX_ANGLE : float = 0.786
 
-@export_category("Step settings")
+@export_group("Step settings")
 @export var STEP_MAX_HEIGHT : float = 0.4
 @export var STEP_SPEED_FACTOR : float = 0.4
 
@@ -80,7 +80,7 @@ const STEP_RAY_VERTICAL_OFFSET : float = 0.01
 
 #region Scene members
 
-@export_category("Scene Members")
+@export_group("Scene Members")
 @export var bodyCollider : CollisionShape3D
 @export var groundCast : ShapeCast3D
 

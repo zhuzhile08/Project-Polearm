@@ -4,10 +4,10 @@ class_name PlayerCombatManager
 
 #region Exported variables
 
-@export_category("Combat config")
+@export_group("Combat config")
 @export var PREVIOUS_COMBO_COUNT : int
 
-@export_category("Combat data")
+@export_group("Combat data")
 @export var unlockedCombos : Array[PlayerCombo]
 
 #endregion
@@ -15,7 +15,7 @@ class_name PlayerCombatManager
 
 #region Scene members
 
-@export_category("Scene members")
+@export_group("Scene members")
 @export var resources : PlayerResources
 
 #endregion

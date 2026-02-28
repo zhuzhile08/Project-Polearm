@@ -16,7 +16,7 @@ class Data extends RefCounted:
 
 #region Exported variables
 
-@export_category("Config")
+@export_group("Config")
 @export var WALK_LIMIT_SQUARED : float
 
 #endregion

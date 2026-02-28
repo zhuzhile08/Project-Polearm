@@ -4,7 +4,7 @@ class_name PlayerModel
 
 #region Scene members
 
-@export_category("Scene members")
+@export_group("Scene members")
 @export var player : Player
 @export var cameraManager : PlayerCameraManager
 

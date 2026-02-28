@@ -10,7 +10,7 @@
 
 [sub_resource type="SphereShape3D" id="SphereShape3D_t38ms"]
 
-[node name="Player" type="CharacterBody3D" unique_id=102432183 node_paths=PackedStringArray("bodyCollider", "groundCast")]
+[node name="Player" type="CharacterBody3D" unique_id=889826782 node_paths=PackedStringArray("bodyCollider", "groundCast")]
 collision_mask = 32768
 floor_max_angle = 0.0
 floor_snap_length = 0.0
@@ -38,8 +38,7 @@ metadata/_custom_type_script = "uid://ls6r1csl2o7j"
 [node name="CameraManager" parent="." unique_id=1956657863 instance=ExtResource("3_1des2")]
 INVERT_VERTICAL = 1.0
 
-[node name="Model" parent="." unique_id=2130243074 node_paths=PackedStringArray("player", "cameraManager") instance=ExtResource("4_an6q6")]
-player = NodePath("..")
+[node name="Model" parent="." unique_id=2130243074 node_paths=PackedStringArray("cameraManager") instance=ExtResource("4_an6q6")]
 cameraManager = NodePath("../CameraManager")
 
 [node name="XBotMesh" parent="." unique_id=114163421 instance=ExtResource("5_an6q6")]

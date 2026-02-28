@@ -4,7 +4,7 @@ class_name PlayerActionManager
 
 #region Scene members
 
-@export_category("Scene members")
+@export_group("Scene members")
 @export var model : PlayerModel
 # @export var physics : PlayerPhysics
 @export var resources : PlayerResources

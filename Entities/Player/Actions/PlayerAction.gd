@@ -21,13 +21,13 @@ enum Priority {
 
 #region Exported variables
 
-@export_category("General")
+@export_group("General")
 @export var TYPE : Player.ActionType
 @export var PRIORITY : int = 0
 @export var ANIMATION_NAME : String
 @export var ROTATION_TRACKING_SPEED : float = 10
 
-@export_category("Combat")
+@export_group("Combat")
 @export var ENERGY_COST : float = 0
 # @export var QUEUEABLE : bool = false # For what?
 

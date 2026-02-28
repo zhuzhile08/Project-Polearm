@@ -4,16 +4,16 @@ class_name PlayerActionData
 
 #region Exported action properties
 
-@export_category("Animation")
+@export_group("Animation")
 @export var _transitionable : bool = true # originally false
 # @export var interruptable : bool = true # I do not understand the purpose of why I added this, uncomment if it is useful and explain the difference between this and the option above
 @export var _trackDirection : bool = false # If an action tracks the direction of the input, it also tracks the direction of the camera
 
-@export_category("Movement")
+@export_group("Movement")
 @export var _mimicRootMotion : bool = false
 @export var _rootMotionVelocityFactor : float = 1
 
-@export_category("Combat")
+@export_group("Combat")
 @export var _vulnerable : bool = true
 @export var _acceptsQueue : bool = false
 

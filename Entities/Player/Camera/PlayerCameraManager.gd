@@ -11,11 +11,11 @@ class CameraInputData:
 
 #region Exported variables
 
-@export_category("Camera config")
+@export_group("Camera config")
 @export var MIN_PITCH : float = -80
 @export var MAX_PITCH : float = 30
 
-@export_category("Controls")
+@export_group("Controls")
 @export var INVERT_VERTICAL : float = -1 # Set to 1 to invert y axis
 @export var CONTROLLER_SENSITIVITY : float
 @export var MOUSE_SENSITIVITY : float

@@ -4,7 +4,7 @@ class_name PlayerResources
 
 #region Exported variables
 
-@export_category("States")
+@export_group("States")
 
 @export var godMode : bool = false
 
@@ -16,7 +16,7 @@ class_name PlayerResources
 @export var unlockedActions : Array[Player.ActionType]
 
 
-@export_category("Resources")
+@export_group("Resources")
 
 @export var health : float = 1000
 @export var maxHealth : float = 1000
@@ -33,7 +33,7 @@ class_name PlayerResources
 # @export var inventory : Array[Items]
 
 
-@export_category("Modifiers")
+@export_group("Modifiers")
 
 # @export var witchModeTime : float # Duration of witch mode
 
@@ -47,7 +47,7 @@ class_name PlayerResources
 
 #region Scene members
 
-@export_category("Scene members")
+@export_group("Scene members")
 @export var model : PlayerModel
 
 #endregion
