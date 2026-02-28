@@ -1,7 +1,20 @@
 [gd_scene format=3 uid="uid://gfs4a5wowsa"]
 
 [ext_resource type="Script" uid="uid://c31gnbehqoq8y" path="res://Core/Main/Main.gd" id="1_ycf5l"]
+[ext_resource type="Script" uid="uid://7cjw5im7rxvp" path="res://Core/Main/InputManager/InputManager.gd" id="2_2cw8b"]
+[ext_resource type="Script" uid="uid://cfycea7ifi2y2" path="res://Core/Main/Uberstate/Boot.gd" id="3_1s610"]
 
 [node name="Main" type="Node" unique_id=371259075]
 script = ExtResource("1_ycf5l")
 metadata/_custom_type_script = "uid://c31gnbehqoq8y"
+
+[node name="InputManager" type="Node" parent="." unique_id=1085649395]
+process_mode = 4
+script = ExtResource("2_2cw8b")
+metadata/_custom_type_script = "uid://7cjw5im7rxvp"
+
+[node name="BootUberState" type="Node" parent="." unique_id=893970890]
+script = ExtResource("3_1s610")
+TYPE = 1
+SCENE_PATH = "res://Core/Main/Boot/Boot.tscn"
+metadata/_custom_type_script = "uid://cfycea7ifi2y2"
