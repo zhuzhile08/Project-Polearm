@@ -48,6 +48,11 @@ enum StepState {
 const MAX_GROUND_COLLISIONS : int = 4
 const COLLISION_EPSILON : float = 0.001
 const GROUND_DISTANCE_BUFFER = 1.01
+const MIN_STEP_SPEED : float = 0.15 # Rigidbody collision resolution wants to move up on ledges
+
+
+# Raycast settings
+
 const STEP_RAY_SCALE_FACTOR : int = 4
 const DOWNWARDS_RAY_LENGTH := Vector3(0.0, 10.0, 0.0)
 
@@ -219,30 +224,24 @@ func _processCollisions() -> void:
 
 	# Stepping collision checks
 
-	if _stepState == StepState.none:
-		_processFootCollisionData(_probeData) # We will need the data from the probe if we are stepping
-		_calculateStepWallProbeQuery(global_position, _groundData.point)
-		var direction := Vector3(_targetVelocity.x, 0, _targetVelocity.z).normalized()
+    # We are checking for downwards steps first because stopping after stepping down and moving again may confuse
+    # the system into thinking that we are stepping up before quickly stepping down again if we check step up first
 
-		# We are checking for downwards steps first because stopping after stepping down and moving again may confuse
-		# the system into thinking that we are stepping up before quickly stepping down again if we check step up first
+	var direction := Vector3(_targetVelocity.x, 0, _targetVelocity.z).normalized()
 
-		if _probeData.grounded == true and _probeData.offset > STEP_RAY_VERTICAL_OFFSET and _validateStepWallProbeQuery(-direction):
-			# We don't need to check if the distance is too large for us to step down, as it was already done for _probeData.grounded
-			if _probeStepWall():
-				_groundData.copy(_probeData) # We need to assign ground data to the probe data because the probe is the true "target position" of the player
-				_stepState = StepState.down
-				
-				return
-		elif _groundData.offset < -STEP_RAY_VERTICAL_OFFSET and _groundData.offset >= -STEP_MAX_HEIGHT and _validateStepWallProbeQuery(direction) and _probeStepWall():
-			_stepState = StepState.up
-			
+	if _stepState != StepState.down:
+		if _tryStepDown(direction):
 			return
+		elif _tryStepUp(direction):
+			return
+	elif _stepState != StepState.up and _tryStepUpFromProbe(direction):
+		return
+	else:
+		_processFootCollisionData(_probeData)
 
 	# If we are not stepping at all, we calculate a point in the direction the player is moving 
 	# slightly behind the edge of the player hitbox. This allows us to perform a bit of smoothing
 
-	_processFootCollisionData(_probeData)
 	_probePointInDirection(_probeData, global_position, _targetVelocity.normalized(), GROUND_CAST_RADIUS, 3)
 
 
@@ -252,11 +251,9 @@ func _moveAndSmooth(delta : float) -> void:
 		move_and_slide()
 
 		return
-	
-	# print(_stepState)
 
 	if _stepState == StepState.none:
-		if abs(_groundData.offset) < COLLISION_EPSILON:
+		if absf(_groundData.offset) < COLLISION_EPSILON:
 			position.y -= _groundData.offset
 			_groundData.offset = 0.0
 
@@ -268,7 +265,7 @@ func _moveAndSmooth(delta : float) -> void:
 		var line := Vector3(global_position.x, global_position.y + _groundData.offset, global_position.z) - _probeData.point
 
 		# If the horizontal OR vertical component of line is too small
-		if abs(line.y) < COLLISION_EPSILON or (line.x * line.x + line.z * line.z) < COLLISION_EPSILON * COLLISION_EPSILON:
+		if absf(line.y) < COLLISION_EPSILON or (line.x * line.x + line.z * line.z) < COLLISION_EPSILON * COLLISION_EPSILON:
 			velocity = Utility.Math.rotateVectorOntoPlane(_targetVelocity, _groundData.normal)
 		else:
 			# The two cross products produce the final slope vector to rotate velocity by
@@ -280,8 +277,9 @@ func _moveAndSmooth(delta : float) -> void:
 		velocity = Utility.Math.rotateVectorOntoPlane(_targetVelocity, _groundData.normal)
 
 		# Stepping logic, this already applies a small amount of snapping on the slope
-		if abs(_groundData.offset) > COLLISION_EPSILON:
-			velocity.y -= _groundData.offset / delta * STEP_SPEED_FACTOR # Divide by delta allows us to move an actual amount every frame
+		var offsetAbs := absf(_groundData.offset)
+		if offsetAbs > COLLISION_EPSILON:
+			velocity.y -= maxf(offsetAbs / delta * STEP_SPEED_FACTOR, MIN_STEP_SPEED) * signf(_groundData.offset)
 		else:
 			position.y -= _groundData.offset # Modify position directly for better snapping
 			_stepState = StepState.none
@@ -310,14 +308,16 @@ func _processFootCollisionData(result : GroundData) -> void:
 	_initRayQuery(global_position + Vector3.UP, global_position - DOWNWARDS_RAY_LENGTH)
 	var collision := get_world_3d().direct_space_state.intersect_ray(_rayQuery)
 
-	if collision:
-		result.point = collision.position
-		result.offset = _vertOffsetToPlayerGlobal(result.point)
-		result.normal = collision.normal
+	if not collision:
+		return
 
-		if result.offset <= _bufferedGroundMaxDistance() and result.normal.y > SLOPE_MAX_ANGLE_COS:
-			# As the normal vector is normalized, its angle can be determined by simply checking for its height
-			result.grounded = true
+	result.point = collision.position
+	result.offset = _vertOffsetToPlayerGlobal(result.point)
+	result.normal = collision.normal
+
+	if result.offset <= _bufferedGroundMaxDistance() and result.normal.y > SLOPE_MAX_ANGLE_COS:
+		# As the normal vector is normalized, its angle can be determined by simply checking for its height
+		result.grounded = true
 
 # Returns the farthest point on the line from startingPos towards direction * distance, which is continuously grounded
 func _probePointInDirection(result : GroundData, startingPos : Vector3, direction : Vector3, distance : float, iterations : int) -> void:
@@ -328,10 +328,9 @@ func _probePointInDirection(result : GroundData, startingPos : Vector3, directio
 	var pos := startingPos + iterShift
 
 	for i : int in range(iterations):
-		var posOffset := pos + Vector3.UP * STEP_MAX_HEIGHT
-		posOffset.y -= STEP_RAY_VERTICAL_OFFSET # We make our ray slightly lower than the max step height to prevent stepping to high
+		var posOffset := Vector3(0, STEP_MAX_HEIGHT - STEP_RAY_VERTICAL_OFFSET, 0) # We make our ray slightly lower than the max step height to prevent stepping to high)
 
-		_initRayQuery(posOffset, pos - DOWNWARDS_RAY_LENGTH)
+		_initRayQuery(pos + posOffset, pos - DOWNWARDS_RAY_LENGTH)
 		var collision := get_world_3d().direct_space_state.intersect_ray(_rayQuery)
 
 		if not collision:
@@ -355,7 +354,7 @@ func _probePointInDirection(result : GroundData, startingPos : Vector3, directio
 
 # Step wall validation functions
 
-# CAUTION: returns the non-globalized target position for usage in _validateStepWallProbeQuery
+# CAUTION: returns the non-globalized target position for usage in _validateStepProbeQueryDirection
 func _calculateStepWallProbeQuery(sourcePointGlobal : Vector3, targetPointGlobal : Vector3) -> void:
 	var sourcePos := Vector3(sourcePointGlobal.x, targetPointGlobal.y - STEP_RAY_VERTICAL_OFFSET, sourcePointGlobal.z)
 	var targetPos := (targetPointGlobal - sourcePos) * STEP_RAY_SCALE_FACTOR
@@ -364,7 +363,7 @@ func _calculateStepWallProbeQuery(sourcePointGlobal : Vector3, targetPointGlobal
 	_initRayQuery(sourcePos, targetPos)
 
 # We also check for a direction variable to prevent the body is moving in a direction incompatible with the step direction
-func _validateStepWallProbeQuery(direction : Vector3) -> bool:
+func _validateStepProbeQueryDirection(direction : Vector3) -> bool:
 	if _rayQuery.to.dot(direction) < 0:
 		return false
 	return true
@@ -379,6 +378,51 @@ func _probeStepWall() -> bool:
 	
 	return false
 
+
+# Stepping functions
+
+func _tryStepDown(direction : Vector3) -> bool:
+	_processFootCollisionData(_probeData) # We will need the data from the probe if we are stepping
+	_calculateStepWallProbeQuery(global_position, _groundData.point)
+
+	if not _probeData.grounded:
+		return false
+	if _probeData.offset < STEP_RAY_VERTICAL_OFFSET:
+		return false
+	if not _validateStepProbeQueryDirection(-direction):
+		return false
+
+	if _probeStepWall(): # We don't need to check if the distance is too large for us to step down, as it was already done for _probeData.grounded
+		_groundData.copy(_probeData) # We need to assign ground data to the probe data because the probe is the true "target position" of the player
+		_stepState = StepState.down
+
+	return true # Return true is placed here intentially, as we will not try to look for a step up if the wall probe fails anyways
+
+func _tryStepUp(direction : Vector3) -> bool:
+	if _stepState == StepState.up:
+		return false
+	if not _canStepUp(_groundData.offset, direction):
+		return false
+
+	_stepState = StepState.up
+	return true
+
+func _tryStepUpFromProbe(direction : Vector3) -> bool:
+	_processGroundCollisionData(_probeData)
+	_calculateStepWallProbeQuery(global_position, _probeData.point)
+
+	if not _probeData.grounded:
+		return false
+	if not _canStepUp(_probeData.offset, direction):
+		return false
+
+	_groundData.copy(_probeData)
+	_stepState = StepState.up
+
+	return true
+
+func _canStepUp(offset : float, direction : Vector3) -> bool:
+	return (offset <= -STEP_RAY_VERTICAL_OFFSET and offset >= -STEP_MAX_HEIGHT and _validateStepProbeQueryDirection(direction) and _probeStepWall())
 
 
 # Utility functions
