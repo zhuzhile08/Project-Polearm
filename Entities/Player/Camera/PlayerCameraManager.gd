@@ -93,6 +93,10 @@ func setFollowTarget(node : Node3D) -> void:
 
 
 
+func cameraPlaneDirection() -> Vector2:
+	var direction = _activeCam.global_position - _activeCam._follow_target_output_position # Private variable of PhantomCamera3D, maybe someday open PR to add a proper getter function
+	return Vector2(direction.x, direction.z).normalized()
+
 #endregion
 
 
@@ -107,10 +111,6 @@ func _rotateCamera(camera : PhantomCamera3D, angle : Vector2) -> void:
 	cameraRotation.x = clampf(cameraRotation.x + angle.x * INVERT_VERTICAL, MIN_PITCH, MAX_PITCH)
 
 	camera.set_third_person_rotation_degrees(cameraRotation)
-
-func _cameraPlaneDirection() -> Vector2:
-	var direction = _activeCam.global_position - _activeCam._follow_target_output_position # Private variable of PhantomCamera3D, maybe someday open PR to add a proper getter function
-	return Vector2(direction.x, direction.z).normalized()
 
 
 # Input handling
