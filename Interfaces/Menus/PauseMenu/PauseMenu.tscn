@@ -1,6 +1,6 @@
 [gd_scene format=3 uid="uid://c4osl43hbuh14"]
 
-[ext_resource type="Script" uid="uid://vyxsiwv005q" path="res://Interfaces/Menus/PauseMenu.gd" id="1_w0rmh"]
+[ext_resource type="Script" uid="uid://vyxsiwv005q" path="res://Interfaces/Menus/PauseMenu/PauseMenu.gd" id="1_w0rmh"]
 [ext_resource type="Script" uid="uid://cfdlgc8aalbtr" path="res://Interfaces/Elements/GameMenuButton.gd" id="2_yj8jp"]
 
 [node name="PauseMenu" type="Control" unique_id=416010714]

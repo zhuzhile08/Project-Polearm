@@ -1,7 +1,7 @@
 [gd_scene format=3 uid="uid://d1t21heudjsue"]
 
 [ext_resource type="Script" path="res://Stages/Main.gd" id="1_t3jir"]
-[ext_resource type="PackedScene" uid="uid://b8hqumrxhfvmn" path="res://Interfaces/MainMenu.tscn" id="4_8dxha"]
+[ext_resource type="PackedScene" uid="uid://b8hqumrxhfvmn" path="res://Interfaces/Menus/MainMenu/MainMenu.tscn" id="4_8dxha"]
 
 [node name="Test" type="Node" unique_id=1776649826]
 process_mode = 3

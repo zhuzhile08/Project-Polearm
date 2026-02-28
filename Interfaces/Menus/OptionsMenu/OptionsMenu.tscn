@@ -1,9 +1,10 @@
 [gd_scene format=3 uid="uid://bbf2d281jeq4y"]
 
 [ext_resource type="Script" uid="uid://cfdlgc8aalbtr" path="res://Interfaces/Elements/GameMenuButton.gd" id="1_4i0wx"]
-[ext_resource type="Script" uid="uid://c73r1egyvrr3f" path="res://Interfaces/Menus/OptionsMenu.gd" id="1_5i6ub"]
+[ext_resource type="Script" uid="uid://c73r1egyvrr3f" path="res://Interfaces/Menus/OptionsMenu/OptionsMenu.gd" id="1_5i6ub"]
 
-[node name="OptionsMenu" type="MarginContainer" unique_id=1199451818]
+[node name="OptionsMenu" type="Control" unique_id=1328641856]
+layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
@@ -14,7 +15,10 @@ size_flags_vertical = 4
 script = ExtResource("1_5i6ub")
 
 [node name="HBoxContainer" type="HBoxContainer" parent="." unique_id=2101487307]
-layout_mode = 2
+layout_mode = 0
+offset_top = 380.0
+offset_right = 450.0
+offset_bottom = 916.0
 size_flags_horizontal = 0
 size_flags_vertical = 4
 theme_override_constants/separation = 150
