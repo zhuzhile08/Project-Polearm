@@ -51,8 +51,6 @@ func handleControllerBLogic() -> void:
 			SignalBus.backRequested.emit()
 
 func updateMouseVisibility(event: InputEvent) -> void:
-	if event is InputEventMouse:
-		return
 		
 		# Handels the visibility of the mouse depending on the gamestate and last input
 	if current_state == GameState.PLAYING:

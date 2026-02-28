@@ -1,0 +1,321 @@
+[gd_scene format=3 uid="uid://cthgc7cm7suej"]
+
+[ext_resource type="Script" uid="uid://cbdax7xlgilxj" path="res://Interfaces/Elements/ActionMappingButton.gd" id="1_ua0h8"]
+
+[node name="KeyboardMapping" type="Control" unique_id=1452140931]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="CenterContainer" type="CenterContainer" parent="." unique_id=2078417268]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="HBoxContainer" type="HBoxContainer" parent="CenterContainer" unique_id=1837179978]
+layout_mode = 2
+theme_override_constants/separation = 100
+
+[node name="Left Colon" type="VBoxContainer" parent="CenterContainer/HBoxContainer" unique_id=610459360]
+layout_mode = 2
+theme_override_constants/separation = 10
+
+[node name="FORWARDS" type="HBoxContainer" parent="CenterContainer/HBoxContainer/Left Colon" unique_id=513300562]
+layout_mode = 2
+theme_override_constants/separation = 0
+
+[node name="Label" type="Label" parent="CenterContainer/HBoxContainer/Left Colon/FORWARDS" unique_id=270263756]
+custom_minimum_size = Vector2(350, 50)
+layout_mode = 2
+theme_override_font_sizes/font_size = 32
+text = "FORWARDS"
+vertical_alignment = 1
+
+[node name="Button" type="Button" parent="CenterContainer/HBoxContainer/Left Colon/FORWARDS" unique_id=1947894532]
+custom_minimum_size = Vector2(100, 50)
+layout_mode = 2
+focus_neighbor_top = NodePath("../../HEAVY ATTACK/Button")
+focus_neighbor_right = NodePath("../../../Right Colon/LEFT/Button")
+focus_neighbor_bottom = NodePath("../../BACKWARDS/Button")
+script = ExtResource("1_ua0h8")
+
+[node name="BACKWARDS" type="HBoxContainer" parent="CenterContainer/HBoxContainer/Left Colon" unique_id=565654253]
+layout_mode = 2
+theme_override_constants/separation = 0
+
+[node name="Label" type="Label" parent="CenterContainer/HBoxContainer/Left Colon/BACKWARDS" unique_id=123687321]
+custom_minimum_size = Vector2(350, 50)
+layout_mode = 2
+theme_override_font_sizes/font_size = 32
+text = "BACKWARDS"
+vertical_alignment = 1
+
+[node name="Button" type="Button" parent="CenterContainer/HBoxContainer/Left Colon/BACKWARDS" unique_id=1579636441]
+custom_minimum_size = Vector2(100, 50)
+layout_mode = 2
+focus_neighbor_top = NodePath("../../FORWARDS/Button")
+focus_neighbor_right = NodePath("../../../Right Colon/RIGHT/Button")
+focus_neighbor_bottom = NodePath("../../JUMP/Button")
+script = ExtResource("1_ua0h8")
+
+[node name="JUMP" type="HBoxContainer" parent="CenterContainer/HBoxContainer/Left Colon" unique_id=2036191111]
+layout_mode = 2
+theme_override_constants/separation = 0
+
+[node name="Label" type="Label" parent="CenterContainer/HBoxContainer/Left Colon/JUMP" unique_id=357322878]
+custom_minimum_size = Vector2(350, 50)
+layout_mode = 2
+theme_override_font_sizes/font_size = 32
+text = "JUMP"
+vertical_alignment = 1
+
+[node name="Button" type="Button" parent="CenterContainer/HBoxContainer/Left Colon/JUMP" unique_id=1004635867]
+custom_minimum_size = Vector2(100, 50)
+layout_mode = 2
+focus_neighbor_top = NodePath("../../BACKWARDS/Button")
+focus_neighbor_right = NodePath("../../../Right Colon/DODGE/Button")
+focus_neighbor_bottom = NodePath("../../SWITCH WEAPON/Button")
+
+[node name="SWITCH WEAPON" type="HBoxContainer" parent="CenterContainer/HBoxContainer/Left Colon" unique_id=1187724629]
+layout_mode = 2
+theme_override_constants/separation = 0
+
+[node name="Label" type="Label" parent="CenterContainer/HBoxContainer/Left Colon/SWITCH WEAPON" unique_id=1503254310]
+custom_minimum_size = Vector2(350, 50)
+layout_mode = 2
+theme_override_font_sizes/font_size = 32
+text = "SWITCH WEAPON"
+vertical_alignment = 1
+
+[node name="Button" type="Button" parent="CenterContainer/HBoxContainer/Left Colon/SWITCH WEAPON" unique_id=42107565]
+custom_minimum_size = Vector2(100, 50)
+layout_mode = 2
+focus_neighbor_top = NodePath("../../JUMP/Button")
+focus_neighbor_right = NodePath("../../../Right Colon/SPRINT/Button")
+focus_neighbor_bottom = NodePath("../../TARGET LEFT/Button")
+
+[node name="TARGET LEFT" type="HBoxContainer" parent="CenterContainer/HBoxContainer/Left Colon" unique_id=528943886]
+layout_mode = 2
+theme_override_constants/separation = 0
+
+[node name="Label" type="Label" parent="CenterContainer/HBoxContainer/Left Colon/TARGET LEFT" unique_id=2030480487]
+custom_minimum_size = Vector2(350, 50)
+layout_mode = 2
+theme_override_font_sizes/font_size = 32
+text = "TARGET LEFT"
+vertical_alignment = 1
+
+[node name="Button" type="Button" parent="CenterContainer/HBoxContainer/Left Colon/TARGET LEFT" unique_id=1587903372]
+custom_minimum_size = Vector2(100, 50)
+layout_mode = 2
+focus_neighbor_top = NodePath("../../SWITCH WEAPON/Button")
+focus_neighbor_right = NodePath("../../../Right Colon/SHOOT/Button")
+focus_neighbor_bottom = NodePath("../../TARGET RIGHT/Button")
+
+[node name="TARGET RIGHT" type="HBoxContainer" parent="CenterContainer/HBoxContainer/Left Colon" unique_id=1167764201]
+layout_mode = 2
+theme_override_constants/separation = 0
+
+[node name="Label" type="Label" parent="CenterContainer/HBoxContainer/Left Colon/TARGET RIGHT" unique_id=1395080340]
+custom_minimum_size = Vector2(350, 50)
+layout_mode = 2
+theme_override_font_sizes/font_size = 32
+text = "TARGET RIGHT"
+vertical_alignment = 1
+
+[node name="Button" type="Button" parent="CenterContainer/HBoxContainer/Left Colon/TARGET RIGHT" unique_id=1757778747]
+custom_minimum_size = Vector2(100, 50)
+layout_mode = 2
+focus_neighbor_top = NodePath("../../TARGET LEFT/Button")
+focus_neighbor_right = NodePath("../../../Right Colon/LAUNCHER/Button")
+focus_neighbor_bottom = NodePath("../../LIGHT ATTACK/Button")
+
+[node name="LIGHT ATTACK" type="HBoxContainer" parent="CenterContainer/HBoxContainer/Left Colon" unique_id=806897362]
+layout_mode = 2
+theme_override_constants/separation = 0
+
+[node name="Label" type="Label" parent="CenterContainer/HBoxContainer/Left Colon/LIGHT ATTACK" unique_id=892948123]
+custom_minimum_size = Vector2(350, 50)
+layout_mode = 2
+theme_override_font_sizes/font_size = 32
+text = "LIGHT ATTACK"
+vertical_alignment = 1
+
+[node name="Button" type="Button" parent="CenterContainer/HBoxContainer/Left Colon/LIGHT ATTACK" unique_id=1603379429]
+custom_minimum_size = Vector2(100, 50)
+layout_mode = 2
+focus_neighbor_top = NodePath("../../TARGET RIGHT/Button")
+focus_neighbor_right = NodePath("../../../Right Colon/TARGET/Button")
+focus_neighbor_bottom = NodePath("../../HEAVY ATTACK/Button")
+
+[node name="HEAVY ATTACK" type="HBoxContainer" parent="CenterContainer/HBoxContainer/Left Colon" unique_id=1207212996]
+layout_mode = 2
+theme_override_constants/separation = 0
+
+[node name="Label" type="Label" parent="CenterContainer/HBoxContainer/Left Colon/HEAVY ATTACK" unique_id=1490531312]
+custom_minimum_size = Vector2(350, 50)
+layout_mode = 2
+theme_override_font_sizes/font_size = 32
+text = "HEAVY ATTACK"
+vertical_alignment = 1
+
+[node name="Button" type="Button" parent="CenterContainer/HBoxContainer/Left Colon/HEAVY ATTACK" unique_id=1424942068]
+custom_minimum_size = Vector2(100, 50)
+layout_mode = 2
+focus_neighbor_top = NodePath("../../LIGHT ATTACK/Button")
+focus_neighbor_right = NodePath("../../../Right Colon/TAUNT/Button")
+focus_neighbor_bottom = NodePath("../../FORWARDS/Button")
+
+[node name="Right Colon" type="VBoxContainer" parent="CenterContainer/HBoxContainer" unique_id=204551368]
+layout_mode = 2
+theme_override_constants/separation = 10
+
+[node name="LEFT" type="HBoxContainer" parent="CenterContainer/HBoxContainer/Right Colon" unique_id=593002619]
+layout_mode = 2
+theme_override_constants/separation = 0
+
+[node name="Label" type="Label" parent="CenterContainer/HBoxContainer/Right Colon/LEFT" unique_id=577702246]
+custom_minimum_size = Vector2(350, 50)
+layout_mode = 2
+theme_override_font_sizes/font_size = 32
+text = "LEFT"
+vertical_alignment = 1
+
+[node name="Button" type="Button" parent="CenterContainer/HBoxContainer/Right Colon/LEFT" unique_id=1396693003]
+custom_minimum_size = Vector2(100, 50)
+layout_mode = 2
+focus_neighbor_left = NodePath("../../../Left Colon/FORWARDS/Button")
+focus_neighbor_top = NodePath("../../TAUNT/Button")
+focus_neighbor_bottom = NodePath("../../RIGHT/Button")
+
+[node name="RIGHT" type="HBoxContainer" parent="CenterContainer/HBoxContainer/Right Colon" unique_id=1764421216]
+layout_mode = 2
+theme_override_constants/separation = 0
+
+[node name="Label" type="Label" parent="CenterContainer/HBoxContainer/Right Colon/RIGHT" unique_id=101781864]
+custom_minimum_size = Vector2(350, 50)
+layout_mode = 2
+theme_override_font_sizes/font_size = 32
+text = "RIGHT"
+vertical_alignment = 1
+
+[node name="Button" type="Button" parent="CenterContainer/HBoxContainer/Right Colon/RIGHT" unique_id=2011546741]
+custom_minimum_size = Vector2(100, 50)
+layout_mode = 2
+focus_neighbor_left = NodePath("../../../Left Colon/BACKWARDS/Button")
+focus_neighbor_top = NodePath("../../LEFT/Button")
+focus_neighbor_bottom = NodePath("../../DODGE/Button")
+
+[node name="DODGE" type="HBoxContainer" parent="CenterContainer/HBoxContainer/Right Colon" unique_id=1762625697]
+layout_mode = 2
+theme_override_constants/separation = 0
+
+[node name="Label" type="Label" parent="CenterContainer/HBoxContainer/Right Colon/DODGE" unique_id=859290686]
+custom_minimum_size = Vector2(350, 50)
+layout_mode = 2
+theme_override_font_sizes/font_size = 32
+text = "DODGE"
+vertical_alignment = 1
+
+[node name="Button" type="Button" parent="CenterContainer/HBoxContainer/Right Colon/DODGE" unique_id=1337172927]
+custom_minimum_size = Vector2(100, 50)
+layout_mode = 2
+focus_neighbor_left = NodePath("../../../Left Colon/JUMP/Button")
+focus_neighbor_top = NodePath("../../RIGHT/Button")
+focus_neighbor_bottom = NodePath("../../SPRINT/Button")
+
+[node name="SPRINT" type="HBoxContainer" parent="CenterContainer/HBoxContainer/Right Colon" unique_id=1763276133]
+layout_mode = 2
+theme_override_constants/separation = 0
+
+[node name="Label" type="Label" parent="CenterContainer/HBoxContainer/Right Colon/SPRINT" unique_id=1255940360]
+custom_minimum_size = Vector2(350, 50)
+layout_mode = 2
+theme_override_font_sizes/font_size = 32
+text = "SPRINT"
+vertical_alignment = 1
+
+[node name="Button" type="Button" parent="CenterContainer/HBoxContainer/Right Colon/SPRINT" unique_id=929682828]
+custom_minimum_size = Vector2(100, 50)
+layout_mode = 2
+focus_neighbor_left = NodePath("../../../Left Colon/SWITCH WEAPON/Button")
+focus_neighbor_top = NodePath("../../DODGE/Button")
+focus_neighbor_bottom = NodePath("../../SHOOT/Button")
+
+[node name="SHOOT" type="HBoxContainer" parent="CenterContainer/HBoxContainer/Right Colon" unique_id=1903282768]
+layout_mode = 2
+theme_override_constants/separation = 0
+
+[node name="Label" type="Label" parent="CenterContainer/HBoxContainer/Right Colon/SHOOT" unique_id=854753000]
+custom_minimum_size = Vector2(350, 50)
+layout_mode = 2
+theme_override_font_sizes/font_size = 32
+text = "SHOOT"
+vertical_alignment = 1
+
+[node name="Button" type="Button" parent="CenterContainer/HBoxContainer/Right Colon/SHOOT" unique_id=1266830039]
+custom_minimum_size = Vector2(100, 50)
+layout_mode = 2
+focus_neighbor_left = NodePath("../../../Left Colon/TARGET LEFT/Button")
+focus_neighbor_top = NodePath("../../SPRINT/Button")
+focus_neighbor_bottom = NodePath("../../LAUNCHER/Button")
+
+[node name="LAUNCHER" type="HBoxContainer" parent="CenterContainer/HBoxContainer/Right Colon" unique_id=67762267]
+layout_mode = 2
+theme_override_constants/separation = 0
+
+[node name="Label" type="Label" parent="CenterContainer/HBoxContainer/Right Colon/LAUNCHER" unique_id=595283872]
+custom_minimum_size = Vector2(350, 50)
+layout_mode = 2
+theme_override_font_sizes/font_size = 32
+text = "LAUNCHER"
+vertical_alignment = 1
+
+[node name="Button" type="Button" parent="CenterContainer/HBoxContainer/Right Colon/LAUNCHER" unique_id=1926647186]
+custom_minimum_size = Vector2(100, 50)
+layout_mode = 2
+focus_neighbor_left = NodePath("../../../Left Colon/TARGET RIGHT/Button")
+focus_neighbor_top = NodePath("../../SHOOT/Button")
+focus_neighbor_bottom = NodePath("../../TARGET/Button")
+
+[node name="TARGET" type="HBoxContainer" parent="CenterContainer/HBoxContainer/Right Colon" unique_id=1642432155]
+layout_mode = 2
+theme_override_constants/separation = 0
+
+[node name="Label" type="Label" parent="CenterContainer/HBoxContainer/Right Colon/TARGET" unique_id=1848630420]
+custom_minimum_size = Vector2(350, 50)
+layout_mode = 2
+theme_override_font_sizes/font_size = 32
+text = "TARGET	"
+vertical_alignment = 1
+
+[node name="Button" type="Button" parent="CenterContainer/HBoxContainer/Right Colon/TARGET" unique_id=502767675]
+custom_minimum_size = Vector2(100, 50)
+layout_mode = 2
+focus_neighbor_left = NodePath("../../../Left Colon/LIGHT ATTACK/Button")
+focus_neighbor_top = NodePath("../../LAUNCHER/Button")
+focus_neighbor_bottom = NodePath("../../TAUNT/Button")
+
+[node name="TAUNT" type="HBoxContainer" parent="CenterContainer/HBoxContainer/Right Colon" unique_id=606875821]
+layout_mode = 2
+theme_override_constants/separation = 0
+
+[node name="Label" type="Label" parent="CenterContainer/HBoxContainer/Right Colon/TAUNT" unique_id=670974877]
+custom_minimum_size = Vector2(350, 50)
+layout_mode = 2
+theme_override_font_sizes/font_size = 32
+text = "TAUNT"
+vertical_alignment = 1
+
+[node name="Button" type="Button" parent="CenterContainer/HBoxContainer/Right Colon/TAUNT" unique_id=772152486]
+custom_minimum_size = Vector2(100, 50)
+layout_mode = 2
+focus_neighbor_left = NodePath("../../../Left Colon/HEAVY ATTACK/Button")
+focus_neighbor_top = NodePath("../../TARGET/Button")
+focus_neighbor_bottom = NodePath("../../LEFT/Button")

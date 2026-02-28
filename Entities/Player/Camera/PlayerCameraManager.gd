@@ -72,7 +72,7 @@ func _unhandled_input(event: InputEvent) -> void:
 	if event is InputEventMouseMotion and _mouseCaptured and not _controllerActive:
 		var mouseDelta := event.relative as Vector2 * MOUSE_SENSITIVITY
 
-		_rotateCamera(followCam, Vector2(mouseDelta.y * INVERT_VERTICAL, mouseDelta.x))
+		_rotateCamera(followCam, Vector2(-mouseDelta.y * INVERT_VERTICAL, mouseDelta.x))
 
 #endregion
 

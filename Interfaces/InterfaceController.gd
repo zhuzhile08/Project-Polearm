@@ -1,7 +1,7 @@
 extends CanvasLayer
 class_name InterfaceController
 
-enum SubMenus { MAIN, OPTIONS, PAUSE }
+enum SubMenus { MAIN, OPTIONS, PAUSE, GAMEOPTIONS, VIDEOOPTIONS, AUDIOOPTIONS, CONTROLLEROPTIONS, KEYBOARDOPTIONS }
 
 # Local variable to track history
 var menuHistory: Array[Control] = []
@@ -9,7 +9,9 @@ var menuHistory: Array[Control] = []
 @onready var menuMapping = {
 	SubMenus.MAIN: $MainMenu,
 	SubMenus.OPTIONS: $OptionsMenu,
-	SubMenus.PAUSE: $PauseMenu
+	SubMenus.PAUSE: $PauseMenu,
+	SubMenus.CONTROLLEROPTIONS: $ControllerMapping,
+	SubMenus.KEYBOARDOPTIONS: $KeyboardMapping
 }
 
 func _ready() -> void:
@@ -78,7 +80,9 @@ func onGamePaused(is_paused: bool) -> void:
 		hideMenu()
 		menuHistory.clear()
 
-# --- BUTTON LINKS ---
+#region --- BUTTON LINKS ---
+
+# --- Main Menu Buttons ---
 func onPlayPressed() -> void:
 	# Tell the SceneLoader to take over!
 	SignalBus.startSceneRequested.emit("res://Stages/Documentation/Gym/Gym.tscn")
@@ -97,3 +101,24 @@ func onMainMenuPressed() -> void:
 
 func onContinuePressed() -> void:
 	menuGoBack()
+
+# --- Options Menu Buttons ---
+func onGameOptionsPressed() -> void:
+	pass # Replace with function body.
+
+
+func onVideoOptionsPressed() -> void:
+	pass # Replace with function body.
+
+
+func onAudioOptionsPressed() -> void:
+	pass # Replace with function body.
+
+
+func onControllerOptionsPressed() -> void:
+	switchMenuTo(SubMenus.CONTROLLEROPTIONS)
+
+func onKeyboardOptionsPressed() -> void:
+	switchMenuTo(SubMenus.KEYBOARDOPTIONS)
+
+#endregion
