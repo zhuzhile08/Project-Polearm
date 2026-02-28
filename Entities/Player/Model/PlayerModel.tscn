@@ -869,6 +869,7 @@ ANIMATION_NAME = "Idle"
 metadata/_custom_type_script = "uid://jc1g0sv32qq1"
 
 [node name="Run" type="Node" parent="ActionManager" unique_id=1599470530]
+process_mode = 4
 script = ExtResource("7_j3w6i")
 RUN_SPEED = 5.0
 TYPE = 3
