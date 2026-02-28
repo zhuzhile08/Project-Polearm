@@ -70,11 +70,10 @@ const STEP_RAY_VERTICAL_OFFSET : float = 0.01
 
 @export_category("Slope settings")
 @export_range(-360, 360, 0.001, "radians_as_degrees") var SLOPE_MAX_ANGLE : float = 0.786
-@export var SLOPE_SNAP_LENGTH : float = 0.3
 
 @export_category("Step settings")
 @export var STEP_MAX_HEIGHT : float = 0.4
-@export var STEP_SPEED_FACTOR : float = 0.45
+@export var STEP_SPEED_FACTOR : float = 0.4
 
 #endregion
 
