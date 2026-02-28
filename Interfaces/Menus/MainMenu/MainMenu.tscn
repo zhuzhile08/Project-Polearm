@@ -6,7 +6,7 @@
 [ext_resource type="PackedScene" uid="uid://cnusbpv84eyf0" path="res://Interfaces/Menus/OptionsMenu/Suboptions/ControllerMapping.tscn" id="4_fvlcm"]
 [ext_resource type="PackedScene" uid="uid://cthgc7cm7suej" path="res://Interfaces/Menus/OptionsMenu/Suboptions/KeyboardMapping.tscn" id="5_3xha2"]
 
-[node name="MainMenu" type="CanvasLayer" unique_id=1607360029]
+[node name="MainMenu" type="CanvasLayer" unique_id=331818549]
 process_mode = 3
 script = ExtResource("1_0vu78")
 INITIAL_MENU_TYPE = 1
