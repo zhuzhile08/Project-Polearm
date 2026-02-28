@@ -54,15 +54,15 @@ const STEP_RAY_VERTICAL_OFFSET : float = 0.01
 @export_category("Physics settings")
 @export var BODY_COLLIDER_RADIUS = 0.5
 @export var BODY_COLLIDER_FLOATING_HEIGHT : float = 0.3
-@export var GROUND_CAST_RADIUS_DIFFERENCE : float = 0.1
+@export var GROUND_CAST_RADIUS : float = 0.4
 
 @export_category("Slope settings")
 @export_range(-360, 360, 0.001, "radians_as_degrees") var SLOPE_MAX_ANGLE : float = 0.786
 @export var SLOPE_SNAP_LENGTH : float = 0.3
 
 @export_category("Step settings")
-@export var STEP_MAX_HEIGHT : float = 0.5
-@export var STEP_SPEED_FACTOR : float = 0.35
+@export var STEP_MAX_HEIGHT : float = 0.4
+@export var STEP_SPEED_FACTOR : float = 0.45
 
 #endregion
 
@@ -114,8 +114,8 @@ func _physics_process(delta : float) -> void:
 	_moveAndSmooth(delta)
 
 
-func _process(_delta : float) -> void: # Used for debugging purposes only
-	DEBUG_drawCollisionPoints()
+#func _process(_delta : float) -> void: # Used for debugging purposes only
+#	DEBUG_drawCollisionPoints()
 
 #endregion
 
@@ -182,7 +182,7 @@ func _configureHitboxes() -> void:
 	bodyCollider.position.y += BODY_COLLIDER_FLOATING_HEIGHT / 2
 	_bodyColliderShape.height -= BODY_COLLIDER_FLOATING_HEIGHT
 
-	_groundCastShape.radius = maxf(BODY_COLLIDER_RADIUS - GROUND_CAST_RADIUS_DIFFERENCE, 0.1)
+	_groundCastShape.radius = GROUND_CAST_RADIUS
 
 
 # Physics functions
@@ -210,27 +210,28 @@ func _processCollisions() -> void:
 
 	if _stepState == StepState.none:
 		_probeData = _processFootCollisionData() # We will need the data from the probe if we are stepping
+		var stepQuery := _calculateStepWallProbeQuery(global_position, _groundData.point)
+		var direction := Vector3(_targetVelocity.x, 0, _targetVelocity.z).normalized()
 
 		# We are checking for downwards steps first because stopping after stepping down and moving again may confuse
 		# the system into thinking that we are stepping up before quickly stepping down again if we check step up first
 
-		if _probeData.grounded == true and _probeData.offset > STEP_RAY_VERTICAL_OFFSET:
+		if _probeData.grounded == true and _probeData.offset > STEP_RAY_VERTICAL_OFFSET and _validateStepWallProbeQuery(stepQuery, -direction):
 			# We don't need to check if the distance is too large for us to step down, as it was already done for _probeData.grounded
-			if _probeStepWall(global_position, _groundData.point, -Vector3(_targetVelocity.x, 0, _targetVelocity.z).normalized()):
+			if _probeStepWall(stepQuery):
 				_groundData = _probeData # We need to assign ground data to the probe data because the probe is the true "target position" of the player
 				_stepState = StepState.down
 				
 				return
-		elif _groundData.offset < -STEP_RAY_VERTICAL_OFFSET and _groundData.offset >= -STEP_MAX_HEIGHT:
-			if _probeStepWall(global_position, _groundData.point, Vector3(_targetVelocity.x, 0, _targetVelocity.z).normalized()):
-				_stepState = StepState.up
-
-				return
+		elif _groundData.offset < -STEP_RAY_VERTICAL_OFFSET and _groundData.offset >= -STEP_MAX_HEIGHT and _validateStepWallProbeQuery(stepQuery, direction) and _probeStepWall(stepQuery):
+			_stepState = StepState.up
+			
+			return
 
 	# If we are not stepping at all, we calculate a point in the direction the player is moving 
 	# slightly behind the edge of the player hitbox. This allows us to perform a bit of smoothing
 
-	_probeData = _probePointInDirection(_processFootCollisionData(), global_position, _targetVelocity.normalized(), BODY_COLLIDER_RADIUS - STEP_RAY_VERTICAL_OFFSET, 4)
+	_probeData = _probePointInDirection(_processFootCollisionData(), global_position, _targetVelocity.normalized(), GROUND_CAST_RADIUS, 3)
 
 
 func _moveAndSmooth(delta : float) -> void:
@@ -239,6 +240,8 @@ func _moveAndSmooth(delta : float) -> void:
 		move_and_slide()
 
 		return
+	
+	# print(_stepState)
 
 	if _stepState == StepState.none:
 		if abs(_groundData.offset) < COLLISION_EPSILON:
@@ -355,21 +358,31 @@ func _probePointInDirection(baseData : GroundData, startingPos : Vector3, direct
 
 	return result
 
-# Checks if the wall of a step is actually a wall and not a slope
-func _probeStepWall(sourcePointGlobal : Vector3, targetPointGlobal : Vector3, direction : Vector3) -> bool:
+
+# Step wall validation functions
+
+# CAUTION: returns the non-globalized target position for usage in _validateStepWallProbeQuery
+func _calculateStepWallProbeQuery(sourcePointGlobal : Vector3, targetPointGlobal : Vector3) -> PhysicsRayQueryParameters3D:
 	var sourcePos := Vector3(sourcePointGlobal.x, targetPointGlobal.y - STEP_RAY_VERTICAL_OFFSET, sourcePointGlobal.z)
 	var targetPos := (targetPointGlobal - sourcePos) * STEP_RAY_SCALE_FACTOR
 	targetPos.y = 0
 
-	if targetPos.dot(direction) < 0:
+	return PhysicsRayQueryParameters3D.create( \
+		sourcePos, \
+		targetPos, \
+		COLLISION_LAYERS)
+
+func _validateStepWallProbeQuery(query : PhysicsRayQueryParameters3D, direction : Vector3) -> bool:
+	if query.to.dot(direction) < 0:
 		# We also check for a direction variable, as if the body is moving in a direction
 		# incompatible with the step direction, we report this as false to prevent a step
 		return false
+	
+	return true
 
-	var query := PhysicsRayQueryParameters3D.create( \
-		sourcePos, \
-		sourcePos + targetPos, \
-		COLLISION_LAYERS)
+# Checks if the wall of a step is actually a wall and not a slope
+func _probeStepWall(query : PhysicsRayQueryParameters3D) -> bool:
+	query.to += query.from
 	var collision := get_world_3d().direct_space_state.intersect_ray(query)
 	
 	if collision and (collision.normal as Vector3).y <= SLOPE_MAX_ANGLE_COS:
