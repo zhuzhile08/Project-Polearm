@@ -111,7 +111,7 @@ var _stepState : StepState = StepState.none
 
 var _grounded : bool = false
 
-var _targetVelocity : Vector3
+var _targetVelocity : Vector3 = Vector3.ZERO
 
 
 # Caching
