@@ -32,27 +32,47 @@ class CameraInputData:
 
 #region Member variables
 
-var activeCam : PhantomCamera3D
+var _activeCam : PhantomCamera3D
 
-var heldTargetToggle : bool = false
-var isTargeting : bool = false # Only active if the above toggle is true
+var _heldTargetToggle : bool = false
+var _isTargeting : bool = false # Only active if the above toggle is true
+
+var _mouseCaptured : bool = false
+var _controllerActive : bool = false
 
 #endregion
 
 
 #region Built-in functions
 
-func _physics_process(delta: float) -> void:
-	var input := handleInput()
+func _ready() -> void:
+	_setMouseCaptured(true)
 
-	rotateCamera(followCam, Vector2(input.direction.y * delta * CONTROLLER_SENSITIVITY, input.direction.x * delta * CONTROLLER_SENSITIVITY))
+
+func _physics_process(delta: float) -> void:
+	var input := _handleInput()
+
+	if input.direction.length_squared() > 0:
+		_controllerActive = true
+
+		_rotateCamera(followCam, Vector2(input.direction.y * delta * CONTROLLER_SENSITIVITY, input.direction.x * delta * CONTROLLER_SENSITIVITY))
+	else:
+		_controllerActive = false
 
 
 func _unhandled_input(event: InputEvent) -> void:
-	if event is InputEventMouseMotion:
-		var mouseDelta = event.relative * MOUSE_SENSITIVITY
+	if event.is_action_pressed("ui_cancel"):
+		_setMouseCaptured(not _mouseCaptured)
+		return
 	
-		rotateCamera(followCam, Vector2(-mouseDelta.y, mouseDelta.x))
+	if event is InputEventMouseButton and event.pressed and not _mouseCaptured:
+		_setMouseCaptured(true)
+		return
+
+	if event is InputEventMouseMotion and _mouseCaptured and not _controllerActive:
+		var mouseDelta := event.relative as Vector2 * MOUSE_SENSITIVITY
+
+		_rotateCamera(followCam, Vector2(mouseDelta.y * INVERT_VERTICAL, mouseDelta.x))
 
 #endregion
 
@@ -62,7 +82,7 @@ func _unhandled_input(event: InputEvent) -> void:
 func setFollowTarget(node : Node3D) -> void:
 	followCam.set_follow_target(node)
 
-	activeCam = followCam # TEMPORARY
+	_activeCam = followCam # TEMPORARY
 
 
 # func setLockOnTarget(target : CharacterBody3D = null) -> void:
@@ -72,17 +92,15 @@ func setFollowTarget(node : Node3D) -> void:
 #	pass
 
 
-func cameraPlaneDirection() -> Vector2:
-	var direction = activeCam.global_position - activeCam._follow_target_output_position # Private variable of PhantomCamera3D, maybe someday open PR to add a proper getter function
-	return Vector2(direction.x, direction.z).normalized()
-
 
 #endregion
 
 
 #region Private functions
 
-func rotateCamera(camera : PhantomCamera3D, angle : Vector2) -> void:
+# Camera functions
+
+func _rotateCamera(camera : PhantomCamera3D, angle : Vector2) -> void:
 	var cameraRotation := camera.get_third_person_rotation_degrees()
 
 	cameraRotation.y = wrapf(cameraRotation.y - angle.y, 0, 360)
@@ -90,15 +108,25 @@ func rotateCamera(camera : PhantomCamera3D, angle : Vector2) -> void:
 
 	camera.set_third_person_rotation_degrees(cameraRotation)
 
-func handleInput() -> CameraInputData:
+func _cameraPlaneDirection() -> Vector2:
+	var direction = _activeCam.global_position - _activeCam._follow_target_output_position # Private variable of PhantomCamera3D, maybe someday open PR to add a proper getter function
+	return Vector2(direction.x, direction.z).normalized()
+
+
+# Input handling
+
+func _handleInput() -> CameraInputData:
 	var data : CameraInputData = CameraInputData.new()
 
-	# if not mouseCamera: # Mouse rotation is handled in _unhandled_input() # How to check?
 	data.direction = Input.get_vector("Camera left", "Camera right", "Camera down", "Camera up").normalized()
 
 	data.targetDirection = Input.get_axis("Target left", "Target right")
 	data.heldTargetToggle = Input.is_action_pressed("Held target toggle")
 
 	return data
+
+func _setMouseCaptured(captured : bool) -> void:
+	_mouseCaptured = captured
+	Input.mouse_mode = Input.MOUSE_MODE_CAPTURED if captured else Input.MOUSE_MODE_VISIBLE
 
 #endregion
