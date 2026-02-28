@@ -60,10 +60,9 @@ const DOWNWARDS_RAY_LENGTH := Vector3(0.0, 10.0, 0.0)
 # Hitbox configuration settings
 
 const GROUND_CAST_DIST_TO_GROUND : float = 1
-const STEP_RAY_VERTICAL_OFFSET : float = 0.01
+const STEP_RAY_VERTICAL_OFFSET : float = 0.03
 
 #endregion
-
 
 
 #region Exported variables
