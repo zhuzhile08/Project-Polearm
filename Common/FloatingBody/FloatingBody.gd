@@ -15,6 +15,18 @@ class GroundData extends RefCounted:
 
 	var grounded : bool = false
 
+	func clear() -> void:
+		point = Vector3.ZERO
+		normal = Vector3.ZERO
+		offset = 0
+		grounded = false
+	
+	func copy(other : GroundData) -> void:
+		point = other.point
+		normal = other.normal
+		offset = other.offset
+		grounded = other.grounded
+
 #endregion
 
 
@@ -96,31 +108,28 @@ var _stepState : StepState = StepState.none
 
 var _grounded : bool = false
 
-
-
 var _targetVelocity : Vector3
 
-#endregion
 
+# Caching
 
-#region Built-in funcitons
-
-func _ready() -> void:
-	_configureHitboxes()
-
-
-func _physics_process(delta : float) -> void:
-	_processCollisions()
-	_moveAndSmooth(delta)
-
-
-#func _process(_delta : float) -> void: # Used for debugging purposes only
-#	DEBUG_drawCollisionPoints()
+@onready var _rayQuery : PhysicsRayQueryParameters3D = PhysicsRayQueryParameters3D.create(Vector3.ZERO, Vector3.ZERO, COLLISION_LAYERS)
 
 #endregion
 
 
 #region Public functions
+
+func init() -> void:
+	_configureHitboxes()
+
+func tick(delta : float) -> void:
+	_processCollisions()
+	_moveAndSmooth(delta)
+
+	_groundData.clear()
+	_probeData.clear()
+
 
 # Movement functions
 
@@ -163,10 +172,10 @@ func groundNormal() -> Vector3:
 
 func forceGroundDataUpdate() -> void:
 	if _stepState == StepState.down:
-		_groundData = _processFootCollisionData()
+		_processFootCollisionData(_groundData)
 	else:
 		groundCast.force_shapecast_update()
-		_groundData = _processGroundCollisionData()
+		_processGroundCollisionData(_groundData)
 
 
 #endregion
@@ -188,7 +197,10 @@ func _configureHitboxes() -> void:
 # Physics functions
 
 func _processCollisions() -> void:
-	_groundData = _processFootCollisionData() if _stepState == StepState.down else _processGroundCollisionData()
+	if _stepState == StepState.down:
+		_processFootCollisionData(_groundData)
+	else:
+		_processGroundCollisionData(_groundData)
 
 	# First order of business, we check for groundedness
 
@@ -209,21 +221,21 @@ func _processCollisions() -> void:
 	# Stepping collision checks
 
 	if _stepState == StepState.none:
-		_probeData = _processFootCollisionData() # We will need the data from the probe if we are stepping
-		var stepQuery := _calculateStepWallProbeQuery(global_position, _groundData.point)
+		_processFootCollisionData(_probeData) # We will need the data from the probe if we are stepping
+		_calculateStepWallProbeQuery(global_position, _groundData.point)
 		var direction := Vector3(_targetVelocity.x, 0, _targetVelocity.z).normalized()
 
 		# We are checking for downwards steps first because stopping after stepping down and moving again may confuse
 		# the system into thinking that we are stepping up before quickly stepping down again if we check step up first
 
-		if _probeData.grounded == true and _probeData.offset > STEP_RAY_VERTICAL_OFFSET and _validateStepWallProbeQuery(stepQuery, -direction):
+		if _probeData.grounded == true and _probeData.offset > STEP_RAY_VERTICAL_OFFSET and _validateStepWallProbeQuery(-direction):
 			# We don't need to check if the distance is too large for us to step down, as it was already done for _probeData.grounded
-			if _probeStepWall(stepQuery):
-				_groundData = _probeData # We need to assign ground data to the probe data because the probe is the true "target position" of the player
+			if _probeStepWall():
+				_groundData.copy(_probeData) # We need to assign ground data to the probe data because the probe is the true "target position" of the player
 				_stepState = StepState.down
 				
 				return
-		elif _groundData.offset < -STEP_RAY_VERTICAL_OFFSET and _groundData.offset >= -STEP_MAX_HEIGHT and _validateStepWallProbeQuery(stepQuery, direction) and _probeStepWall(stepQuery):
+		elif _groundData.offset < -STEP_RAY_VERTICAL_OFFSET and _groundData.offset >= -STEP_MAX_HEIGHT and _validateStepWallProbeQuery(direction) and _probeStepWall():
 			_stepState = StepState.up
 			
 			return
@@ -231,7 +243,8 @@ func _processCollisions() -> void:
 	# If we are not stepping at all, we calculate a point in the direction the player is moving 
 	# slightly behind the edge of the player hitbox. This allows us to perform a bit of smoothing
 
-	_probeData = _probePointInDirection(_processFootCollisionData(), global_position, _targetVelocity.normalized(), GROUND_CAST_RADIUS, 3)
+	_processFootCollisionData(_probeData)
+	_probePointInDirection(_probeData, global_position, _targetVelocity.normalized(), GROUND_CAST_RADIUS, 3)
 
 
 func _moveAndSmooth(delta : float) -> void:
@@ -254,10 +267,13 @@ func _moveAndSmooth(delta : float) -> void:
 		# We overcorrect the line when the difference between ground and actual position is too big
 
 		var line := Vector3(global_position.x, global_position.y + _groundData.offset, global_position.z) - _probeData.point
-		#line.y *= 1 + (line.dot(_probeData.normal) if _probeData.normal.y > global_position.y else -line.dot(_probeData.normal))
 
-		# The two cross products produce the final slope vector to rotate velocity by
-		velocity = Utility.Math.rotateVectorOntoPlane(_targetVelocity, line.cross(_probeData.normal).cross(line).normalized())
+		# If the horizontal OR vertical component of line is too small
+		if abs(line.y) < COLLISION_EPSILON or (line.x * line.x + line.z * line.z) < COLLISION_EPSILON * COLLISION_EPSILON:
+			velocity = Utility.Math.rotateVectorOntoPlane(_targetVelocity, _groundData.normal)
+		else:
+			# The two cross products produce the final slope vector to rotate velocity by
+			velocity = Utility.Math.rotateVectorOntoPlane(_targetVelocity, line.cross(_probeData.normal).cross(line).normalized())
 	else:
 		# If we know we are stepping, we will rotate the input velocity vector onto the plane of only the step point
 		# We will also not apply any ground snapping, as this will ruin the stepping and since it already handles it sort of
@@ -277,35 +293,23 @@ func _moveAndSmooth(delta : float) -> void:
 
 # Collision analysis functions
 
-func _processGroundCollisionData() -> GroundData:
-	var result : GroundData = GroundData.new()
-
+func _processGroundCollisionData(result : GroundData) -> void:
 	if not groundCast.is_colliding():
-		return result
+		return
 
 	result.point = _highestGroundPointGlobal()
 	result.offset = _vertOffsetToPlayerGlobal(result.point)
 
-	var query := PhysicsRayQueryParameters3D.create( \
-		result.point + Vector3.UP, \
-		result.point - DOWNWARDS_RAY_LENGTH, \
-		COLLISION_LAYERS)
-	result.normal = get_world_3d().direct_space_state.intersect_ray(query).normal as Vector3
+	_initRayQuery(result.point + Vector3.UP, result.point - DOWNWARDS_RAY_LENGTH)
+	result.normal = get_world_3d().direct_space_state.intersect_ray(_rayQuery).normal as Vector3
 
 	if result.offset <= _bufferedGroundMaxDistance() and result.normal.y > SLOPE_MAX_ANGLE_COS:
 		# As the normal vector is normalized, its angle can be determined by simply checking for its height
 		result.grounded = true
 
-	return result
-
-func _processFootCollisionData() -> GroundData:
-	var result : GroundData = GroundData.new()
-
-	var query := PhysicsRayQueryParameters3D.create( \
-		global_position + Vector3.UP, \
-		global_position - DOWNWARDS_RAY_LENGTH, \
-		COLLISION_LAYERS)
-	var collision := get_world_3d().direct_space_state.intersect_ray(query)
+func _processFootCollisionData(result : GroundData) -> void:
+	_initRayQuery(global_position + Vector3.UP, global_position - DOWNWARDS_RAY_LENGTH)
+	var collision := get_world_3d().direct_space_state.intersect_ray(_rayQuery)
 
 	if collision:
 		result.point = collision.position
@@ -316,16 +320,8 @@ func _processFootCollisionData() -> GroundData:
 			# As the normal vector is normalized, its angle can be determined by simply checking for its height
 			result.grounded = true
 
-	return result
-
 # Returns the farthest point on the line from startingPos towards direction * distance, which is continuously grounded
-func _probePointInDirection(baseData : GroundData, startingPos : Vector3, direction : Vector3, distance : float, iterations : int) -> GroundData:
-	var result := GroundData.new()
-	result.point = baseData.point
-	result.normal = baseData.normal
-	result.offset = baseData.offset
-	result.grounded = baseData.grounded
-
+func _probePointInDirection(result : GroundData, startingPos : Vector3, direction : Vector3, distance : float, iterations : int) -> void:
 	var iterDistance := distance / iterations
 	var iterShift := direction * iterDistance
 	iterShift.y = 0
@@ -333,11 +329,11 @@ func _probePointInDirection(baseData : GroundData, startingPos : Vector3, direct
 	var pos := startingPos + iterShift
 
 	for i : int in range(iterations):
-		var query := PhysicsRayQueryParameters3D.create( \
-			pos + Vector3.UP, \
-			pos - DOWNWARDS_RAY_LENGTH, \
-			COLLISION_LAYERS)
-		var collision := get_world_3d().direct_space_state.intersect_ray(query)
+		var posOffset := pos + Vector3.UP * STEP_MAX_HEIGHT
+		posOffset.y -= STEP_RAY_VERTICAL_OFFSET # We make our ray slightly lower than the max step height to prevent stepping to high
+
+		_initRayQuery(posOffset, pos - DOWNWARDS_RAY_LENGTH)
+		var collision := get_world_3d().direct_space_state.intersect_ray(_rayQuery)
 
 		if not collision:
 			break
@@ -353,37 +349,31 @@ func _probePointInDirection(baseData : GroundData, startingPos : Vector3, direct
 		result.offset = dist
 		result.normal = normal
 		result.grounded = true
-
+		
 		pos += iterShift
-
-	return result
+		pos.y = point.y
 
 
 # Step wall validation functions
 
 # CAUTION: returns the non-globalized target position for usage in _validateStepWallProbeQuery
-func _calculateStepWallProbeQuery(sourcePointGlobal : Vector3, targetPointGlobal : Vector3) -> PhysicsRayQueryParameters3D:
+func _calculateStepWallProbeQuery(sourcePointGlobal : Vector3, targetPointGlobal : Vector3) -> void:
 	var sourcePos := Vector3(sourcePointGlobal.x, targetPointGlobal.y - STEP_RAY_VERTICAL_OFFSET, sourcePointGlobal.z)
 	var targetPos := (targetPointGlobal - sourcePos) * STEP_RAY_SCALE_FACTOR
 	targetPos.y = 0
 
-	return PhysicsRayQueryParameters3D.create( \
-		sourcePos, \
-		targetPos, \
-		COLLISION_LAYERS)
+	_initRayQuery(sourcePos, targetPos)
 
-func _validateStepWallProbeQuery(query : PhysicsRayQueryParameters3D, direction : Vector3) -> bool:
-	if query.to.dot(direction) < 0:
-		# We also check for a direction variable, as if the body is moving in a direction
-		# incompatible with the step direction, we report this as false to prevent a step
+# We also check for a direction variable to prevent the body is moving in a direction incompatible with the step direction
+func _validateStepWallProbeQuery(direction : Vector3) -> bool:
+	if _rayQuery.to.dot(direction) < 0:
 		return false
-	
 	return true
 
 # Checks if the wall of a step is actually a wall and not a slope
-func _probeStepWall(query : PhysicsRayQueryParameters3D) -> bool:
-	query.to += query.from
-	var collision := get_world_3d().direct_space_state.intersect_ray(query)
+func _probeStepWall() -> bool:
+	_rayQuery.to += _rayQuery.from
+	var collision := get_world_3d().direct_space_state.intersect_ray(_rayQuery)
 	
 	if collision and (collision.normal as Vector3).y <= SLOPE_MAX_ANGLE_COS:
 		return true
@@ -418,8 +408,13 @@ func _bufferedGroundMaxDistance() -> float:
 		return (BODY_COLLIDER_FLOATING_HEIGHT + STEP_MAX_HEIGHT) * GROUND_DISTANCE_BUFFER
 	return BODY_COLLIDER_FLOATING_HEIGHT * GROUND_DISTANCE_BUFFER
 
+# Assign our cached ray cast query
+func _initRayQuery(from : Vector3, to : Vector3) -> void:
+	_rayQuery.from = from
+	_rayQuery.to = to
 
-# Debug functionality
+
+# Debug functionality, put in tick() for debugging
 func DEBUG_drawCollisionPoints() -> void:
 	if groundCast.is_colliding():
 		var points : PackedVector3Array
@@ -430,7 +425,7 @@ func DEBUG_drawCollisionPoints() -> void:
 			DebugDraw3D.draw_arrow(pt, pt + groundCast.get_collision_normal(i), Color.PINK, 0.05)
 
 		DebugDraw3D.draw_points(points, DebugDraw3D.POINT_TYPE_SQUARE, 0.1, Color.CRIMSON)
-	
+
 	if _groundData.point != Vector3.ZERO:
 		var points : PackedVector3Array
 		points.push_back(_groundData.point)
