@@ -31,6 +31,7 @@ target_position = Vector3(0, -10, 0)
 collision_mask = 32768
 
 [node name="InputManager" type="Node" parent="." unique_id=1541718122]
+process_mode = 4
 script = ExtResource("2_aj5cy")
 WALK_LIMIT_SQUARED = 0.25
 metadata/_custom_type_script = "uid://ls6r1csl2o7j"

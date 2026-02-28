@@ -840,17 +840,21 @@ libraries/ = ExtResource("2_dvg17")
 script = ExtResource("2_m20wt")
 _rootMotionVelocityFactor = 0.0
 
-[node name="Resources" type="Node" parent="." unique_id=2081649325 node_paths=PackedStringArray("model")]
+[node name="Resources" type="Node" parent="." unique_id=534401950 node_paths=PackedStringArray("model")]
+process_mode = 4
 script = ExtResource("3_dvg17")
 FLOW_CURVE = SubResource("Curve_prnb2")
 model = NodePath("..")
+metadata/_custom_type_script = "uid://bjw3tygpodtev"
 
 [node name="CombatManager" type="Node" parent="." unique_id=2042843911 node_paths=PackedStringArray("resources")]
+process_mode = 4
 script = ExtResource("4_f2y5u")
 resources = NodePath("../Resources")
 metadata/_custom_type_script = "uid://620any2k6qha"
 
 [node name="ActionManager" type="Node" parent="." unique_id=1256291964 node_paths=PackedStringArray("model", "resources", "combatManager", "animationPlayer")]
+process_mode = 4
 script = ExtResource("6_n82hr")
 model = NodePath("..")
 resources = NodePath("../Resources")
@@ -869,7 +873,6 @@ ANIMATION_NAME = "Idle"
 metadata/_custom_type_script = "uid://jc1g0sv32qq1"
 
 [node name="Run" type="Node" parent="ActionManager" unique_id=1599470530]
-process_mode = 4
 script = ExtResource("7_j3w6i")
 RUN_SPEED = 5.0
 TYPE = 3
