@@ -2,13 +2,6 @@ extends Node
 class_name Main
 
 
-#region Scene members
-
-@onready var inputManager := $InputManager as MainInputManager
-
-#endregion
-
-
 #region Member variables
 
 var uberStates : Dictionary[UberState.Type, UberState]
@@ -29,10 +22,8 @@ func _ready() -> void:
 	_currentState = uberStates[UberState.Type.boot]
 	_currentState.enter()
 
-func _physics_process(_delta : float) -> void:
-	inputManager.pollInputs()
-	
-	var nextState : UberState.Type = _currentState.nextState(inputManager.inputs)
+func _process(_delta : float) -> void:
+	var nextState := _currentState.nextState()
 	if nextState != UberState.Type.none:
 		_switchTo(nextState)
 

@@ -9,6 +9,13 @@ class_name InterfaceStateMachine
 #endregion
 
 
+#region Scene members
+
+@onready var inputManager := $InputManager as ISMInputManager
+
+#endregion
+
+
 #region Member variables
 
 var menus : Dictionary[InterfaceState.Type, InterfaceState]
@@ -34,13 +41,15 @@ func _ready() -> void:
 
 #region Public functions
 
-func manageStates(input : MainInputManager.Data) -> void:
-	var nextMenu : InterfaceState.Type = _currentMenu.nextMenu(input)
+func update() -> void:
+	inputManager.pollInputs()
+
+	var nextMenu := _currentMenu.nextMenu(inputManager.inputs)
 	if nextMenu != InterfaceState.Type.none:
 		_switchTo(nextMenu)
 
-func exitType() -> int:
-	return _currentMenu.exitType()
+func exit() -> int:
+	return _currentMenu.exit()
 
 #endregion
 
@@ -48,8 +57,8 @@ func exitType() -> int:
 #region Private functions
 
 func _switchTo(nextState):
-	_currentMenu.exit()
+	_currentMenu.showMenu()
 	_currentMenu = menus[nextState]
-	_currentMenu.enter()
+	_currentMenu.hideMenu()
 
 #endregion

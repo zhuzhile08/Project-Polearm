@@ -28,22 +28,21 @@ enum Type {
 
 #region Member functions
 
-func enter() -> void:
-	show()
-
-func exit() -> void:
-	hide()
-
-func nextMenu(inputs : MainInputManager.Data) -> Type:
-	return Type.none
-
-func exitType() -> int:
-	return 0
-
 func showMenu() -> void:
 	show()
 
 func hideMenu() -> void:
 	hide()
 	
+#endregion
+
+
+#region Implementation functions
+
+func nextMenu(inputs : ISMInputManager.Data) -> Type:
+	return Type.none
+
+func exit() -> int:
+	return 0
+
 #endregion

@@ -22,10 +22,10 @@ func exitImpl() -> void:
 	pass
 
 
-func nextState(input : MainInputManager.Data) -> Type:
-	scene.manageStates(input)
+func nextState() -> Type:
+	scene.update()
 
-	var exitType := scene.exitType() as int
+	var exitType := scene.exit() as int
 
 	if exitType == ExitType.startGame:
 		return Type.game

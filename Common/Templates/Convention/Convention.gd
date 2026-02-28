@@ -79,3 +79,10 @@ class_name Convention
 
 
 #endregion
+
+
+#region Signal functions
+
+
+
+#endregion

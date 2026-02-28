@@ -53,7 +53,7 @@ func exit() -> void:
 
 	exitImpl()
 
-func nextState(_input : MainInputManager.Data) -> Type:
+func nextState() -> Type:
 	return Type.none
 
 #endregion

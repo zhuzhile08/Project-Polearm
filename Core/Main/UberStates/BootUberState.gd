@@ -19,7 +19,7 @@ func exitImpl() -> void:
 	pass
 
 
-func nextState(_input : MainInputManager.Data) -> Type:
+func nextState() -> Type:
 	if not scene.readyToSwitch():
 		return Type.none
 
