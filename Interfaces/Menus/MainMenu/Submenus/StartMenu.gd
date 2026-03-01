@@ -52,4 +52,3 @@ func _on_exit_game_pressed() -> void:
 	_quitGamePressed = true
 
 #endregion
-

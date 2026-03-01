@@ -9,6 +9,7 @@
 [node name="MainMenu" type="CanvasLayer" unique_id=2044156185]
 process_mode = 3
 script = ExtResource("1_0vu78")
+INITIAL_MENU_TYPE = 1
 metadata/_custom_type_script = "uid://cdmfn0vdjybja"
 
 [node name="StartMenu" parent="." unique_id=2089339401 instance=ExtResource("2_4mftg")]
@@ -17,4 +18,3 @@ metadata/_custom_type_script = "uid://cdmfn0vdjybja"
 
 [node name="ControllerMapping" parent="." unique_id=125246150 instance=ExtResource("4_0vu78")]
 script = ExtResource("5_smu38")
-TYPE = 7

@@ -22,7 +22,7 @@ func _on_controller_pressed() -> void:
 func _on_keyboard_pressed() -> void:
 	_onKeyboardOptionsPressed = true
 	
-func nextMenu(inputs : MainInputManager.Data) -> Type:
+func nextMenu(inputs : ISMInputManager.Data) -> Type:
 	if inputs.cancel:
 		pass
 	
