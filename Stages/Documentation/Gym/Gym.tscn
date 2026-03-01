@@ -71,6 +71,14 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.5, 2.1386669)
 
 [node name="Geometry" type="Node" parent="." unique_id=255614809]
 
+[node name="Ground" type="CSGBox3D" parent="Geometry" unique_id=1174585820]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.4, 0, -0.6)
+material_override = ExtResource("1_r3mhs")
+use_collision = true
+collision_layer = 32768
+collision_mask = 0
+size = Vector3(200, 1, 200)
+
 [node name="JumpHeight" type="Node3D" parent="Geometry" unique_id=1328271858]
 
 [node name="JumpDistance" type="Node3D" parent="Geometry" unique_id=1794139538]
@@ -143,9 +151,9 @@ transform = Transform3D(-4.371139e-08, -2.9802322e-08, 1, -7.1054274e-15, 1, 2.9
 pixel_size = 0.008
 text = "50' incline"
 
-[node name="Bumps" type="Node3D" parent="Geometry" unique_id=740124405]
+[node name="Steps" type="Node3D" parent="Geometry" unique_id=740124405]
 
-[node name="Limit" type="CSGBox3D" parent="Geometry/Bumps" unique_id=1828962277]
+[node name="Limit" type="CSGBox3D" parent="Geometry/Steps" unique_id=1828962277]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -6.5, 0.70000005, -1)
 material_override = ExtResource("3_gfyed")
 use_collision = true
@@ -153,12 +161,12 @@ collision_layer = 32768
 collision_mask = 0
 size = Vector3(1, 0.4, 3)
 
-[node name="Label3D" type="Label3D" parent="Geometry/Bumps/Limit" unique_id=1567760448]
+[node name="Label3D" type="Label3D" parent="Geometry/Steps/Limit" unique_id=1567760448]
 transform = Transform3D(-4.371139e-08, 0, 1, 0, 1, 0, -1, 0, -4.371139e-08, 0, 2.5, -2.3841858e-07)
 pixel_size = 0.008
 text = "Step Height 0.4m"
 
-[node name="Large" type="CSGBox3D" parent="Geometry/Bumps" unique_id=1577387821]
+[node name="Large" type="CSGBox3D" parent="Geometry/Steps" unique_id=1577387821]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -3.5, 0.65000004, -1)
 material_override = ExtResource("3_cpyv8")
 use_collision = true
@@ -166,12 +174,12 @@ collision_layer = 32768
 collision_mask = 0
 size = Vector3(1, 0.3, 3)
 
-[node name="Label3D" type="Label3D" parent="Geometry/Bumps/Large" unique_id=1119728918]
+[node name="Label3D" type="Label3D" parent="Geometry/Steps/Large" unique_id=1119728918]
 transform = Transform3D(-4.371139e-08, 0, 1, 0, 1, 0, -1, 0, -4.371139e-08, 0, 2.5499997, -2.3841858e-07)
 pixel_size = 0.008
 text = "Step Height 0.3m"
 
-[node name="Middle" type="CSGBox3D" parent="Geometry/Bumps" unique_id=1314326092]
+[node name="Middle" type="CSGBox3D" parent="Geometry/Steps" unique_id=1314326092]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.5, 0.6, -1)
 material_override = ExtResource("4_gfyed")
 use_collision = true
@@ -179,12 +187,12 @@ collision_layer = 32768
 collision_mask = 0
 size = Vector3(1, 0.2, 3)
 
-[node name="Label3D" type="Label3D" parent="Geometry/Bumps/Middle" unique_id=2048739871]
+[node name="Label3D" type="Label3D" parent="Geometry/Steps/Middle" unique_id=2048739871]
 transform = Transform3D(-4.371139e-08, 0, 1, 0, 1, 0, -1, 0, -4.371139e-08, 0, 2.6, -2.3841858e-07)
 pixel_size = 0.008
 text = "Step Height 0.2m"
 
-[node name="Small" type="CSGBox3D" parent="Geometry/Bumps" unique_id=823278636]
+[node name="Small" type="CSGBox3D" parent="Geometry/Steps" unique_id=823278636]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.5, 0.55, -1)
 material_override = ExtResource("4_gfyed")
 use_collision = true
@@ -193,12 +201,12 @@ collision_mask = 0
 size = Vector3(1, 0.1, 3)
 material = ExtResource("3_cpyv8")
 
-[node name="Label3D" type="Label3D" parent="Geometry/Bumps/Small" unique_id=1206184330]
+[node name="Label3D" type="Label3D" parent="Geometry/Steps/Small" unique_id=1206184330]
 transform = Transform3D(-4.371139e-08, 0, 1, 0, 1, 0, -1, 0, -4.371139e-08, 0, 2.6499999, -2.3841858e-07)
 pixel_size = 0.008
 text = "Step Height 0.1m"
 
-[node name="TooLarge" type="CSGBox3D" parent="Geometry/Bumps" unique_id=2084627907]
+[node name="TooLarge" type="CSGBox3D" parent="Geometry/Steps" unique_id=2084627907]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -9.5, 0.75, -1)
 material_override = ExtResource("3_ji2m5")
 use_collision = true
@@ -206,15 +214,139 @@ collision_layer = 32768
 collision_mask = 0
 size = Vector3(1, 0.5, 3)
 
-[node name="Label3D" type="Label3D" parent="Geometry/Bumps/TooLarge" unique_id=733379295]
+[node name="Label3D" type="Label3D" parent="Geometry/Steps/TooLarge" unique_id=733379295]
 transform = Transform3D(-4.371139e-08, 0, 1, 0, 1, 0, -1, 0, -4.371139e-08, 0, 2.5, -2.3841858e-07)
 pixel_size = 0.008
 text = "Step Height 0.5m"
 
-[node name="Ground" type="CSGBox3D" parent="Geometry" unique_id=1174585820]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.4, 0, -0.6)
-material_override = ExtResource("1_r3mhs")
+[node name="Bumps" type="Node3D" parent="Geometry" unique_id=522868306]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.5, 0, -6.9500003)
+
+[node name="Small" type="CSGCombiner3D" parent="Geometry/Bumps" unique_id=1558348152]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 3.5000002, 0, 0)
 use_collision = true
 collision_layer = 32768
 collision_mask = 0
-size = Vector3(200, 1, 200)
+
+[node name="Label3D" type="Label3D" parent="Geometry/Bumps/Small" unique_id=2045334253]
+transform = Transform3D(-4.371139e-08, 0, 0.99999994, 0, 0.99999994, 0, -1, 0, -4.371139e-08, 0.5238321, 3.1738336, -0.100000024)
+pixel_size = 0.008
+text = "Bump Height ~0.1m"
+
+[node name="CSGBox3D" type="CSGBox3D" parent="Geometry/Bumps/Small" unique_id=1143264651]
+transform = Transform3D(0.70710677, 0.70710677, 0, -0.70710677, 0.70710677, 0, 0, 0, 1, 0.54999995, -0.10000001, 1.5)
+material_override = ExtResource("4_gfyed")
+use_collision = true
+collision_layer = 32768
+collision_mask = 0
+size = Vector3(1, 1, 3)
+material = ExtResource("4_gfyed")
+
+[node name="CSGCylinder3D" type="CSGCylinder3D" parent="Geometry/Bumps/Small" unique_id=291507503]
+transform = Transform3D(0, -4.371138e-08, 0.99999994, -0.9999999, 0, 0, 0, -0.99999994, -4.371139e-08, 0.54999995, 0.5, -1.5)
+radius = 0.1
+height = 3.0
+material = ExtResource("4_gfyed")
+
+[node name="Middle" type="CSGCombiner3D" parent="Geometry/Bumps" unique_id=841334495]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.5000001, 0, 0)
+use_collision = true
+collision_layer = 32768
+collision_mask = 0
+
+[node name="Label3D" type="Label3D" parent="Geometry/Bumps/Middle" unique_id=2021663177]
+transform = Transform3D(-4.371139e-08, 0, 0.99999994, 0, 0.99999994, 0, -1, 0, -4.371139e-08, 0.47383213, 3.1738336, -0.100000024)
+pixel_size = 0.008
+text = "Bump Height ~0.2m"
+
+[node name="CSGBox3D" type="CSGBox3D" parent="Geometry/Bumps/Middle" unique_id=1413085125]
+transform = Transform3D(0.70710677, 0.70710677, 0, -0.70710677, 0.70710677, 0, 0, 0, 1, 0.5, -7.450581e-09, 1.5)
+material_override = ExtResource("4_gfyed")
+use_collision = true
+collision_layer = 32768
+collision_mask = 0
+size = Vector3(1, 1, 3)
+material = ExtResource("4_gfyed")
+
+[node name="CSGCylinder3D" type="CSGCylinder3D" parent="Geometry/Bumps/Middle" unique_id=1342765779]
+transform = Transform3D(0, -4.371138e-08, 0.99999994, -0.9999999, 0, 0, 0, -0.99999994, -4.371139e-08, 0.5, 0.5, -1.5)
+radius = 0.2
+height = 3.0
+material = ExtResource("4_gfyed")
+
+[node name="Large" type="CSGCombiner3D" parent="Geometry/Bumps" unique_id=513912339]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.54999983, 0, 0)
+use_collision = true
+collision_layer = 32768
+collision_mask = 0
+
+[node name="Label3D" type="Label3D" parent="Geometry/Bumps/Large" unique_id=973303353]
+transform = Transform3D(-4.371139e-08, 0, 0.99999994, 0, 0.99999994, 0, -1, 0, -4.371139e-08, 0.5238323, 3.1738336, -0.100000024)
+pixel_size = 0.008
+text = "Bump Height ~0.3m"
+
+[node name="CSGBox3D" type="CSGBox3D" parent="Geometry/Bumps/Large" unique_id=717512786]
+transform = Transform3D(0.70710677, 0.70710677, 0, -0.70710677, 0.70710677, 0, 0, 0, 1, 0.5500002, 0.099999994, 1.5)
+material_override = ExtResource("4_gfyed")
+use_collision = true
+collision_layer = 32768
+collision_mask = 0
+size = Vector3(1, 1, 3)
+material = ExtResource("3_cpyv8")
+
+[node name="CSGCylinder3D" type="CSGCylinder3D" parent="Geometry/Bumps/Large" unique_id=1643162512]
+transform = Transform3D(0, -4.371138e-08, 0.99999994, -0.9999999, 0, 0, 0, -0.99999994, -4.371139e-08, 0.5500002, 0.5, -1.5)
+radius = 0.3
+height = 3.0
+material = ExtResource("3_cpyv8")
+
+[node name="Limit" type="CSGCombiner3D" parent="Geometry/Bumps" unique_id=450046726]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2.9999998, 0, 0)
+use_collision = true
+collision_layer = 32768
+collision_mask = 0
+
+[node name="Label3D" type="Label3D" parent="Geometry/Bumps/Limit" unique_id=165768521]
+transform = Transform3D(-4.371139e-08, 0, 0.99999994, 0, 0.99999994, 0, -1, 0, -4.371139e-08, 0.47383213, 3.1738336, -0.100000024)
+pixel_size = 0.008
+text = "Bump Height ~0.4m"
+
+[node name="CSGBox3D" type="CSGBox3D" parent="Geometry/Bumps/Limit" unique_id=1369100458]
+transform = Transform3D(0.70710677, 0.70710677, 0, -0.70710677, 0.70710677, 0, 0, 0, 1, 0.5, 0.19999999, 1.5)
+material_override = ExtResource("4_gfyed")
+use_collision = true
+collision_layer = 32768
+collision_mask = 0
+size = Vector3(1, 1, 3)
+material = ExtResource("3_gfyed")
+
+[node name="CSGCylinder3D" type="CSGCylinder3D" parent="Geometry/Bumps/Limit" unique_id=1268004066]
+transform = Transform3D(0, -4.371138e-08, 0.99999994, -0.9999999, 0, 0, 0, -0.99999994, -4.371139e-08, 0.5, 0.5, -1.5)
+radius = 0.4
+height = 3.0
+material = ExtResource("3_gfyed")
+
+[node name="TooLarge" type="CSGCombiner3D" parent="Geometry/Bumps" unique_id=1148051859]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -5.4999995, 0, 0)
+use_collision = true
+collision_layer = 32768
+collision_mask = 0
+
+[node name="Label3D" type="Label3D" parent="Geometry/Bumps/TooLarge" unique_id=1917676117]
+transform = Transform3D(-4.371139e-08, 0, 0.99999994, 0, 0.99999994, 0, -1, 0, -4.371139e-08, 0.47383213, 3.1738336, -0.100000024)
+pixel_size = 0.008
+text = "Bump Height ~0.5m"
+
+[node name="CSGBox3D" type="CSGBox3D" parent="Geometry/Bumps/TooLarge" unique_id=1959581444]
+transform = Transform3D(0.70710677, 0.70710677, 0, -0.70710677, 0.70710677, 0, 0, 0, 1, 0.5, 0.29999998, 1.5)
+material_override = ExtResource("4_gfyed")
+use_collision = true
+collision_layer = 32768
+collision_mask = 0
+size = Vector3(1, 1, 3)
+material = ExtResource("3_ji2m5")
+
+[node name="CSGCylinder3D" type="CSGCylinder3D" parent="Geometry/Bumps/TooLarge" unique_id=1162867967]
+transform = Transform3D(0, -4.371138e-08, 0.99999994, -0.9999999, 0, 0, 0, -0.99999994, -4.371139e-08, 0.5, 0.5, -1.5)
+height = 3.0
+material = ExtResource("3_ji2m5")
