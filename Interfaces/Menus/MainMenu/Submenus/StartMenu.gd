@@ -36,4 +36,3 @@ func exitType() -> int:
 		return MainMenuUberState.ExitType.quitGame
 
 	return MainMenuUberState.ExitType.none
-

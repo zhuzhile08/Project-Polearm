@@ -1,4 +1,4 @@
-extends Control
+extends InterfaceState
 
 # Signals that get redirected to the Interface Controller
 signal continuePressed

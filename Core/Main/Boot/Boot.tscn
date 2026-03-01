@@ -1,6 +1,11 @@
 [gd_scene format=3 uid="uid://cj6e5myqfeajy"]
 
-[ext_resource type="Script" uid="uid://ckrwadwaw0b0h" path="res://Core/Main/Boot/boot.gd" id="1_0byu4"]
+[ext_resource type="Script" uid="uid://ckrwadwaw0b0h" path="res://Core/Main/Boot/Boot.gd" id="1_0byu4"]
+[ext_resource type="Texture2D" uid="uid://ctdbykm11ffsx" path="res://icon.svg" id="2_l5py6"]
 
-[node name="Boot" type="Node3D" unique_id=1471582336]
+[node name="Boot" type="Node2D" unique_id=1893134298]
 script = ExtResource("1_0byu4")
+
+[node name="Icon" type="Sprite2D" parent="." unique_id=1949159219]
+position = Vector2(551, 191)
+texture = ExtResource("2_l5py6")

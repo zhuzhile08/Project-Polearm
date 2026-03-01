@@ -1,25 +1,21 @@
 [gd_scene format=3 uid="uid://b8hqumrxhfvmn"]
 
-[ext_resource type="Script" uid="uid://bhr3tyrv8yy1s" path="res://Interfaces/Menus/MainMenu/MainMenu.gd" id="1_0vu78"]
+[ext_resource type="Script" uid="uid://cdmfn0vdjybja" path="res://Common/InterfaceStateMachine/InterfaceStateMachine.gd" id="1_0vu78"]
 [ext_resource type="PackedScene" uid="uid://c0atl8ffoeq5u" path="res://Interfaces/Menus/MainMenu/Submenus/StartMenu.tscn" id="2_4mftg"]
 [ext_resource type="PackedScene" uid="uid://bbf2d281jeq4y" path="res://Interfaces/Menus/OptionsMenu/OptionsMenu.tscn" id="3_f6nv7"]
-[ext_resource type="PackedScene" uid="uid://cnusbpv84eyf0" path="res://Interfaces/Menus/OptionsMenu/Suboptions/ControllerMapping.tscn" id="4_fvlcm"]
-[ext_resource type="PackedScene" uid="uid://cthgc7cm7suej" path="res://Interfaces/Menus/OptionsMenu/Suboptions/KeyboardMapping.tscn" id="5_3xha2"]
+[ext_resource type="PackedScene" uid="uid://cnusbpv84eyf0" path="res://Interfaces/Menus/OptionsMenu/Suboptions/ControllerMapping.tscn" id="4_0vu78"]
+[ext_resource type="Script" uid="uid://cb62bax61vhwy" path="res://Interfaces/Menus/OptionsMenu/Suboptions/ControllerMapping.gd" id="5_smu38"]
 
-[node name="MainMenu" type="CanvasLayer" unique_id=331818549]
+[node name="MainMenu" type="CanvasLayer" unique_id=1512433121]
 process_mode = 3
 script = ExtResource("1_0vu78")
 INITIAL_MENU_TYPE = 1
-metadata/_custom_type_script = "uid://bhr3tyrv8yy1s"
+metadata/_custom_type_script = "uid://cdmfn0vdjybja"
 
 [node name="StartMenu" parent="." unique_id=2089339401 instance=ExtResource("2_4mftg")]
 
-[node name="OptionsMenu" parent="." unique_id=1199451818 instance=ExtResource("3_f6nv7")]
-visible = false
-mouse_filter = 2
+[node name="OptionsMenu" parent="." unique_id=865326453 instance=ExtResource("3_f6nv7")]
 
-[node name="ControllerMapping" parent="." unique_id=1452140931 instance=ExtResource("4_fvlcm")]
-visible = false
-
-[node name="KeyboardMapping" parent="." unique_id=1565302024 instance=ExtResource("5_3xha2")]
-visible = false
+[node name="ControllerMapping" parent="." unique_id=125246150 instance=ExtResource("4_0vu78")]
+script = ExtResource("5_smu38")
+TYPE = 7

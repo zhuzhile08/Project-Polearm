@@ -34,4 +34,3 @@ func pollInputs() -> void:
 		inputs.pause = true
 
 #endregion
-

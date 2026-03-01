@@ -72,3 +72,9 @@ focus_neighbor_top = NodePath("../Controller")
 focus_neighbor_bottom = NodePath("../Game")
 text = "Keyboard"
 script = ExtResource("1_4i0wx")
+
+[connection signal="pressed" from="HBoxContainer/VBoxContainer/Game" to="." method="_on_game_pressed"]
+[connection signal="pressed" from="HBoxContainer/VBoxContainer/Video" to="." method="_on_video_pressed"]
+[connection signal="pressed" from="HBoxContainer/VBoxContainer/Audio" to="." method="_on_audio_pressed"]
+[connection signal="pressed" from="HBoxContainer/VBoxContainer/Controller" to="." method="_on_controller_pressed"]
+[connection signal="pressed" from="HBoxContainer/VBoxContainer/Keyboard" to="." method="_on_keyboard_pressed"]

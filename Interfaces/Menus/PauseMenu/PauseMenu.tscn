@@ -3,7 +3,7 @@
 [ext_resource type="Script" uid="uid://vyxsiwv005q" path="res://Interfaces/Menus/PauseMenu/PauseMenu.gd" id="1_w0rmh"]
 [ext_resource type="Script" uid="uid://cfdlgc8aalbtr" path="res://Interfaces/Elements/GameMenuButton.gd" id="2_yj8jp"]
 
-[node name="PauseMenu" type="Control" unique_id=416010714]
+[node name="PauseMenu" type="Control" unique_id=1473172923]
 process_mode = 2
 layout_mode = 3
 anchors_preset = 15
@@ -12,6 +12,7 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 script = ExtResource("1_w0rmh")
+metadata/_custom_type_script = "uid://cyn28bbc16luj"
 
 [node name="MarginContainer" type="MarginContainer" parent="." unique_id=812718561]
 custom_minimum_size = Vector2(300, 318)

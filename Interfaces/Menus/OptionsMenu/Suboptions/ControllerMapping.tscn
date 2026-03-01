@@ -1,14 +1,17 @@
 [gd_scene format=3 uid="uid://cnusbpv84eyf0"]
 
+[ext_resource type="Script" uid="uid://cyn28bbc16luj" path="res://Common/InterfaceStateMachine/InterfaceState.gd" id="1_7v3hs"]
 [ext_resource type="Script" uid="uid://cbdax7xlgilxj" path="res://Interfaces/Elements/ActionMappingButton.gd" id="1_50hgd"]
 
-[node name="ControllerMapping" type="Control" unique_id=1452140931]
+[node name="ControllerMapping" type="Control" unique_id=125246150]
 layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
+script = ExtResource("1_7v3hs")
+metadata/_custom_type_script = "uid://cyn28bbc16luj"
 
 [node name="CenterContainer" type="CenterContainer" parent="." unique_id=2078417268]
 layout_mode = 1

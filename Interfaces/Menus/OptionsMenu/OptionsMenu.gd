@@ -1,23 +1,44 @@
 extends InterfaceState
 
 
-signal onGameOptionsPressed
-signal onVideoOptionsPressed
-signal onAudioOptionsPressed
-signal onControllerOptionsPressed
-signal onKeyboardOptionsPressed
+var _onGameOptionsPressed: bool = false
+var _onVideoOptionsPressed: bool = false
+var _onAudioOptionsPressed: bool = false
+var _onControllerOptionsPressed: bool = false
+var _onKeyboardOptionsPressed: bool = false
 
 func _on_game_pressed() -> void:
-	onGameOptionsPressed.emit()
+	_onGameOptionsPressed = true
 
 func _on_video_pressed() -> void:
-	onVideoOptionsPressed.emit()
+	_onVideoOptionsPressed = true
 
 func _on_audio_pressed() -> void:
-	onAudioOptionsPressed.emit()
+	_onAudioOptionsPressed = true
 
 func _on_controller_pressed() -> void:
-	onControllerOptionsPressed.emit()
+	_onControllerOptionsPressed = true
 
 func _on_keyboard_pressed() -> void:
-	onKeyboardOptionsPressed.emit()
+	_onKeyboardOptionsPressed = true
+	
+func nextMenu(inputs : MainInputManager.Data) -> Type:
+	if inputs.cancel:
+		pass
+	
+	if _onGameOptionsPressed:
+		return Type.gameOptions
+		
+	if _onVideoOptionsPressed:
+		return Type.videoOptions
+	
+	if _onAudioOptionsPressed:
+		return Type.audioOptions
+	
+	if _onControllerOptionsPressed:
+		return Type.controllerOptions
+	
+	if _onKeyboardOptionsPressed:
+		return Type.keyboardOptions
+	
+	return Type.none
