@@ -1,20 +1,64 @@
 [gd_scene format=3 uid="uid://b8hqumrxhfvmn"]
 
 [ext_resource type="Script" uid="uid://cdmfn0vdjybja" path="res://Interfaces/InterfaceStateMachine/InterfaceStateMachine.gd" id="1_0vu78"]
-[ext_resource type="PackedScene" uid="uid://c0atl8ffoeq5u" path="res://Interfaces/Menus/MainMenu/Submenus/StartMenu.tscn" id="2_4mftg"]
+[ext_resource type="PackedScene" uid="uid://c0atl8ffoeq5u" path="res://Interfaces/Menus/MainMenu/StartMenu/StartMenu.tscn" id="2_4mftg"]
+[ext_resource type="Script" uid="uid://7cjw5im7rxvp" path="res://Interfaces/InterfaceStateMachine/InputManager/InputManager.gd" id="2_4sgcv"]
+[ext_resource type="PackedScene" uid="uid://cwwqmgybgoy3v" path="res://Interfaces/Menus/MainMenu/QuitConfirmMenu/QuitConfirmMenu.tscn" id="3_3nt47"]
 [ext_resource type="PackedScene" uid="uid://bbf2d281jeq4y" path="res://Interfaces/Menus/OptionsMenu/OptionsMenu.tscn" id="3_f6nv7"]
-[ext_resource type="PackedScene" uid="uid://cnusbpv84eyf0" path="res://Interfaces/Menus/OptionsMenu/Suboptions/ControllerMapping.tscn" id="4_0vu78"]
-[ext_resource type="Script" uid="uid://cb62bax61vhwy" path="res://Interfaces/Menus/OptionsMenu/Suboptions/ControllerMapping.gd" id="5_smu38"]
+[ext_resource type="PackedScene" uid="uid://cnusbpv84eyf0" path="res://Interfaces/Menus/OptionsMenu/ControllerMapping/ControllerMapping.tscn" id="4_0vu78"]
+[ext_resource type="Script" uid="uid://bmdkrgtuaq1to" path="res://Interfaces/Menus/MainMenu/QuitConfirmMenu/QuitConfrimMenu.gd" id="4_ayaka"]
+[ext_resource type="Script" uid="uid://cb62bax61vhwy" path="res://Interfaces/Menus/OptionsMenu/ControllerMapping/ControllerMapping.gd" id="5_smu38"]
+[ext_resource type="PackedScene" uid="uid://cthgc7cm7suej" path="res://Interfaces/Menus/OptionsMenu/KeyboardMapping/KeyboardMapping.tscn" id="7_smu38"]
+[ext_resource type="PackedScene" uid="uid://3vnyxp2i1ac0" path="res://Interfaces/Menus/OptionsMenu/AudioOptions/AudioOptions.tscn" id="8_6nkw5"]
+[ext_resource type="Script" uid="uid://pgyhhnbdkno5" path="res://Interfaces/Menus/OptionsMenu/KeyboardMapping/KeyboardMapping.gd" id="8_kuglm"]
+[ext_resource type="Script" uid="uid://dmm6hc5f7l4s2" path="res://Interfaces/Menus/OptionsMenu/AudioOptions/AudioOptions.gd" id="10_yincg"]
+[ext_resource type="PackedScene" uid="uid://dewxnxvy14tjr" path="res://Interfaces/Menus/OptionsMenu/GameOptions/GameOptions.tscn" id="11_3nt47"]
+[ext_resource type="Script" uid="uid://celjwc20dqkr8" path="res://Interfaces/Menus/OptionsMenu/GameOptions/GameOptions.gd" id="12_ayaka"]
+[ext_resource type="PackedScene" uid="uid://b8ng1m4gseuer" path="res://Interfaces/Menus/OptionsMenu/VideoOptions/VideoOptions.tscn" id="13_0ye7o"]
+[ext_resource type="Script" uid="uid://6tv3tv4exou" path="res://Interfaces/Menus/OptionsMenu/VideoOptions/VideoOptions.gd" id="14_0xxrw"]
 
 [node name="MainMenu" type="CanvasLayer" unique_id=2044156185]
 process_mode = 3
 script = ExtResource("1_0vu78")
-INITIAL_MENU_TYPE = 1
+INITIAL_MENU_TYPE = 2
 metadata/_custom_type_script = "uid://cdmfn0vdjybja"
 
+[node name="InputManager" type="Node" parent="." unique_id=1112738063]
+script = ExtResource("2_4sgcv")
+metadata/_custom_type_script = "uid://7cjw5im7rxvp"
+
+[node name="QuitConfirmMenu" parent="." unique_id=1621337902 instance=ExtResource("3_3nt47")]
+script = ExtResource("4_ayaka")
+BACK_MENU = 2
+
 [node name="StartMenu" parent="." unique_id=2089339401 instance=ExtResource("2_4mftg")]
+BACK_MENU = 1
 
 [node name="OptionsMenu" parent="." unique_id=865326453 instance=ExtResource("3_f6nv7")]
+visible = false
+BACK_MENU = 2
+
+[node name="GameOptions" parent="." unique_id=12045681 instance=ExtResource("11_3nt47")]
+visible = false
+script = ExtResource("12_ayaka")
+BACK_MENU = 3
+
+[node name="VideoOptions" parent="." unique_id=889703237 instance=ExtResource("13_0ye7o")]
+visible = false
+script = ExtResource("14_0xxrw")
+BACK_MENU = 3
+
+[node name="AudioOptions" parent="." unique_id=805272734 instance=ExtResource("8_6nkw5")]
+visible = false
+script = ExtResource("10_yincg")
+BACK_MENU = 3
 
 [node name="ControllerMapping" parent="." unique_id=125246150 instance=ExtResource("4_0vu78")]
+visible = false
 script = ExtResource("5_smu38")
+BACK_MENU = 3
+
+[node name="KeyboardMapping" parent="." unique_id=2031472548 instance=ExtResource("7_smu38")]
+visible = false
+script = ExtResource("8_kuglm")
+BACK_MENU = 3

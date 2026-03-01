@@ -6,7 +6,7 @@ class_name UberState
 
 enum Type {
 	none,
-
+	
 	boot,
 	quit,
 	mainMenu,

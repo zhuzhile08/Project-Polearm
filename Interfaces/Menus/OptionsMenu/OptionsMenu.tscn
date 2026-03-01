@@ -13,14 +13,17 @@ grow_vertical = 2
 size_flags_horizontal = 4
 size_flags_vertical = 4
 script = ExtResource("1_5i6ub")
-TYPE = 2
 metadata/_custom_type_script = "uid://cyn28bbc16luj"
 
 [node name="HBoxContainer" type="HBoxContainer" parent="." unique_id=2101487307]
-layout_mode = 0
-offset_top = 380.0
+layout_mode = 1
+anchors_preset = 4
+anchor_top = 0.5
+anchor_bottom = 0.5
+offset_top = -268.0
 offset_right = 450.0
-offset_bottom = 916.0
+offset_bottom = 268.0
+grow_vertical = 2
 size_flags_horizontal = 0
 size_flags_vertical = 4
 theme_override_constants/separation = 150

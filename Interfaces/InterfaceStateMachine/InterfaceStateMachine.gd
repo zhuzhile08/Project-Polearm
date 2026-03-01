@@ -30,11 +30,11 @@ var _currentMenu : InterfaceState
 func _ready() -> void:
 	for child in get_children():
 		if child is InterfaceState:
-			child.hideMenu()
-			menus[child.TYPE] = child
+			child.hide()
+			menus[child.type()] = child
 	
 	_currentMenu = menus[INITIAL_MENU_TYPE]
-	_currentMenu.enter()
+	_currentMenu.activate()
 
 func _process(_delta : float) -> void:
 	inputManager.pollInputs()
@@ -57,8 +57,8 @@ func exit() -> int:
 #region Private functions
 
 func _switchTo(nextState):
-	_currentMenu.showMenu()
+	_currentMenu.deactivate()
 	_currentMenu = menus[nextState]
-	_currentMenu.hideMenu()
+	_currentMenu.activate()
 
 #endregion

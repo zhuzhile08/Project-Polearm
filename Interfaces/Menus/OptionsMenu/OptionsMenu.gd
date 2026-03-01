@@ -1,31 +1,33 @@
 extends InterfaceState
 
 
-var _onGameOptionsPressed: bool = false
-var _onVideoOptionsPressed: bool = false
-var _onAudioOptionsPressed: bool = false
-var _onControllerOptionsPressed: bool = false
-var _onKeyboardOptionsPressed: bool = false
+#region Export variables
 
-func _on_game_pressed() -> void:
-	_onGameOptionsPressed = true
+@export var BACK_MENU : Type
 
-func _on_video_pressed() -> void:
-	_onVideoOptionsPressed = true
+#endregion
 
-func _on_audio_pressed() -> void:
-	_onAudioOptionsPressed = true
 
-func _on_controller_pressed() -> void:
-	_onControllerOptionsPressed = true
+#region Member variables
 
-func _on_keyboard_pressed() -> void:
-	_onKeyboardOptionsPressed = true
-	
+var _onGameOptionsPressed : bool = false
+var _onVideoOptionsPressed : bool = false
+var _onAudioOptionsPressed : bool = false
+var _onControllerOptionsPressed : bool = false
+var _onKeyboardOptionsPressed : bool = false
+
+#endregion
+
+
+#region Implementation functions
+
+func type() -> Type:
+	return Type.options
+
 func nextMenu(inputs : ISMInputManager.Data) -> Type:
 	if inputs.cancel:
-		pass
-	
+		return BACK_MENU
+		
 	if _onGameOptionsPressed:
 		return Type.gameOptions
 		
@@ -42,3 +44,32 @@ func nextMenu(inputs : ISMInputManager.Data) -> Type:
 		return Type.keyboardOptions
 	
 	return Type.none
+
+func deactivateImpl() -> void:
+	_onGameOptionsPressed = false
+	_onVideoOptionsPressed = false
+	_onAudioOptionsPressed = false
+	_onControllerOptionsPressed = false
+	_onKeyboardOptionsPressed = false
+
+#endregion
+
+
+#region Signal functions
+
+func _on_game_pressed() -> void:
+	_onGameOptionsPressed = true
+
+func _on_video_pressed() -> void:
+	_onVideoOptionsPressed = true
+
+func _on_audio_pressed() -> void:
+	_onAudioOptionsPressed = true
+
+func _on_controller_pressed() -> void:
+	_onControllerOptionsPressed = true
+
+func _on_keyboard_pressed() -> void:
+	_onKeyboardOptionsPressed = true
+
+#endregion
