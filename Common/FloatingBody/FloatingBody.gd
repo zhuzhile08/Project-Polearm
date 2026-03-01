@@ -49,6 +49,7 @@ const MAX_GROUND_COLLISIONS : int = 4
 const COLLISION_EPSILON : float = 0.001
 const GROUND_DISTANCE_BUFFER = 1.01
 const MIN_STEP_SPEED : float = 0.15 # Rigidbody collision resolution wants to move up on ledges
+const VELOCITY_VERTICAL_OVERCORRECTION_FACTOR : float = 2.0
 
 
 # Raycast settings
@@ -76,7 +77,7 @@ const STEP_RAY_VERTICAL_OFFSET : float = 0.03
 @export_range(-360, 360, 0.001, "radians_as_degrees") var SLOPE_MAX_ANGLE : float = 0.786
 
 @export_group("Step settings")
-@export var STEP_MAX_HEIGHT : float = 0.4
+@export var STEP_MAX_HEIGHT : float = 0.41
 @export var STEP_SPEED_FACTOR : float = 0.4
 
 #endregion
@@ -94,6 +95,9 @@ const STEP_RAY_VERTICAL_OFFSET : float = 0.03
 #region Member variables
 
 # References
+
+@onready var BUFFERED_MAX_GROUND_DISTANCE := (BODY_COLLIDER_FLOATING_HEIGHT + STEP_MAX_HEIGHT) * GROUND_DISTANCE_BUFFER
+@onready var UNBUFFERED_MAX_GROUND_DISTANCE := BODY_COLLIDER_FLOATING_HEIGHT * GROUND_DISTANCE_BUFFER
 
 @onready var SLOPE_MAX_ANGLE_COS := cos(SLOPE_MAX_ANGLE)
 @onready var COLLISION_LAYERS := groundCast.collision_mask
@@ -200,14 +204,18 @@ func _configureHitboxes() -> void:
 # Physics functions
 
 func _processCollisions() -> void:
+	#print(_grounded, _stepState)
+
 	if _stepState == StepState.down:
+		_processGroundCollisionData(_probeData)
 		_processFootCollisionData(_groundData)
 	else:
 		_processGroundCollisionData(_groundData)
+		_processFootCollisionData(_probeData)
 
 	# First order of business, we check for groundedness
 
-	if not _groundData.grounded:
+	if not _groundData.grounded and not _probeData.grounded:
 		_stepState = StepState.none
 		_grounded = false
 
@@ -226,22 +234,24 @@ func _processCollisions() -> void:
 	# We are checking for downwards steps first because stopping after stepping down and moving again may confuse
 	# the system into thinking that we are stepping up before quickly stepping down again if we check step up first
 
-	var direction := Vector3(_targetVelocity.x, 0, _targetVelocity.z).normalized()
+	var direction := Vector3(_targetVelocity.x, 0, _targetVelocity.z)
 
 	if _stepState != StepState.down:
-		if _tryStepDown(direction):
+		var checkStepDownResult := _checkStepDown(direction)
+
+		if checkStepDownResult == 0:
 			return
-		elif _tryStepUp(direction):
+		elif checkStepDownResult == 1 and _checkStepUp(direction):
 			return
-	elif _stepState != StepState.up and _tryStepUpFromProbe(direction):
-		return
-	else:
-		_processFootCollisionData(_probeData)
+	elif _stepState != StepState.up:
+		if _checkStepUpFromProbe(direction):
+			return
 
 	# If we are not stepping at all, we calculate a point in the direction the player is moving 
 	# slightly behind the edge of the player hitbox. This allows us to perform a bit of smoothing
 
-	_probePointInDirection(_probeData, global_position, _targetVelocity.normalized(), GROUND_CAST_RADIUS, 3)
+	if _stepState == StepState.none:
+		_probePointInDirection(_probeData, global_position, _targetVelocity.normalized(), GROUND_CAST_RADIUS, 3)
 
 
 func _moveAndSmooth(delta : float) -> void:
@@ -259,9 +269,8 @@ func _moveAndSmooth(delta : float) -> void:
 		# If we are not stepping, we will preform a bit of movement smoothing Instead of rotating our velocity based on one
 		# point, we rotate it based on the "average plane" between our probe point and ground point and overcorrect a bit
 
-		# We overcorrect the line when the difference between ground and actual position is too big
-
-		var line := Vector3(global_position.x, global_position.y + _groundData.offset, global_position.z) - _probeData.point
+		var line := Vector3(global_position.x, global_position.y, global_position.z) - _probeData.point
+		line.y *= VELOCITY_VERTICAL_OVERCORRECTION_FACTOR # We overcorrect the line when the difference between ground and actual position is too big
 
 		# If the horizontal OR vertical component of line is too small
 		if absf(line.y) < COLLISION_EPSILON or (line.x * line.x + line.z * line.z) < COLLISION_EPSILON * COLLISION_EPSILON:
@@ -380,24 +389,29 @@ func _probeStepWall() -> bool:
 
 # Stepping functions
 
-func _tryStepDown(direction : Vector3) -> bool:
-	_processFootCollisionData(_probeData) # We will need the data from the probe if we are stepping
+# This can return three values depending on the result
+# 0: The probing was succesful
+# 1: The probing failed before the wall has been checked
+# 2: The probing failed during the wall check
+func _checkStepDown(direction : Vector3) -> int:
 	_calculateStepWallProbeQuery(global_position, _groundData.point)
 
 	if not _probeData.grounded:
-		return false
+		return 1
 	if _probeData.offset < STEP_RAY_VERTICAL_OFFSET:
-		return false
+		return 1
 	if not _validateStepProbeQueryDirection(-direction):
-		return false
+		return 1
 
 	if _probeStepWall(): # We don't need to check if the distance is too large for us to step down, as it was already done for _probeData.grounded
 		_groundData.copy(_probeData) # We need to assign ground data to the probe data because the probe is the true "target position" of the player
 		_stepState = StepState.down
 
-	return true # Return true is placed here intentially, as we will not try to look for a step up if the wall probe fails anyways
+		return 0
 
-func _tryStepUp(direction : Vector3) -> bool:
+	return 2
+
+func _checkStepUp(direction : Vector3) -> bool:
 	if _stepState == StepState.up:
 		return false
 	if not _canStepUp(_groundData.offset, direction):
@@ -406,8 +420,7 @@ func _tryStepUp(direction : Vector3) -> bool:
 	_stepState = StepState.up
 	return true
 
-func _tryStepUpFromProbe(direction : Vector3) -> bool:
-	_processGroundCollisionData(_probeData)
+func _checkStepUpFromProbe(direction : Vector3) -> bool:
 	_calculateStepWallProbeQuery(global_position, _probeData.point)
 
 	if not _probeData.grounded:
@@ -446,9 +459,9 @@ func _highestGroundPointGlobal() -> Vector3:
 
 # The maximum ground distance introduces some leniency, which changes whether the player is on the ground or not
 func _bufferedGroundMaxDistance() -> float:                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                           
-	if onGround():
-		return (BODY_COLLIDER_FLOATING_HEIGHT + STEP_MAX_HEIGHT) * GROUND_DISTANCE_BUFFER
-	return BODY_COLLIDER_FLOATING_HEIGHT * GROUND_DISTANCE_BUFFER
+	if _grounded:
+		return BUFFERED_MAX_GROUND_DISTANCE
+	return UNBUFFERED_MAX_GROUND_DISTANCE
 
 # Assign our cached ray cast query
 func _initRayQuery(from : Vector3, to : Vector3) -> void:
