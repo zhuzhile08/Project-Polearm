@@ -1,7 +1,6 @@
 [gd_scene format=3 uid="uid://gfs4a5wowsa"]
 
 [ext_resource type="Script" uid="uid://c31gnbehqoq8y" path="res://Core/Main/Main.gd" id="1_ycf5l"]
-[ext_resource type="Script" uid="uid://7cjw5im7rxvp" path="res://Core/Main/InputManager/InputManager.gd" id="2_2cw8b"]
 [ext_resource type="Script" uid="uid://cpetiw40mhprd" path="res://Core/Main/UberStates/BootUberState.gd" id="3_jgmb7"]
 [ext_resource type="Script" uid="uid://c53qsvtvhijbt" path="res://Core/Main/UberStates/MainMenuUberState.gd" id="4_x511n"]
 
@@ -9,19 +8,13 @@
 script = ExtResource("1_ycf5l")
 metadata/_custom_type_script = "uid://c31gnbehqoq8y"
 
-[node name="InputManager" type="Node" parent="." unique_id=1085649395]
-process_mode = 4
-script = ExtResource("2_2cw8b")
-metadata/_custom_type_script = "uid://7cjw5im7rxvp"
-
-[node name="BootUberState" type="Node" parent="." unique_id=965956773]
+[node name="BootState" type="Node" parent="." unique_id=965956773 node_paths=PackedStringArray("_mainMenu")]
 script = ExtResource("3_jgmb7")
-TYPE = 1
+_mainMenu = NodePath("../MainMenuState")
 SCENE_PATH = "res://Core/Main/Boot/Boot.tscn"
 metadata/_custom_type_script = "uid://cpetiw40mhprd"
 
-[node name="MainMenuUberState" type="Node" parent="." unique_id=1908078019]
+[node name="MainMenuState" type="Node" parent="." unique_id=1908078019]
 script = ExtResource("4_x511n")
-TYPE = 3
 SCENE_PATH = "res://Interfaces/Menus/MainMenu/MainMenu.tscn"
 metadata/_custom_type_script = "uid://c53qsvtvhijbt"

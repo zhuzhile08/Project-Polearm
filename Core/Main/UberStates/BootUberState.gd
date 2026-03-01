@@ -2,6 +2,13 @@ extends UberState
 class_name BootUberState
 
 
+@export var _mainMenu : MainMenuUberState = null
+
+
+func _ready() -> void:
+	assert(_mainMenu != null, "BootUberState._ready(): Main menu wasn't assigned!")
+
+
 #region Implementation functions
 
 func type() -> Type:
@@ -15,7 +22,7 @@ func exitImpl() -> void:
 
 
 func nextState() -> Type:
-	if not scene.readyToSwitch():
+	if not scene.readyToSwitch() and not _mainMenu.finishedLoading():
 		return Type.none
 
 	return Type.mainMenu
