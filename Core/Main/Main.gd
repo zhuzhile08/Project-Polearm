@@ -16,8 +16,7 @@ var _currentState : UberState
 func _ready() -> void:
 	for child in get_children():
 		if child is UberState:
-			child.set_physics_process(false)
-			uberStates[child.TYPE] = child
+			uberStates[child.type()] = child
 	
 	_currentState = uberStates[UberState.Type.boot]
 	_currentState.enter()

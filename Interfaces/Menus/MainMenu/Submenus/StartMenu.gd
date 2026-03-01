@@ -11,7 +11,10 @@ var _quitGamePressed : bool = false
 #endregion
 
 
-#region Public functions
+#region Implementation functions
+
+func type() -> Type:
+	return Type.startMenu
 
 func nextMenu(inputs : ISMInputManager.Data) -> Type:
 	if inputs.cancel:

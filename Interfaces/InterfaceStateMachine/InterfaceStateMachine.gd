@@ -36,17 +36,17 @@ func _ready() -> void:
 	_currentMenu = menus[INITIAL_MENU_TYPE]
 	_currentMenu.enter()
 
-#endregion
-
-
-#region Public functions
-
-func update() -> void:
+func _process(_delta : float) -> void:
 	inputManager.pollInputs()
 
 	var nextMenu := _currentMenu.nextMenu(inputManager.inputs)
 	if nextMenu != InterfaceState.Type.none:
 		_switchTo(nextMenu)
+
+#endregion
+
+
+#region Public functions
 
 func exit() -> int:
 	return _currentMenu.exit()

@@ -19,13 +19,6 @@ enum Type {
 #endregion
 
 
-#region Exported variables
-
-@export var TYPE : Type
-
-#endregion
-
-
 #region Member functions
 
 func showMenu() -> void:
@@ -38,6 +31,9 @@ func hideMenu() -> void:
 
 
 #region Implementation functions
+
+func type() -> Type:
+	return Type.none
 
 func nextMenu(inputs : ISMInputManager.Data) -> Type:
 	return Type.none
