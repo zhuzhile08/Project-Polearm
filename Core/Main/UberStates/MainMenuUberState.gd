@@ -23,6 +23,22 @@ func _ready() -> void:
 #endregion
 
 
+#region Public functions
+
+func finishedLoading() -> bool:
+	match ResourceLoader.load_threaded_get_status(SCENE_PATH):
+		ResourceLoader.THREAD_LOAD_LOADED:
+			return true
+		ResourceLoader.THREAD_LOAD_IN_PROGRESS:
+			return false
+		_:
+			assert(false, "MainMenuUberState.finishedLoading(): Loading scene resource failed")
+	
+	return false
+
+#endregion
+
+
 #region Implementation functions
 
 func type() -> Type:
@@ -30,18 +46,12 @@ func type() -> Type:
 
 
 func createSceneImpl() -> Node:
-	while true:
-		match ResourceLoader.load_threaded_get_status(SCENE_PATH):
-			ResourceLoader.THREAD_LOAD_LOADED:
-				_sceneResource = ResourceLoader.load_threaded_get(SCENE_PATH)
-				return _sceneResource.instantiate()
-			ResourceLoader.THREAD_LOAD_IN_PROGRESS:
-				pass
-			_:
-				assert(false, "MainMenuUberState.createSceneImpl(): Loading scene resource failed")
-				return null
+	assert( \
+		ResourceLoader.load_threaded_get_status(SCENE_PATH) == ResourceLoader.THREAD_LOAD_LOADED, \
+		"MainMenuUberState.createSceneImpl(): Scene resource has not finished loading! Please use the MainMenuUberState.finishedLoading() function.")
 
-	return null
+	_sceneResource = ResourceLoader.load_threaded_get(SCENE_PATH)
+	return _sceneResource.instantiate()
 
 func enterImpl() -> void:
 	pass
