@@ -22,6 +22,14 @@ var inputs : Data = Data.new()
 #endregion
 
 
+#region Built-in functions
+
+func _ready() -> void:
+	process_mode = Node.PROCESS_MODE_DISABLED
+
+#endregion
+
+
 #region Public functions
 
 func pollInputs() -> void:
