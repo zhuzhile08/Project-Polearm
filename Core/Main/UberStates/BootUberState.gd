@@ -24,7 +24,9 @@ func exitImpl() -> void:
 
 
 func nextState() -> Type:
-	if not scene.readyToSwitch() and not _mainMenu.finishedLoading():
+	if not scene.readyToSwitch():
+		return Type.none
+	if not _mainMenu.finishedLoading():
 		return Type.none
 
 	return Type.mainMenu
