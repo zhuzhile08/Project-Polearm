@@ -8,6 +8,8 @@ class_name BootUberState
 func _ready() -> void:
 	assert(_mainMenu != null, "BootUberState._ready(): Main menu wasn't assigned!")
 
+	super._ready()
+
 
 #region Implementation functions
 
