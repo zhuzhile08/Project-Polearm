@@ -1,5 +1,5 @@
 extends Node
-class_name MainInputManager
+class_name ISMInputManager
 
 
 #region Helper structure

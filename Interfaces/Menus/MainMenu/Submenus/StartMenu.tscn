@@ -3,7 +3,8 @@
 [ext_resource type="Script" uid="uid://da7enr8axqhyb" path="res://Interfaces/Menus/MainMenu/Submenus/StartMenu.gd" id="1_006fw"]
 [ext_resource type="Script" uid="uid://cfdlgc8aalbtr" path="res://Interfaces/Elements/GameMenuButton.gd" id="2_1kon5"]
 
-[node name="StartMenu" type="Control" unique_id=384191866]
+[node name="StartMenu" type="Control" unique_id=1875216693]
+physics_interpolation_mode = 0
 layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0

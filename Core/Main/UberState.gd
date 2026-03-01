@@ -16,24 +16,21 @@ enum Type {
 #endregion
 
 
-#region Exported variables
-
-@export var TYPE : Type
-@export_file_path("*tscn", "*scn") var SCENE_PATH : String
-
-#endregion
-
-
-#region Scene memebers
-
-var scene : Node
-
-#endregion
-
-
 #region Member variables
 
-@onready var _sceneResource : PackedScene = load(SCENE_PATH)
+@export_file_path("*tscn", "*scn") var SCENE_PATH : String
+
+var _sceneResource : PackedScene = null
+
+var scene : Node = null
+
+#endregion
+
+
+#region Built-in functions
+
+func _ready() -> void:
+	_sceneResource = load(SCENE_PATH)
 
 #endregion
 
@@ -41,30 +38,41 @@ var scene : Node
 #region Member functions
 
 func enter() -> void:
-	set_physics_process(true)
-	scene = _sceneResource.instantiate()
+	scene = createSceneImpl()
 	add_child(scene)
 
 	enterImpl()
 
 func exit() -> void:
-	set_physics_process(false)
-	remove_child(scene)
-
 	exitImpl()
 
-func nextState(_input : MainInputManager.Data) -> Type:
-	return Type.none
+	remove_child(scene)
+	scene.queue_free()
+	scene = null
 
 #endregion
 
 
 #region Implementation functions
 
+func type() -> Type:
+	return Type.none
+
+
+func createSceneImpl() -> Node:
+	return _sceneResource.instantiate()
+
+
+# Called after entering the scene tree
 func enterImpl() -> void:
 	pass
 
+# Called before exiting the scene tree
 func exitImpl() -> void:
 	pass
+
+
+func nextState() -> Type:
+	return Type.none
 
 #endregion

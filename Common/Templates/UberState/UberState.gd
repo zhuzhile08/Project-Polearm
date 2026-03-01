@@ -3,13 +3,21 @@ extends UberState
 
 #region Built-in functions
 
-func _physics_process(delta : float) -> void:
+# Overwrite for custom _sceneResource loading behavior
+func _ready() -> void:
 	pass
 
 #endregion
 
 
 #region Implementation functions
+
+func type() -> Type:
+	return Type.none
+
+
+func createSceneImpl() -> Node:
+	return _sceneResource.instantiate()
 
 func enterImpl() -> void:
 	pass
@@ -18,7 +26,7 @@ func exitImpl() -> void:
 	pass
 
 
-func nextState(_input : MainInputManager.Data) -> Type:
+func nextState() -> Type:
 	return Type.none
 
 #endregion

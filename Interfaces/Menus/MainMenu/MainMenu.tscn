@@ -1,15 +1,14 @@
 [gd_scene format=3 uid="uid://b8hqumrxhfvmn"]
 
-[ext_resource type="Script" uid="uid://cdmfn0vdjybja" path="res://Common/InterfaceStateMachine/InterfaceStateMachine.gd" id="1_0vu78"]
+[ext_resource type="Script" uid="uid://cdmfn0vdjybja" path="res://Interfaces/InterfaceStateMachine/InterfaceStateMachine.gd" id="1_0vu78"]
 [ext_resource type="PackedScene" uid="uid://c0atl8ffoeq5u" path="res://Interfaces/Menus/MainMenu/Submenus/StartMenu.tscn" id="2_4mftg"]
 [ext_resource type="PackedScene" uid="uid://bbf2d281jeq4y" path="res://Interfaces/Menus/OptionsMenu/OptionsMenu.tscn" id="3_f6nv7"]
 [ext_resource type="PackedScene" uid="uid://cnusbpv84eyf0" path="res://Interfaces/Menus/OptionsMenu/Suboptions/ControllerMapping.tscn" id="4_0vu78"]
 [ext_resource type="Script" uid="uid://cb62bax61vhwy" path="res://Interfaces/Menus/OptionsMenu/Suboptions/ControllerMapping.gd" id="5_smu38"]
 
-[node name="MainMenu" type="CanvasLayer" unique_id=1512433121]
+[node name="MainMenu" type="CanvasLayer" unique_id=2044156185]
 process_mode = 3
 script = ExtResource("1_0vu78")
-INITIAL_MENU_TYPE = 1
 metadata/_custom_type_script = "uid://cdmfn0vdjybja"
 
 [node name="StartMenu" parent="." unique_id=2089339401 instance=ExtResource("2_4mftg")]

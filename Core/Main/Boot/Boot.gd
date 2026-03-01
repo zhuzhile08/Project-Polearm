@@ -8,8 +8,5 @@ extends Node2D
 func _physics_process(delta: float) -> void:
 	timer -= delta
 
-	if timer < 0.0:
-		print("haha")
-
 func readyToSwitch() -> bool:
 	return timer < 0.0
