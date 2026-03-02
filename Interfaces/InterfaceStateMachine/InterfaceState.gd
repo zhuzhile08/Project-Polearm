@@ -22,7 +22,7 @@ enum Type {
 
 #region Member variable
 
-@onready var currentButton : Control = find_next_valid_focus()
+@onready var currentButton : Control = null
 
 #endregion
 
@@ -32,11 +32,16 @@ enum Type {
 func activate() -> void:
 	show()
 	
-	if currentButton:
+	if not currentButton:
+		currentButton = find_next_valid_focus()
+	
+	if not null:
 		currentButton.grab_focus()
 
 func deactivate() -> void:
+	currentButton = get_viewport().gui_get_focus_owner()
 	hide()
+
 	deactivateImpl()
 	
 #endregion

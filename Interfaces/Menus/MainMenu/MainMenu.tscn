@@ -28,6 +28,7 @@ script = ExtResource("2_4sgcv")
 metadata/_custom_type_script = "uid://7cjw5im7rxvp"
 
 [node name="QuitConfirmMenu" parent="." unique_id=1621337902 instance=ExtResource("3_3nt47")]
+visible = false
 script = ExtResource("4_ayaka")
 BACK_MENU = 2
 
