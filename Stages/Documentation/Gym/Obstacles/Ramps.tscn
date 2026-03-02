@@ -1,0 +1,97 @@
+[gd_scene format=3 uid="uid://dobb4o5ifw1e6"]
+
+[ext_resource type="Material" uid="uid://bxph5pp01vonr" path="res://Assets/Materials/Prototype/Obstacle.tres" id="1_4cy77"]
+[ext_resource type="Material" uid="uid://p2ekc74yxtq1" path="res://Assets/Materials/Prototype/ObstacleGreen.tres" id="2_xfwa8"]
+[ext_resource type="Material" uid="uid://bihtu5l32o8it" path="res://Assets/Materials/Prototype/ObsctacleOrange.tres" id="3_6p1xf"]
+[ext_resource type="Material" uid="uid://chpk81hfx4o7x" path="res://Assets/Materials/Prototype/ObstacleRed.tres" id="4_x0u0n"]
+
+[node name="Ramps" type="CSGCombiner3D" unique_id=187119212]
+transform = Transform3D(-4.371139e-08, 0, 1, 0, 1, 0, -1, 0, -4.371139e-08, 0, 0, 0)
+use_collision = true
+collision_layer = 32768
+collision_mask = 0
+
+[node name="SmallRampEnd" type="CSGBox3D" parent="." unique_id=203445296]
+transform = Transform3D(1, 1.4901161e-08, 3.5527137e-15, -1.4901161e-08, 1, -6.1692226e-16, 0, -2.3682798e-16, 1, -2.4217687, 1.0148476, 10)
+size = Vector3(2.1164064, 1.75, 5)
+material = ExtResource("1_4cy77")
+
+[node name="SmallRamp" type="CSGBox3D" parent="." unique_id=648253196]
+transform = Transform3D(0.9848077, 0.17364818, 0, -0.17364818, 0.9848077, 0, 0, 0, 1, 2.402008, 0.21544087, 10.000001)
+material_override = ExtResource("1_4cy77")
+use_collision = true
+collision_layer = 32768
+collision_mask = 0
+size = Vector3(8, 2, 5)
+material = ExtResource("1_4cy77")
+
+[node name="Label3D" type="Label3D" parent="SmallRamp" unique_id=1587838996]
+transform = Transform3D(-4.371139e-08, 1.490116e-08, 1, 0, 1, -1.4901161e-08, -1, 0, -4.371139e-08, -3.632026, 2.966577, 1.4206202e-07)
+pixel_size = 0.008
+text = "10' incline"
+
+[node name="MediumRampEnd" type="CSGBox3D" parent="." unique_id=101306077]
+transform = Transform3D(1, 1.4901161e-08, 3.5527137e-15, -1.4901161e-08, 1, -6.1692226e-16, 0, -2.3682798e-16, 1, -2.1049716, 2.0022044, 5)
+size = Vector3(2.75, 3.75, 5)
+material = ExtResource("1_4cy77")
+
+[node name="MediumRamp" type="CSGBox3D" parent="." unique_id=360197843]
+transform = Transform3D(0.90630776, 0.42261827, 0, -0.42261827, 0.90630776, 0, 0, 0, 1, 1.8341167, -0.082255535, 5)
+material_override = ExtResource("1_4cy77")
+use_collision = true
+collision_layer = 32768
+collision_mask = 0
+size = Vector3(8, 5, 5)
+material = ExtResource("1_4cy77")
+
+[node name="Label3D" type="Label3D" parent="MediumRamp" unique_id=1670512999]
+transform = Transform3D(-4.3711402e-08, 0, 1.0000002, 0, 1.0000002, 0, -1, 3.5527137e-15, -4.3711378e-08, -4.308216, 4.416671, 0)
+pixel_size = 0.008
+text = "25' incline"
+
+[node name="LargeRampEnd" type="CSGBox3D" parent="." unique_id=187698276]
+transform = Transform3D(0.99999994, 0, 0, 0, 0.99999994, 0, 0, 0, 1, -1.7549713, 2.0669606, -6.687717e-08)
+size = Vector3(3.45, 6.0253906, 5)
+material = ExtResource("2_xfwa8")
+
+[node name="LargeRamp" type="CSGBox3D" parent="." unique_id=1660281854]
+transform = Transform3D(0.819152, 0.57357645, 0, -0.57357645, 0.819152, 0, 0, 0, 1, 1.2426348, -0.09173429, 2.7038413e-07)
+material_override = ExtResource("2_xfwa8")
+use_collision = true
+collision_layer = 32768
+collision_mask = 0
+size = Vector3(8, 7, 5)
+material = ExtResource("2_xfwa8")
+
+[node name="Label3D" type="Label3D" parent="LargeRamp" unique_id=129885332]
+transform = Transform3D(-4.3711378e-08, 0, 1, 0, 1, 0, -1, -3.5527137e-15, -4.3711395e-08, -4.807941, 5.256165, -2.842171e-14)
+pixel_size = 0.008
+text = "35' incline"
+
+[node name="SteepestRamp" type="CSGBox3D" parent="." unique_id=37805772]
+transform = Transform3D(0.70710677, 0.70710677, 0, -0.70710677, 0.70710677, 0, 0, 0, 1, 0.49194023, 0.15086767, -5)
+material_override = ExtResource("3_6p1xf")
+use_collision = true
+collision_layer = 32768
+collision_mask = 0
+size = Vector3(8, 9, 5)
+material = ExtResource("3_6p1xf")
+
+[node name="Label3D" type="Label3D" parent="SteepestRamp" unique_id=748715918]
+transform = Transform3D(-4.371139e-08, 0, 1, 7.1054274e-15, 1, 0, -1, 0, -4.3711385e-08, -4.9048195, 6.077847, 0)
+pixel_size = 0.008
+text = "45' incline"
+
+[node name="TooSteep" type="CSGBox3D" parent="." unique_id=1053073052]
+transform = Transform3D(0.6427876, 0.7660444, 0, -0.7660444, 0.6427876, 0, 0, 0, 1, -0.26675227, 0.017838001, -9.999999)
+material_override = ExtResource("4_x0u0n")
+use_collision = true
+collision_layer = 32768
+collision_mask = 0
+size = Vector3(8, 11, 5)
+material = ExtResource("4_x0u0n")
+
+[node name="Label3D" type="Label3D" parent="TooSteep" unique_id=1468098500]
+transform = Transform3D(-4.371139e-08, -2.9802322e-08, 1, -7.1054274e-15, 1, 2.9802322e-08, -1, -1.0658141e-14, -4.371141e-08, -4.9097, 7.0918345, 0)
+pixel_size = 0.008
+text = "50' incline"
