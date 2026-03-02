@@ -308,10 +308,20 @@ func _processGroundCollisionData(result : GroundData) -> void:
 		return
 
 	result.point = _highestGroundPointGlobal()
-	result.offset = _vertOffsetToPlayerGlobal(result.point)
 
 	_initRayQuery(result.point + Vector3.UP, result.point - DOWNWARDS_RAY_LENGTH)
-	result.normal = get_world_3d().direct_space_state.intersect_ray(_rayQuery).normal as Vector3
+	var normalRayResult := get_world_3d().direct_space_state.intersect_ray(_rayQuery)
+
+	if not normalRayResult:
+		return
+
+	if absf(result.point.y - (normalRayResult.position as Vector3).y) > COLLISION_EPSILON:
+		# If we can't hit the same point as the sphereCast, we assume for safety that we haven't hit anything
+		result.point = Vector3.ZERO
+		return
+
+	result.offset = _vertOffsetToPlayerGlobal(result.point)
+	result.normal = normalRayResult.normal as Vector3
 
 	if result.offset <= _bufferedGroundMaxDistance() and result.normal.y > SLOPE_MAX_ANGLE_COS:
 		# As the normal vector is normalized, its angle can be determined by simply checking for its height
