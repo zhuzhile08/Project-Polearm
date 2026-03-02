@@ -6,6 +6,7 @@ class_name InterfaceState
 
 enum Type { 
 	none,
+	quitConfirmMenu,
 	startMenu,
 	options,
 	pause,
@@ -19,13 +20,28 @@ enum Type {
 #endregion
 
 
+#region Member variable
+
+@onready var currentButton : Control = null
+
+#endregion
+
+
 #region Member functions
 
-func showMenu() -> void:
+func activate() -> void:
 	show()
+	if not currentButton:
+		currentButton = find_next_valid_focus()
+	
+	if currentButton:
+		currentButton.grab_focus()
 
-func hideMenu() -> void:
+func deactivate() -> void:
+	currentButton = get_viewport().gui_get_focus_owner()
 	hide()
+
+	deactivateImpl()
 	
 #endregion
 
@@ -37,6 +53,9 @@ func type() -> Type:
 
 func nextMenu(inputs : ISMInputManager.Data) -> Type:
 	return Type.none
+
+func deactivateImpl() -> void:
+	pass
 
 func exit() -> int:
 	return 0

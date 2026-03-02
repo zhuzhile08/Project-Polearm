@@ -1,6 +1,6 @@
 [gd_scene format=3 uid="uid://c0atl8ffoeq5u"]
 
-[ext_resource type="Script" uid="uid://da7enr8axqhyb" path="res://Interfaces/Menus/MainMenu/Submenus/StartMenu.gd" id="1_006fw"]
+[ext_resource type="Script" uid="uid://da7enr8axqhyb" path="res://Interfaces/Menus/MainMenu/StartMenu/StartMenu.gd" id="1_006fw"]
 [ext_resource type="Script" uid="uid://cfdlgc8aalbtr" path="res://Interfaces/Elements/GameMenuButton.gd" id="2_1kon5"]
 
 [node name="StartMenu" type="Control" unique_id=1875216693]
@@ -12,7 +12,6 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 script = ExtResource("1_006fw")
-TYPE = 1
 metadata/_custom_type_script = "uid://cyn28bbc16luj"
 
 [node name="HBoxContainer" type="HBoxContainer" parent="." unique_id=562557462]
@@ -37,39 +36,35 @@ layout_mode = 2
 layout_mode = 2
 theme_override_constants/separation = 9
 
-[node name="Continue" type="Button" parent="HBoxContainer/MarginContainer/VBoxContainer" unique_id=455544828]
+[node name="Continue" type="Button" parent="HBoxContainer/MarginContainer/VBoxContainer" unique_id=1927661442]
 layout_mode = 2
 size_flags_vertical = 3
-focus_neighbor_top = NodePath("../Exit Game")
-focus_neighbor_bottom = NodePath("../New Game")
 text = "Continue"
 script = ExtResource("2_1kon5")
+metadata/_custom_type_script = "uid://cfdlgc8aalbtr"
 
-[node name="New Game" type="Button" parent="HBoxContainer/MarginContainer/VBoxContainer" unique_id=1951452282]
+[node name="Saves" type="Button" parent="HBoxContainer/MarginContainer/VBoxContainer" unique_id=2059408295]
 layout_mode = 2
 size_flags_vertical = 3
-focus_neighbor_top = NodePath("../Continue")
-focus_neighbor_bottom = NodePath("../Options")
-text = "New Game"
+text = "Saves"
 script = ExtResource("2_1kon5")
+metadata/_custom_type_script = "uid://cfdlgc8aalbtr"
 
-[node name="Options" type="Button" parent="HBoxContainer/MarginContainer/VBoxContainer" unique_id=1089722731]
+[node name="Options" type="Button" parent="HBoxContainer/MarginContainer/VBoxContainer" unique_id=903404609]
 layout_mode = 2
 size_flags_vertical = 3
-focus_neighbor_top = NodePath("../New Game")
-focus_neighbor_bottom = NodePath("../Exit Game")
 text = "Options"
 script = ExtResource("2_1kon5")
+metadata/_custom_type_script = "uid://cfdlgc8aalbtr"
 
-[node name="Exit Game" type="Button" parent="HBoxContainer/MarginContainer/VBoxContainer" unique_id=248575094]
+[node name="Quit Game" type="Button" parent="HBoxContainer/MarginContainer/VBoxContainer" unique_id=322889893]
 layout_mode = 2
 size_flags_vertical = 3
-focus_neighbor_top = NodePath("../Options")
-focus_neighbor_bottom = NodePath("../Continue")
-text = "Exit Game"
+text = "Quit Game"
 script = ExtResource("2_1kon5")
+metadata/_custom_type_script = "uid://cfdlgc8aalbtr"
 
 [connection signal="pressed" from="HBoxContainer/MarginContainer/VBoxContainer/Continue" to="." method="_on_continue_pressed"]
-[connection signal="pressed" from="HBoxContainer/MarginContainer/VBoxContainer/New Game" to="." method="_on_new_game_pressed"]
+[connection signal="pressed" from="HBoxContainer/MarginContainer/VBoxContainer/Saves" to="." method="_on_saves_pressed"]
 [connection signal="pressed" from="HBoxContainer/MarginContainer/VBoxContainer/Options" to="." method="_on_options_pressed"]
-[connection signal="pressed" from="HBoxContainer/MarginContainer/VBoxContainer/Exit Game" to="." method="_on_exit_game_pressed"]
+[connection signal="pressed" from="HBoxContainer/MarginContainer/VBoxContainer/Quit Game" to="." method="_on_exit_game_pressed"]
