@@ -1,6 +1,6 @@
 [gd_scene format=3 uid="uid://cthgc7cm7suej"]
 
-[ext_resource type="Script" uid="uid://cyn28bbc16luj" path="res://Common/InterfaceStateMachine/InterfaceState.gd" id="1_lh7t6"]
+[ext_resource type="Script" uid="uid://cyn28bbc16luj" path="res://Interfaces/InterfaceStateMachine/InterfaceState.gd" id="1_lh7t6"]
 [ext_resource type="Script" uid="uid://cbdax7xlgilxj" path="res://Interfaces/Elements/ActionMappingButton.gd" id="1_ua0h8"]
 
 [node name="KeyboardMapping" type="Control" unique_id=2031472548]

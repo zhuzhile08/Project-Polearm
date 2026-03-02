@@ -1,0 +1,25 @@
+[gd_scene format=3 uid="uid://cwwqmgybgoy3v"]
+
+[ext_resource type="Script" uid="uid://cyn28bbc16luj" path="res://Interfaces/InterfaceStateMachine/InterfaceState.gd" id="1_h2m4t"]
+
+[node name="QuitConfirmMenu" type="Control" unique_id=1621337902]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_h2m4t")
+metadata/_custom_type_script = "uid://cyn28bbc16luj"
+
+[node name="CenterContainer" type="CenterContainer" parent="." unique_id=949687210]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Label" type="Label" parent="CenterContainer" unique_id=208079217]
+layout_mode = 2
+text = "REally wanna Quit????"

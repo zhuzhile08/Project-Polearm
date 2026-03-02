@@ -1,0 +1,19 @@
+[gd_scene format=3 uid="uid://dewxnxvy14tjr"]
+
+[ext_resource type="Script" uid="uid://cyn28bbc16luj" path="res://Interfaces/InterfaceStateMachine/InterfaceState.gd" id="1_lp0oy"]
+[ext_resource type="Texture2D" uid="uid://ctdbykm11ffsx" path="res://icon.svg" id="2_lp0oy"]
+
+[node name="GameOptions" type="Control" unique_id=2031472548]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_lp0oy")
+metadata/_custom_type_script = "uid://cyn28bbc16luj"
+
+[node name="Icon" type="Sprite2D" parent="." unique_id=1802255644]
+position = Vector2(199.5, 648)
+scale = Vector2(1.9765625, 4.09375)
+texture = ExtResource("2_lp0oy")
