@@ -31,11 +31,10 @@ enum Type {
 
 func activate() -> void:
 	show()
-	
 	if not currentButton:
 		currentButton = find_next_valid_focus()
 	
-	if not null:
+	if currentButton:
 		currentButton.grab_focus()
 
 func deactivate() -> void:

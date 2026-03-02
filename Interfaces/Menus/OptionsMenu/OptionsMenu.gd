@@ -26,6 +26,7 @@ func type() -> Type:
 
 func nextMenu(inputs : ISMInputManager.Data) -> Type:
 	if inputs.cancel:
+		currentButton = null
 		return BACK_MENU
 		
 	if _onGameOptionsPressed:

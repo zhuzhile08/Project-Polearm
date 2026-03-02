@@ -18,5 +18,4 @@ func nextMenu(inputs : ISMInputManager.Data) -> Type:
 		return BACK_MENU
 	return Type.none
 
-
 #endregion
