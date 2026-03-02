@@ -110,6 +110,7 @@ const STEP_RAY_VERTICAL_OFFSET : float = 0.03
 
 var _groundData : GroundData = GroundData.new()
 var _probeData : GroundData = GroundData.new()
+var _groundedData : GroundData = null # Reference to the current ground data which is grounded
 
 var _stepState : StepState = StepState.none
 
@@ -215,7 +216,11 @@ func _processCollisions() -> void:
 
 	# First order of business, we check for groundedness
 
-	if not _groundData.grounded and not _probeData.grounded:
+	if _groundData.grounded:
+		_groundedData = _groundData
+	elif _probeData.grounded:
+		_groundedData = _probeData
+	else:
 		_stepState = StepState.none
 		_grounded = false
 
@@ -250,7 +255,7 @@ func _processCollisions() -> void:
 	# If we are not stepping at all, we calculate a point in the direction the player is moving 
 	# slightly behind the edge of the player hitbox. This allows us to perform a bit of smoothing
 
-	if _stepState == StepState.none:
+	if _stepState == StepState.none and _probeData.grounded:
 		_probePointInDirection(_probeData, global_position, _targetVelocity.normalized(), GROUND_CAST_RADIUS, 3)
 
 
@@ -274,7 +279,7 @@ func _moveAndSmooth(delta : float) -> void:
 
 		# If the horizontal OR vertical component of line is too small
 		if absf(line.y) < COLLISION_EPSILON or (line.x * line.x + line.z * line.z) < COLLISION_EPSILON * COLLISION_EPSILON:
-			velocity = Utility.Math.rotateVectorOntoPlane(_targetVelocity, _groundData.normal)
+			velocity = Utility.Math.rotateVectorOntoPlane(_targetVelocity, _groundedData.normal)
 		else:
 			# The two cross products produce the final slope vector to rotate velocity by
 			velocity = Utility.Math.rotateVectorOntoPlane(_targetVelocity, line.cross(_probeData.normal).cross(line).normalized())
@@ -413,6 +418,8 @@ func _checkStepDown(direction : Vector3) -> int:
 
 func _checkStepUp(direction : Vector3) -> bool:
 	if _stepState == StepState.up:
+		return false
+	if not _groundData.grounded: # Here, this specifically needs to be grounded
 		return false
 	if not _canStepUp(_groundData.offset, direction):
 		return false
