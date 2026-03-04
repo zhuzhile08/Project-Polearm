@@ -1,0 +1,13 @@
+[gd_scene format=3 uid="uid://db4vg43der2bd"]
+
+[ext_resource type="Script" uid="uid://c04l1hwm4qb74" path="res://Core/Main/GameStateMachine/GameStateMachine.gd" id="1_uv4ay"]
+[ext_resource type="Script" uid="uid://e3nmb3cgdtqk" path="res://GameInstance.gd" id="2_xlp7f"]
+[ext_resource type="PackedScene" uid="uid://blt5xgmerkvnd" path="res://Stages/GameStateMachineTes.tscn" id="2_ymcea"]
+
+[node name="GameStateMachine" type="Node" unique_id=1582475917]
+script = ExtResource("1_uv4ay")
+INITIAL_GAME_TYPE = 2
+metadata/_custom_type_script = "uid://c04l1hwm4qb74"
+
+[node name="Gym" parent="." unique_id=1712231684 instance=ExtResource("2_ymcea")]
+script = ExtResource("2_xlp7f")

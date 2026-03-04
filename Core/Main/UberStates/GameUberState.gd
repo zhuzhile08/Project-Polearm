@@ -1,4 +1,5 @@
 extends UberState
+class_name GameUberState
 
 
 #region Implementation functions

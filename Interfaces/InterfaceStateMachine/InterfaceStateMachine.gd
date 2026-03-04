@@ -18,7 +18,7 @@ class_name InterfaceStateMachine
 
 #region Member variables
 
-var menus : Dictionary[InterfaceState.Type, InterfaceState]
+var _menus : Dictionary[InterfaceState.Type, InterfaceState]
 
 var _currentMenu : InterfaceState
 
@@ -31,9 +31,9 @@ func _ready() -> void:
 	for child in get_children():
 		if child is InterfaceState:
 			child.hide()
-			menus[child.type()] = child
+			_menus[child.type()] = child
 	
-	_currentMenu = menus[INITIAL_MENU_TYPE]
+	_currentMenu = _menus[INITIAL_MENU_TYPE]
 	_currentMenu.activate()
 
 func _process(_delta : float) -> void:
@@ -58,7 +58,7 @@ func exit() -> int:
 
 func _switchTo(nextState):
 	_currentMenu.deactivate()
-	_currentMenu = menus[nextState]
+	_currentMenu = _menus[nextState]
 	_currentMenu.activate()
 
 #endregion

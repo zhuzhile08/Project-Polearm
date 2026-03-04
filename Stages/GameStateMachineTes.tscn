@@ -1,0 +1,99 @@
+[gd_scene format=3 uid="uid://blt5xgmerkvnd"]
+
+[ext_resource type="PackedScene" uid="uid://2twxnnq3mj7i" path="res://Common/Camera/SceneCamera/SceneCamera.tscn" id="1_auuor"]
+[ext_resource type="Script" uid="uid://b8sow6hwf1gny" path="res://Core/Main/GameStateMachine/GameState.gd" id="1_ctl5g"]
+[ext_resource type="Shader" uid="uid://exx180lp74b0" path="res://Assets/Shaders/Sky/StylizedSky.gdshader" id="2_wje10"]
+[ext_resource type="PackedScene" uid="uid://cyti0335fm7s0" path="res://Entities/Player/Player.tscn" id="3_cbpo0"]
+[ext_resource type="Material" uid="uid://cgj2lr4vp41pl" path="res://Assets/Materials/Prototype/FloorGray.tres" id="4_uc5kb"]
+[ext_resource type="PackedScene" uid="uid://dobb4o5ifw1e6" path="res://Stages/Documentation/Gym/Obstacles/Ramps.tscn" id="5_8wv5c"]
+[ext_resource type="PackedScene" uid="uid://4721tk72gs1t" path="res://Stages/Documentation/Gym/Obstacles/Steps.tscn" id="6_p27wj"]
+[ext_resource type="PackedScene" uid="uid://bduaf0ou244na" path="res://Stages/Documentation/Gym/Obstacles/Bumps.tscn" id="7_37c1p"]
+[ext_resource type="PackedScene" uid="uid://duc76equt8iqk" path="res://Stages/Documentation/Gym/Obstacles/Round.tscn" id="8_cwhqw"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_jiqka"]
+shader = ExtResource("2_wje10")
+shader_parameter/day_top_color = Color(0.1, 0.6, 1, 1)
+shader_parameter/day_bottom_color = Color(0.4, 0.8, 1, 1)
+shader_parameter/sunset_top_color = Color(0.7, 0.75, 1, 1)
+shader_parameter/sunset_bottom_color = Color(1, 0.5, 0.7, 1)
+shader_parameter/night_top_color = Color(0.02, 0, 0.04, 1)
+shader_parameter/night_bottom_color = Color(0.1, 0, 0.2, 1)
+shader_parameter/horizon_color = Color(0, 0.7, 0.8, 1)
+shader_parameter/horizon_blur = 0.05
+shader_parameter/sun_color = Color(10, 8, 1, 1)
+shader_parameter/sun_sunset_color = Color(10, 0, 0, 1)
+shader_parameter/sun_size = 0.2
+shader_parameter/sun_blur = 10.0
+shader_parameter/moon_color = Color(1, 0.95, 0.7, 1)
+shader_parameter/moon_size = 0.06
+shader_parameter/moon_blur = 0.1
+shader_parameter/clouds_edge_color = Color(0.8, 0.8, 0.98, 1)
+shader_parameter/clouds_top_color = Color(1, 1, 1, 1)
+shader_parameter/clouds_middle_color = Color(0.92, 0.92, 0.98, 1)
+shader_parameter/clouds_bottom_color = Color(0.83, 0.83, 0.94, 1)
+shader_parameter/clouds_speed = 2.0
+shader_parameter/clouds_direction = 0.2
+shader_parameter/clouds_scale = 1.0
+shader_parameter/clouds_cutoff = 0.3
+shader_parameter/clouds_fuzziness = 0.5
+shader_parameter/clouds_weight = 0.0
+shader_parameter/clouds_blur = 0.25
+shader_parameter/stars_speed = 1.0
+shader_parameter/overwritten_time = 0.0
+
+[sub_resource type="Sky" id="Sky_uesqs"]
+sky_material = SubResource("ShaderMaterial_jiqka")
+
+[sub_resource type="Environment" id="Environment_0qwk7"]
+background_mode = 2
+sky = SubResource("Sky_uesqs")
+
+[node name="Gym" type="Node" unique_id=1712231684]
+script = ExtResource("1_ctl5g")
+metadata/_custom_type_script = "uid://b8sow6hwf1gny"
+
+[node name="Visuals" type="Node" parent="." unique_id=1391791017]
+
+[node name="SceneCamera" parent="Visuals" unique_id=1015597522 instance=ExtResource("1_auuor")]
+transform = Transform3D(1, 0, 0, 0, 0.8660254, 0.5, 0, -0.5, 0.8660254, 0, 0, 0)
+top_level = true
+current = true
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="Visuals" unique_id=2034854936]
+environment = SubResource("Environment_0qwk7")
+
+[node name="SunAxis" type="Node3D" parent="Visuals" unique_id=269714516]
+transform = Transform3D(1, 0, 0, 0, 0.49999997, 0.86602545, 0, -0.86602545, 0.49999997, 0, 0, 0)
+
+[node name="Sun" type="DirectionalLight3D" parent="Visuals/SunAxis" unique_id=80417960]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 1000)
+shadow_enabled = true
+shadow_blur = 0.02
+
+[node name="Player" parent="." unique_id=1997770894 instance=ExtResource("3_cbpo0")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.5, 2.1386669)
+
+[node name="Geometry" type="Node" parent="." unique_id=255614809]
+
+[node name="Ground" type="CSGBox3D" parent="Geometry" unique_id=1174585820]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.4, 0, -0.6)
+material_override = ExtResource("4_uc5kb")
+use_collision = true
+collision_layer = 32768
+collision_mask = 0
+size = Vector3(200, 1, 200)
+
+[node name="JumpHeight" type="Node3D" parent="Geometry" unique_id=1328271858]
+
+[node name="JumpDistance" type="Node3D" parent="Geometry" unique_id=1794139538]
+
+[node name="Ramps" parent="Geometry" unique_id=7076619 instance=ExtResource("5_8wv5c")]
+transform = Transform3D(-4.371139e-08, 0, 1, 0, 1, 0, -1, 0, -4.371139e-08, 4.5, 0, 12.3280945)
+
+[node name="Steps" parent="Geometry" unique_id=793798539 instance=ExtResource("6_p27wj")]
+
+[node name="Bumps" parent="Geometry" unique_id=1776097978 instance=ExtResource("7_37c1p")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.5, 0, -6.9500003)
+
+[node name="Round" parent="Geometry" unique_id=830021453 instance=ExtResource("8_cwhqw")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -18.5)
