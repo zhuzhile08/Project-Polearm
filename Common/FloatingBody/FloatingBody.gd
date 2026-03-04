@@ -69,6 +69,7 @@ const STEP_RAY_VERTICAL_OFFSET : float = 0.03
 #region Exported variables
 
 @export_group("Physics settings")
+@export var CHARACTER_HEIGHT :float = 1.8
 @export var BODY_COLLIDER_RADIUS = 0.5
 @export var BODY_COLLIDER_FLOATING_HEIGHT : float = 0.3
 @export var GROUND_CAST_RADIUS : float = 0.4
@@ -78,7 +79,8 @@ const STEP_RAY_VERTICAL_OFFSET : float = 0.03
 
 @export_group("Step settings")
 @export var STEP_MAX_HEIGHT : float = 0.41
-@export var STEP_SPEED_FACTOR : float = 0.4
+@export var STEP_MAX_DEPTH : float = 0.3
+@export var STEP_SPEED_FACTOR : float = 0.5
 
 #endregion
 
@@ -98,6 +100,7 @@ const STEP_RAY_VERTICAL_OFFSET : float = 0.03
 
 @onready var BUFFERED_MAX_GROUND_DISTANCE := (BODY_COLLIDER_FLOATING_HEIGHT + STEP_MAX_HEIGHT) * GROUND_DISTANCE_BUFFER
 @onready var UNBUFFERED_MAX_GROUND_DISTANCE := BODY_COLLIDER_FLOATING_HEIGHT * GROUND_DISTANCE_BUFFER
+@onready var BODY_COLLIDER_HEIGHT := CHARACTER_HEIGHT - BODY_COLLIDER_FLOATING_HEIGHT
 
 @onready var SLOPE_MAX_ANGLE_COS := cos(SLOPE_MAX_ANGLE)
 @onready var COLLISION_LAYERS := groundCast.collision_mask
@@ -113,6 +116,7 @@ var _probeData : GroundData = GroundData.new()
 var _groundedData : GroundData = null # Reference to the current ground data which is grounded
 
 var _stepState : StepState = StepState.none
+var _validStepDepth : bool = true
 
 var _grounded : bool = false
 
@@ -122,6 +126,12 @@ var _targetVelocity : Vector3 = Vector3.ZERO
 # Caching
 
 @onready var _rayQuery : PhysicsRayQueryParameters3D = PhysicsRayQueryParameters3D.create(Vector3.ZERO, Vector3.ZERO, COLLISION_LAYERS)
+@onready var _motionParameters : PhysicsTestMotionParameters3D = PhysicsTestMotionParameters3D.new()
+
+@onready var _motionBodyData : Dictionary[String, float] = { "height" : BODY_COLLIDER_HEIGHT, "radius" : BODY_COLLIDER_RADIUS }
+
+@onready var _collisionProbeBody : RID = PhysicsServer3D.body_create()
+@onready var _collisionProbeShape : RID = PhysicsServer3D.capsule_shape_create()
 
 #endregion
 
@@ -134,6 +144,7 @@ func init() -> void:
 func tick(delta : float) -> void:
 	_processCollisions()
 	_moveAndSmooth(delta)
+	#DEBUG_drawCollisionPoints()
 
 	_groundData.clear()
 	_probeData.clear()
@@ -173,10 +184,10 @@ func onlyOnWall() -> bool:
 # Ground functions
 
 func groundPoint() -> Vector3:
-	return _groundData.point
+	return _groundedData.point
 
 func groundNormal() -> Vector3:
-	return _groundData.normal
+	return _groundedData.normal
 
 func forceGroundDataUpdate() -> void:
 	if _stepState == StepState.down:
@@ -184,6 +195,8 @@ func forceGroundDataUpdate() -> void:
 	else:
 		groundCast.force_shapecast_update()
 		_processGroundCollisionData(_groundData)
+	
+	_groundedData = _groundData
 
 
 #endregion
@@ -196,17 +209,21 @@ func forceGroundDataUpdate() -> void:
 func _configureHitboxes() -> void:
 	groundCast.max_results = MAX_GROUND_COLLISIONS
 
-	bodyCollider.position.y += BODY_COLLIDER_FLOATING_HEIGHT / 2
-	_bodyColliderShape.height -= BODY_COLLIDER_FLOATING_HEIGHT
+	bodyCollider.position.y = BODY_COLLIDER_HEIGHT / 2 + BODY_COLLIDER_FLOATING_HEIGHT
+	_bodyColliderShape.radius = BODY_COLLIDER_RADIUS
+	_bodyColliderShape.height = BODY_COLLIDER_HEIGHT
 
 	_groundCastShape.radius = GROUND_CAST_RADIUS
+
+	PhysicsServer3D.shape_set_data(_collisionProbeShape, _motionBodyData)
+	PhysicsServer3D.body_set_collision_mask(_collisionProbeBody, COLLISION_LAYERS)
+	PhysicsServer3D.body_set_space(_collisionProbeBody, get_world_3d().space)
+	PhysicsServer3D.body_add_shape(_collisionProbeBody, _collisionProbeShape)
 
 
 # Physics functions
 
 func _processCollisions() -> void:
-	#print(_grounded, _stepState)
-
 	if _stepState == StepState.down:
 		_processGroundCollisionData(_probeData)
 		_processFootCollisionData(_groundData)
@@ -255,8 +272,10 @@ func _processCollisions() -> void:
 	# If we are not stepping at all, we calculate a point in the direction the player is moving 
 	# slightly behind the edge of the player hitbox. This allows us to perform a bit of smoothing
 
-	if _stepState == StepState.none and _probeData.grounded:
+	if _stepState == StepState.none and _probeData.grounded and _validStepDepth:
 		_probePointInDirection(_probeData, global_position, _targetVelocity.normalized(), GROUND_CAST_RADIUS, 3)
+	
+	_validStepDepth = true
 
 
 func _moveAndSmooth(delta : float) -> void:
@@ -287,15 +306,28 @@ func _moveAndSmooth(delta : float) -> void:
 		# If we know we are stepping, we will rotate the input velocity vector onto the plane of only the step point
 		# We will also not apply any ground snapping, as this will ruin the stepping and since it already handles it sort of
 
-		velocity = Utility.Math.rotateVectorOntoPlane(_targetVelocity, _groundData.normal)
+		var velLength := _targetVelocity.length()
+		var absStepVel : float = 0.0
+
 
 		# Stepping logic, this already applies a small amount of snapping on the slope
+
 		var offsetAbs := absf(_groundData.offset)
 		if offsetAbs > COLLISION_EPSILON:
-			velocity.y -= maxf(offsetAbs / delta * STEP_SPEED_FACTOR, MIN_STEP_SPEED) * signf(_groundData.offset)
+			absStepVel = offsetAbs / delta * STEP_SPEED_FACTOR
 		else:
 			position.y -= _groundData.offset # Modify position directly for better snapping
 			_stepState = StepState.none
+
+
+		if velLength != 0:
+			_targetVelocity *= (1 - (absStepVel * 0.5) / velLength)
+
+			velocity = Utility.Math.rotateVectorOntoPlane(_targetVelocity, _groundData.normal)
+		else:
+			velocity = Vector3.ZERO
+
+		velocity.y -= absStepVel * signf(_groundData.offset)
 
 
 	move_and_slide()
@@ -316,8 +348,7 @@ func _processGroundCollisionData(result : GroundData) -> void:
 		return
 
 	if absf(result.point.y - (normalRayResult.position as Vector3).y) > COLLISION_EPSILON:
-		# If we can't hit the same point as the sphereCast, we assume for safety that we haven't hit anything
-		result.point = Vector3.ZERO
+		# If we can't hit the same point as the sphereCast, we assume for safety that we are not grounded
 		return
 
 	result.offset = _vertOffsetToPlayerGlobal(result.point)
@@ -380,8 +411,7 @@ func _probePointInDirection(result : GroundData, startingPos : Vector3, directio
 # CAUTION: returns the non-globalized target position for usage in _validateStepProbeQueryDirection
 func _calculateStepWallProbeQuery(sourcePointGlobal : Vector3, targetPointGlobal : Vector3) -> void:
 	var sourcePos := Vector3(sourcePointGlobal.x, targetPointGlobal.y - STEP_RAY_VERTICAL_OFFSET, sourcePointGlobal.z)
-	var targetPos := (targetPointGlobal - sourcePos) * STEP_RAY_SCALE_FACTOR
-	targetPos.y = 0
+	var targetPos := Vector3(targetPointGlobal.x - sourcePointGlobal.x, 0, targetPointGlobal.z - sourcePointGlobal.z) * STEP_RAY_SCALE_FACTOR
 
 	_initRayQuery(sourcePos, targetPos)
 
@@ -431,7 +461,7 @@ func _checkStepUp(direction : Vector3) -> bool:
 		return false
 	if not _groundData.grounded: # Here, this specifically needs to be grounded
 		return false
-	if not _canStepUp(_groundData.offset, direction):
+	if not _canStepUp(_groundData.point, _groundData.offset, direction):
 		return false
 
 	_stepState = StepState.up
@@ -442,7 +472,7 @@ func _checkStepUpFromProbe(direction : Vector3) -> bool:
 
 	if not _probeData.grounded:
 		return false
-	if not _canStepUp(_probeData.offset, direction):
+	if not _canStepUp(_probeData.point, _probeData.offset, direction):
 		return false
 
 	_groundData.copy(_probeData)
@@ -450,8 +480,16 @@ func _checkStepUpFromProbe(direction : Vector3) -> bool:
 
 	return true
 
-func _canStepUp(offset : float, direction : Vector3) -> bool:
-	return (offset <= -STEP_RAY_VERTICAL_OFFSET and offset >= -STEP_MAX_HEIGHT and _validateStepProbeQueryDirection(direction) and _probeStepWall())
+func _canStepUp(point : Vector3, offset : float, direction : Vector3) -> bool:
+	_motionParameters.from = Transform3D.IDENTITY
+	_motionParameters.from.origin = Vector3(point.x, point.y - offset + bodyCollider.position.y, point.z)
+	_motionParameters.motion = direction.normalized() * STEP_MAX_DEPTH
+
+	_validStepDepth = not PhysicsServer3D.body_test_motion(_collisionProbeBody, _motionParameters)
+
+	return offset <= -STEP_RAY_VERTICAL_OFFSET and offset >= -STEP_MAX_HEIGHT and \
+		_validateStepProbeQueryDirection(direction) and \
+		_probeStepWall() and _validStepDepth
 
 
 # Utility functions
