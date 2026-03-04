@@ -20,7 +20,6 @@ groundCast = NodePath("GroundCast")
 metadata/_custom_type_script = "uid://c4qocsfubevqb"
 
 [node name="BodyCollider" type="CollisionShape3D" parent="." unique_id=810581492]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0)
 shape = SubResource("CapsuleShape3D_an6q6")
 debug_fill = false
 
