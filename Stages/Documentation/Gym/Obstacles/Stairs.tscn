@@ -1,0 +1,60 @@
+[gd_scene format=3 uid="uid://dhsuh2ufuvwdp"]
+
+[ext_resource type="Script" uid="uid://cn381b6mnpegx" path="res://Common/Tools/CSGStair.gd" id="1_t2xum"]
+[ext_resource type="Material" uid="uid://bxph5pp01vonr" path="res://Assets/Materials/Prototype/Obstacle.tres" id="2_btwux"]
+[ext_resource type="Material" uid="uid://p2ekc74yxtq1" path="res://Assets/Materials/Prototype/ObstacleGreen.tres" id="3_8n46m"]
+[ext_resource type="Material" uid="uid://bihtu5l32o8it" path="res://Assets/Materials/Prototype/ObsctacleOrange.tres" id="4_bhsjy"]
+
+[node name="Stairs" type="Node3D" unique_id=1187381614]
+
+[node name="VeryEasy" type="CSGCombiner3D" parent="." unique_id=31955397]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 7.5000005, 0.5, -8.75)
+use_collision = true
+collision_layer = 32768
+collision_mask = 0
+script = ExtResource("1_t2xum")
+total_height = 6.0
+total_length = 9.0
+total_width = 5.0
+num_steps = 24
+step_material = ExtResource("2_btwux")
+metadata/_custom_type_script = "uid://cn381b6mnpegx"
+
+[node name="Easy" type="CSGCombiner3D" parent="." unique_id=1279203015]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.5000002, 0.5, -8.75)
+use_collision = true
+collision_layer = 32768
+collision_mask = 0
+script = ExtResource("1_t2xum")
+total_height = 7.0
+total_length = 9.0
+total_width = 5.0
+num_steps = 24
+step_material = ExtResource("3_8n46m")
+metadata/_custom_type_script = "uid://cn381b6mnpegx"
+
+[node name="Easy2" type="CSGCombiner3D" parent="." unique_id=1797594170]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2.4999998, 0.5, -8.75)
+use_collision = true
+collision_layer = 32768
+collision_mask = 0
+script = ExtResource("1_t2xum")
+total_height = 8.0
+total_length = 9.0
+total_width = 5.0
+num_steps = 24
+step_material = ExtResource("3_8n46m")
+metadata/_custom_type_script = "uid://cn381b6mnpegx"
+
+[node name="Middle" type="CSGCombiner3D" parent="." unique_id=261911480]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -7.4999995, 0.5, -8.75)
+use_collision = true
+collision_layer = 32768
+collision_mask = 0
+script = ExtResource("1_t2xum")
+total_height = 9.0
+total_length = 9.0
+total_width = 5.0
+num_steps = 24
+step_material = ExtResource("4_bhsjy")
+metadata/_custom_type_script = "uid://cn381b6mnpegx"

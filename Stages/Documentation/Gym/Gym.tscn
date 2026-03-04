@@ -8,6 +8,7 @@
 [ext_resource type="PackedScene" uid="uid://4721tk72gs1t" path="res://Stages/Documentation/Gym/Obstacles/Steps.tscn" id="6_ji2m5"]
 [ext_resource type="PackedScene" uid="uid://bduaf0ou244na" path="res://Stages/Documentation/Gym/Obstacles/Bumps.tscn" id="7_tsewk"]
 [ext_resource type="PackedScene" uid="uid://duc76equt8iqk" path="res://Stages/Documentation/Gym/Obstacles/Round.tscn" id="8_tsewk"]
+[ext_resource type="PackedScene" uid="uid://dhsuh2ufuvwdp" path="res://Stages/Documentation/Gym/Obstacles/Stairs.tscn" id="9_jiqka"]
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_jiqka"]
 shader = ExtResource("1_tsewk")
@@ -68,6 +69,7 @@ shadow_blur = 0.02
 
 [node name="Player" parent="." unique_id=1997770894 instance=ExtResource("2_d2u3u")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.5, 2.1386669)
+STEP_SPEED_FACTOR = 0.3
 
 [node name="Geometry" type="Node" parent="." unique_id=255614809]
 
@@ -92,4 +94,7 @@ transform = Transform3D(-4.371139e-08, 0, 1, 0, 1, 0, -1, 0, -4.371139e-08, 4.5,
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.5, 0, -6.9500003)
 
 [node name="Round" parent="Geometry" unique_id=830021453 instance=ExtResource("8_tsewk")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -18.5)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -27.650002)
+
+[node name="Stairs" parent="Geometry" unique_id=1187381614 instance=ExtResource("9_jiqka")]
+transform = Transform3D(-4.371139e-08, 0, 1, 0, 1, 0, -1, 0, -4.371139e-08, 15.39006, 0, -8.6)
