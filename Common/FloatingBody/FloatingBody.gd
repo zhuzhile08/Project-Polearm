@@ -1,5 +1,5 @@
 # The logic behind the structure derive loosely from the methods used in https://github.com/NoiRC256/SRMove/
-# A forward probing function to apply smoothing on slopes is directly inspired by the library
+# A forward probing function to apply smoothing during movement is directly inspired by the library
 
 extends CharacterBody3D
 class_name FloatingBody
@@ -288,16 +288,15 @@ func _moveAndSmooth(delta : float) -> void:
 
 		# If the horizontal OR vertical component of line is too small
 		if absf(line.y) < COLLISION_EPSILON or (line.x * line.x + line.z * line.z) < COLLISION_EPSILON * COLLISION_EPSILON:
+			_groundedData = _groundData
 			velocity = Utility.Math.rotateVectorOntoPlane(_targetVelocity, _groundData.normal)
 		else:
 			# The two cross products produce the final slope vector to rotate velocity by
 			velocity = Utility.Math.rotateVectorOntoPlane(_targetVelocity, line.cross(_footData.normal).cross(line).normalized())
 	elif _stepState != StepState.none:
 		if absf(_groundedData.offset) > COLLISION_EPSILON:
-			print(_groundedData.offset)
 			velocity.y -= _groundedData.offset / delta * STEP_SPEED_FACTOR
 		else:
-			_groundedData = _groundData
 			position.y -= _groundedData.offset # Modify position directly for better snapping
 			_stepState = StepState.none
 
