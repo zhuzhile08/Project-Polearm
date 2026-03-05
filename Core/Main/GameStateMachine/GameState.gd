@@ -2,6 +2,13 @@ extends Node
 class_name GameState
 
 
+#region Exported variables
+
+@export_file_path("*tscn", "*scn") var SCENE_PATH : String
+
+#endregion
+
+
 #region Enums
 
 enum Type { 

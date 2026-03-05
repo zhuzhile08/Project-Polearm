@@ -1,4 +1,4 @@
-[gd_scene format=3 uid="uid://blt5xgmerkvnd"]
+[gd_scene format=3 uid="uid://b5cueu00ttce"]
 
 [ext_resource type="PackedScene" uid="uid://2twxnnq3mj7i" path="res://Common/Camera/SceneCamera/SceneCamera.tscn" id="1_auuor"]
 [ext_resource type="Script" uid="uid://b8sow6hwf1gny" path="res://Core/Main/GameStateMachine/GameState.gd" id="1_ctl5g"]

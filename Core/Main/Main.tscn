@@ -22,5 +22,5 @@ metadata/_custom_type_script = "uid://c53qsvtvhijbt"
 
 [node name="GameUberState" type="Node" parent="." unique_id=616033369]
 script = ExtResource("4_jgmb7")
-SCENE_PATH = "res://Stages/Documentation/Gym/Gym.tscn"
+SCENE_PATH = "res://Core/Game/Game.tscn"
 metadata/_custom_type_script = "uid://da6qvutamfeu7"

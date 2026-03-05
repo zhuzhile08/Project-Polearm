@@ -1,0 +1,19 @@
+[gd_scene format=3 uid="uid://cnh3sfmjaqvme"]
+
+[ext_resource type="Script" uid="uid://c04l1hwm4qb74" path="res://Core/Main/GameStateMachine/GameStateMachine.gd" id="1_kydix"]
+[ext_resource type="Script" uid="uid://dbhyds3ikcvq0" path="res://Core/Game/LoadingScreen.gd" id="2_kydix"]
+[ext_resource type="Script" uid="uid://e3nmb3cgdtqk" path="res://Core/Game/GameInstance.gd" id="3_kydix"]
+
+[node name="Game" type="Node" unique_id=1672999399]
+script = ExtResource("1_kydix")
+INITIAL_GAME_TYPE = 2
+metadata/_custom_type_script = "uid://c04l1hwm4qb74"
+
+[node name="LoadingScreen" type="Node" parent="." unique_id=475412671]
+script = ExtResource("2_kydix")
+metadata/_custom_type_script = "uid://b8sow6hwf1gny"
+
+[node name="GameInstance" type="Node" parent="." unique_id=1969901012]
+script = ExtResource("3_kydix")
+SCENE_PATH = "res://Stages/Documentation/Gym/Gym.tscn"
+metadata/_custom_type_script = "uid://b8sow6hwf1gny"

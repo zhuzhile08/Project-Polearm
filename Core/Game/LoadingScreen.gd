@@ -4,6 +4,6 @@ extends GameState
 #region Implementation functions
 
 func type() -> Type:
-	return Type.playing
+	return Type.loading
 
 #endregion
