@@ -2,6 +2,7 @@
 
 [ext_resource type="Script" uid="uid://c31gnbehqoq8y" path="res://Core/Main/Main.gd" id="1_ycf5l"]
 [ext_resource type="Script" uid="uid://cpetiw40mhprd" path="res://Core/Main/UberStates/BootUberState.gd" id="3_jgmb7"]
+[ext_resource type="Script" uid="uid://da6qvutamfeu7" path="res://Core/Main/UberStates/GameUberState.gd" id="4_jgmb7"]
 [ext_resource type="Script" uid="uid://c53qsvtvhijbt" path="res://Core/Main/UberStates/MainMenuUberState.gd" id="4_x511n"]
 
 [node name="Main" type="Node" unique_id=371259075]
@@ -18,3 +19,8 @@ metadata/_custom_type_script = "uid://cpetiw40mhprd"
 script = ExtResource("4_x511n")
 SCENE_PATH = "res://Interfaces/Menus/MainMenu/MainMenu.tscn"
 metadata/_custom_type_script = "uid://c53qsvtvhijbt"
+
+[node name="GameUberState" type="Node" parent="." unique_id=616033369]
+script = ExtResource("4_jgmb7")
+SCENE_PATH = "res://Core/Game/Game.tscn"
+metadata/_custom_type_script = "uid://da6qvutamfeu7"

@@ -6,6 +6,7 @@ class_name InterfaceState
 
 enum Type { 
 	none,
+	
 	quitConfirmMenu,
 	startMenu,
 	options,

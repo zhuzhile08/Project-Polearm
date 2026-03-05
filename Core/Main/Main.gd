@@ -4,9 +4,9 @@ class_name Main
 
 #region Member variables
 
-var uberStates : Dictionary[UberState.Type, UberState]
+var uberStates : Dictionary[UberState.Type, UberState] = { }
 
-var _currentState : UberState
+var _currentState : UberState = null
 
 #endregion
 
@@ -31,7 +31,7 @@ func _process(_delta : float) -> void:
 
 #region Private functions
 
-func _switchTo(nextState):
+func _switchTo(nextState : UberState.Type):
 	_currentState.exit()
 	_currentState = uberStates[nextState]
 	_currentState.enter()

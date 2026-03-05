@@ -1,16 +1,17 @@
-extends UberState
-class_name GameUberState
+extends GameState
+class_name PlayingGameState
 
 
-#region Built-in functions
+#region Build-in functions
 
 func _ready() -> void:
 	var err := ResourceLoader.load_threaded_request(SCENE_PATH)
 
-	assert(err == OK, "GameUberState._ready(): Request to load the scene resource failed!")
+	assert(err == OK, "PlayingGameState._ready(): Request to load the scene resource failed!")
+
+	super._ready()
 
 #endregion
-
 
 #region Public functions
 
@@ -21,7 +22,7 @@ func finishedLoading() -> bool:
 		ResourceLoader.THREAD_LOAD_IN_PROGRESS:
 			return false
 		_:
-			assert(false, "GameUberState.finishedLoading(): Loading scene resource failed")
+			assert(false, "MainMenuUberState.finishedLoading(): Loading scene resource failed")
 	
 	return false
 
@@ -31,24 +32,19 @@ func finishedLoading() -> bool:
 #region Implementation functions
 
 func type() -> Type:
-	return Type.game
+	return Type.playing
+
 
 func createSceneImpl() -> Node:
 	assert( \
 		ResourceLoader.load_threaded_get_status(SCENE_PATH) == ResourceLoader.THREAD_LOAD_LOADED, \
-		"GameUberState.createSceneImpl(): Scene resource has not finished loading! Please use the GameUberState.finishedLoading() function.")
+		"PlayingGameState.createSceneImpl(): Scene resource has not finished loading! Please use the MainMenuUberState.finishedLoading() function.")
 
 	_sceneResource = ResourceLoader.load_threaded_get(SCENE_PATH)
 	return _sceneResource.instantiate()
 
-func enterImpl() -> void:
-	pass
 
 func exitImpl() -> void:
-	pass
-
-
-func nextState() -> Type:
-	return Type.none
+	scene = null
 
 #endregion
