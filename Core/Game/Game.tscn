@@ -9,13 +9,14 @@ script = ExtResource("1_kydix")
 INITIAL_GAME_TYPE = 1
 metadata/_custom_type_script = "uid://c04l1hwm4qb74"
 
-[node name="LoadingGameState" type="Node" parent="." unique_id=329497483 node_paths=PackedStringArray("GAME_INSTANCE")]
+[node name="LoadingState" type="Node" parent="." unique_id=329497483]
+process_mode = 4
 script = ExtResource("2_kydix")
-GAME_INSTANCE = NodePath("../PlayingGameState")
 SCENE_PATH = "res://Core/Game/LoadingScreen.tscn"
 metadata/_custom_type_script = "uid://c2mvqn0m3b31"
 
-[node name="PlayingGameState" type="Node" parent="." unique_id=9757392]
+[node name="GameState" type="Node" parent="." unique_id=9757392]
+process_mode = 4
 script = ExtResource("3_f6rc3")
 SCENE_PATH = "res://Stages/Documentation/Gym/Gym.tscn"
 metadata/_custom_type_script = "uid://ckpjqjxoubneu"

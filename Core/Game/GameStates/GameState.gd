@@ -65,11 +65,10 @@ func createSceneImpl() -> Node:
 	return _sceneResource.instantiate()
 
 func enterImpl() -> void:
-	set_process(true)
-	set_physics_process(true)
+	process_mode = Node.PROCESS_MODE_INHERIT
 
 func exitImpl() -> void:
-	pass
+	process_mode = Node.PROCESS_MODE_DISABLED
 
 func nextState() -> Type:
 	return Type.none

@@ -9,9 +9,8 @@ func _ready() -> void:
 
 	assert(err == OK, "PlayingGameState._ready(): Request to load the scene resource failed!")
 
-	super._ready()
-
 #endregion
+
 
 #region Public functions
 

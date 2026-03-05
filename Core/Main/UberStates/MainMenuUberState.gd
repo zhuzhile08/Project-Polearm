@@ -13,6 +13,13 @@ enum ExitType {
 #endregion
 
 
+#region Scene members
+
+@export var _game : GameUberState = null
+
+#endregion
+
+
 #region Built-in functions
 
 func _ready() -> void:
@@ -63,7 +70,8 @@ func exitImpl() -> void:
 func nextState() -> Type:
 	match scene.exit() as int:
 		ExitType.startGame:
-			return Type.game
+			if _game.finishedLoading():
+				return Type.game
 		ExitType.quitGame:
 			return Type.quit
 

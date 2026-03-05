@@ -11,9 +11,9 @@ class_name GameStateMachine
 
 #region Member variables
 
-var _gameStates : Dictionary[GameState.Type, GameState] = { }
+var _states : Dictionary[GameState.Type, GameState] = { }
 
-var _currentGameState : GameState = null
+var _currentState : GameState = null
 
 #endregion
 
@@ -23,13 +23,13 @@ var _currentGameState : GameState = null
 func _ready() -> void:
 	for child in get_children():
 		if child is GameState:
-			_gameStates[child.type()] = child
-	if _gameStates.has(INITIAL_GAME_TYPE):
-		_currentGameState = _gameStates[INITIAL_GAME_TYPE]
-		_currentGameState.enter()
+			_states[child.type()] = child
+
+	_currentState = _states[INITIAL_GAME_TYPE]
+	_currentState.enter()
 
 func _process(_delta : float) -> void:
-	var nextState := _currentGameState.nextState()
+	var nextState := _currentState.nextState()
 	if nextState != GameState.Type.none:
 		_switchTo(nextState)
 
@@ -39,8 +39,8 @@ func _process(_delta : float) -> void:
 #region Private functions
 
 func _switchTo(nextState : GameState.Type):
-	_currentGameState.exit()
-	_currentGameState = _gameStates[nextState]
-	_currentGameState.enter()
+	_currentState.exit()
+	_currentState = _states[nextState]
+	_currentState.enter()
 
 #endregion

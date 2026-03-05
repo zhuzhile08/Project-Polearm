@@ -5,22 +5,23 @@
 [ext_resource type="Script" uid="uid://da6qvutamfeu7" path="res://Core/Main/UberStates/GameUberState.gd" id="4_jgmb7"]
 [ext_resource type="Script" uid="uid://c53qsvtvhijbt" path="res://Core/Main/UberStates/MainMenuUberState.gd" id="4_x511n"]
 
-[node name="Main" type="Node" unique_id=371259075]
+[node name="Main" type="Node" unique_id=1689907238]
 script = ExtResource("1_ycf5l")
 metadata/_custom_type_script = "uid://c31gnbehqoq8y"
 
-[node name="BootState" type="Node" parent="." unique_id=965956773 node_paths=PackedStringArray("_mainMenu")]
+[node name="BootState" type="Node" parent="." unique_id=60879716 node_paths=PackedStringArray("_mainMenu")]
 script = ExtResource("3_jgmb7")
-_mainMenu = NodePath("../MainMenuState")
+_mainMenu = NodePath("")
 SCENE_PATH = "res://Core/Main/Boot/Boot.tscn"
 metadata/_custom_type_script = "uid://cpetiw40mhprd"
 
-[node name="MainMenuState" type="Node" parent="." unique_id=1908078019]
+[node name="MainMenuState" type="Node" parent="." unique_id=1653639788 node_paths=PackedStringArray("_game")]
 script = ExtResource("4_x511n")
+_game = NodePath("../GameState")
 SCENE_PATH = "res://Interfaces/Menus/MainMenu/MainMenu.tscn"
 metadata/_custom_type_script = "uid://c53qsvtvhijbt"
 
-[node name="GameUberState" type="Node" parent="." unique_id=616033369]
+[node name="GameState" type="Node" parent="." unique_id=761398070]
 script = ExtResource("4_jgmb7")
 SCENE_PATH = "res://Core/Game/Game.tscn"
 metadata/_custom_type_script = "uid://da6qvutamfeu7"
