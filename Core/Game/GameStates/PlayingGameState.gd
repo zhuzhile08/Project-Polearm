@@ -42,8 +42,4 @@ func createSceneImpl() -> Node:
 	_sceneResource = ResourceLoader.load_threaded_get(SCENE_PATH)
 	return _sceneResource.instantiate()
 
-
-func exitImpl() -> void:
-	scene = null
-
 #endregion

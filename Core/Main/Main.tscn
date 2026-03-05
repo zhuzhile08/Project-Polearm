@@ -11,7 +11,7 @@ metadata/_custom_type_script = "uid://c31gnbehqoq8y"
 
 [node name="BootState" type="Node" parent="." unique_id=60879716 node_paths=PackedStringArray("_mainMenu")]
 script = ExtResource("3_jgmb7")
-_mainMenu = NodePath("")
+_mainMenu = NodePath("../MainMenuState")
 SCENE_PATH = "res://Core/Main/Boot/Boot.tscn"
 metadata/_custom_type_script = "uid://cpetiw40mhprd"
 

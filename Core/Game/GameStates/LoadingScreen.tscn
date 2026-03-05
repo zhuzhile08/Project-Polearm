@@ -1,10 +1,11 @@
 [gd_scene format=3 uid="uid://de2gy04pjvv8m"]
 
 [ext_resource type="Texture2D" uid="uid://ctdbykm11ffsx" path="res://icon.svg" id="1_2l3vg"]
-[ext_resource type="Script" uid="uid://tru2wijs1u3l" path="res://Core/Game/Load.gd" id="1_ip2jc"]
+[ext_resource type="Script" uid="uid://tru2wijs1u3l" path="res://Core/Game/GameStates/Load.gd" id="1_ip2jc"]
 
 [node name="LoadingScreen" type="Node2D" unique_id=1291295066]
 script = ExtResource("1_ip2jc")
+timer = 10.0
 
 [node name="Icon" type="Sprite2D" parent="." unique_id=422839984]
 position = Vector2(1020, 535.0001)
