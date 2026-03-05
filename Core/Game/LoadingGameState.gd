@@ -2,13 +2,13 @@ extends GameState
 class_name LoadingGameState
 
 
-@export var GAME_INSTANCE : PlayingGameState = null
+@export var _gameInstance : PlayingGameState = null
 
 
 #region Build-in functions
 
 func _ready() -> void:
-	assert(GAME_INSTANCE != null, "LoadingScreen._ready(): Main menu wasn't assigned!")
+	assert(_gameInstance != null, "LoadingScreen._ready(): Main menu wasn't assigned!")
 
 	super._ready()
 
@@ -23,7 +23,7 @@ func nextState() -> Type:
 	if not scene.readyToSwitch():
 		print("ha")
 		return Type.none
-	if not GAME_INSTANCE.finishedLoading():
+	if not _gameInstance.finishedLoading():
 		print("he")
 		return Type.none
 	print("ho")

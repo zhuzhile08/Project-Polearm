@@ -38,7 +38,7 @@ func type() -> Type:
 func createSceneImpl() -> Node:
 	assert( \
 		ResourceLoader.load_threaded_get_status(SCENE_PATH) == ResourceLoader.THREAD_LOAD_LOADED, \
-		"MainMenuUberState.createSceneImpl(): Scene resource has not finished loading! Please use the MainMenuUberState.finishedLoading() function.")
+		"PlayingGameState.createSceneImpl(): Scene resource has not finished loading! Please use the MainMenuUberState.finishedLoading() function.")
 
 	_sceneResource = ResourceLoader.load_threaded_get(SCENE_PATH)
 	return _sceneResource.instantiate()
